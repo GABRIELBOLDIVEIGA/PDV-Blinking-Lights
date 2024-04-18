@@ -12,7 +12,7 @@ import { UsuariosModule } from './usuarios/usuarios.module';
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.HOST,
-      port: +process.env.PORT,
+      port: +process.env.DB_PORT,
       username: process.env.USER_NAME,
       password: process.env.PASSWORD,
       database: process.env.DATA_BASE,
