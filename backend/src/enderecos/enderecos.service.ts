@@ -1,29 +1,64 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { CreateEnderecoDto } from './dto/create-endereco.dto';
-import { UpdateEnderecoDto } from './dto/update-endereco.dto';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Endereco } from './entities/endereco.entity';
 import { Repository } from 'typeorm';
 import { CreateEnderecoParams } from './types/CreateEnderecoParams';
+import { UpdateEnderecoParams } from './types/UpdateEnderecoParams';
+import { ClienteEndereco } from './entities/cliente_endereco.entity';
+
+import { Cliente } from 'src/clientes/entities/cliente.entity';
 
 @Injectable()
 export class EnderecosService {
   constructor(
+    @InjectRepository(Cliente)
+    private clienteRepository: Repository<Cliente>,
+
     @InjectRepository(Endereco)
     private enderecoRepository: Repository<Endereco>,
+    @InjectRepository(ClienteEndereco)
+    private clienteEnderecoRepository: Repository<ClienteEndereco>,
   ) {}
 
   async create(createEnderecoParams: CreateEnderecoParams): Promise<Endereco> {
     try {
       const novoEndereco = this.enderecoRepository.create(createEnderecoParams);
 
-      return this.enderecoRepository.save(novoEndereco);
+      return await this.enderecoRepository.save(novoEndereco);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
   }
 
-  async findAll() {
+  async createEnderecoCliente(
+    cliente_id: number,
+    createEnderecoParams: CreateEnderecoParams,
+  ) {
+    try {
+      const cliente = await this.clienteRepository.findOne({
+        where: { id: cliente_id },
+      });
+
+      if (!cliente) throw new BadRequestException('Cliente não encontrado.');
+
+      const enderece_cadastrado = await this.create(createEnderecoParams);
+      const novoEndereco = this.clienteEnderecoRepository.create({
+        endereco: enderece_cadastrado,
+        cliente,
+      });
+
+      return await this.clienteEnderecoRepository.save(novoEndereco);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async findAll(): Promise<Endereco[]> {
     try {
       return await this.enderecoRepository.find();
     } catch (error) {
@@ -31,15 +66,46 @@ export class EnderecosService {
     }
   }
 
-  async findOne(id: number) {
-    return `This action returns a #${id} endereco`;
+  async getById(id: number): Promise<Endereco> {
+    try {
+      const endereco = await this.enderecoRepository.findOne({
+        where: { id },
+      });
+      if (!endereco) throw new NotFoundException();
+
+      return endereco;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
-  async update(id: number, updateEnderecoDto: UpdateEnderecoDto) {
-    return `This action updates a #${id} endereco`;
+  async update(
+    id: number,
+    updateEnderecoParams: UpdateEnderecoParams,
+  ): Promise<Endereco> {
+    try {
+      const result = await this.enderecoRepository.update(
+        { id },
+        { ...updateEnderecoParams },
+      );
+
+      if (result.affected === 0) throw new NotFoundException();
+
+      return await this.getById(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
-  async remove(id: number) {
-    return `This action removes a #${id} endereco`;
+  async softDeleteById(id: number): Promise<string> {
+    try {
+      const result = await this.enderecoRepository.softDelete({ id });
+
+      if (result.affected === 0) throw new NotFoundException();
+
+      return 'Endereço deletado com sucesso.';
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 }

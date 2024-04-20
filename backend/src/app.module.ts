@@ -7,6 +7,9 @@ import { UsuariosModule } from './usuarios/usuarios.module';
 import { EnderecosModule } from './enderecos/enderecos.module';
 import { Usuario } from './usuarios/entities/usuario.entity';
 import { Endereco } from './enderecos/entities/endereco.entity';
+import { ClientesModule } from './clientes/clientes.module';
+import { Cliente } from './clientes/entities/cliente.entity';
+import { ClienteEndereco } from './enderecos/entities/cliente_endereco.entity';
 
 @Module({
   imports: [
@@ -18,11 +21,12 @@ import { Endereco } from './enderecos/entities/endereco.entity';
       username: process.env.USER_NAME,
       password: process.env.PASSWORD,
       database: process.env.DATA_BASE,
-      entities: [Usuario, Endereco],
+      entities: [Usuario, Endereco, Cliente, ClienteEndereco],
       synchronize: true,
     }),
     UsuariosModule,
     EnderecosModule,
+    ClientesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

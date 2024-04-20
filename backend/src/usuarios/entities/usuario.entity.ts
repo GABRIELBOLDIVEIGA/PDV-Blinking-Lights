@@ -37,7 +37,7 @@ export class Usuario {
   @Column()
   senha: string;
 
-  @OneToOne(() => Endereco)
+  @OneToOne(() => Endereco, (endereco) => endereco, { onDelete: 'SET NULL' })
   @JoinColumn()
   endereco: Endereco;
 

@@ -6,6 +6,7 @@ import * as session from 'express-session';
 import * as passport from 'passport';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { EnderecosModule } from './enderecos/enderecos.module';
+import { ClientesModule } from './clientes/clientes.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
@@ -93,6 +94,20 @@ async function bootstrap() {
   });
 
   SwaggerModule.setup('api/endereco', app, docEndereco);
+
+  // Clientes
+  const optClientes = new DocumentBuilder()
+    .setTitle('Clientes')
+    .setDescription('Clientes Model')
+    .setVersion('1.0')
+    .addTag('Clientes')
+    .build();
+
+  const docClientes = SwaggerModule.createDocument(app, optClientes, {
+    include: [ClientesModule],
+  });
+
+  SwaggerModule.setup('api/clientes', app, docClientes);
 
   // Start app
   await app.listen(process.env.PORT || 3030);

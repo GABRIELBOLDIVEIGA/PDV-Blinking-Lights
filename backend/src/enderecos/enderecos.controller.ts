@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { EnderecosService } from './enderecos.service';
 import { CreateEnderecoDto } from './dto/create-endereco.dto';
@@ -23,26 +24,37 @@ export class EnderecosController {
     return this.enderecosService.create(createEnderecoDto);
   }
 
+  @Post('cliente-endereco/:cliente_id')
+  createEnderecoCliente(
+    @Param('cliente_id', ParseIntPipe) cliente_id: number,
+    @Body() createEnderecoDto: CreateEnderecoDto,
+  ) {
+    return this.enderecosService.createEnderecoCliente(
+      cliente_id,
+      createEnderecoDto,
+    );
+  }
+
   @Get()
-  findAll() {
+  findAll(): Promise<Endereco[]> {
     return this.enderecosService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.enderecosService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<Endereco> {
+    return this.enderecosService.getById(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateEnderecoDto: UpdateEnderecoDto,
-  ) {
-    return this.enderecosService.update(+id, updateEnderecoDto);
+  ): Promise<Endereco> {
+    return this.enderecosService.update(id, updateEnderecoDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.enderecosService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number): Promise<string> {
+    return this.enderecosService.softDeleteById(id);
   }
 }

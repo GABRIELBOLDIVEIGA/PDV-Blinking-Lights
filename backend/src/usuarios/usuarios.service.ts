@@ -28,10 +28,9 @@ export class UsuariosService {
     try {
       const usuario = await this.usuarioRepository.findOne({
         where: { id: user_id },
+        relations: ['endereco'],
       });
       if (!usuario) throw new NotFoundException();
-
-      console.log(usuario);
 
       return usuario;
     } catch (error) {
@@ -61,8 +60,6 @@ export class UsuariosService {
         { id },
         { ...updateUsuario },
       );
-
-      console.log(result);
 
       if (result.affected === 0) throw new NotFoundException();
 

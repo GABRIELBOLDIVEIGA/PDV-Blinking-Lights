@@ -1,6 +1,14 @@
 import { IsString } from 'class-validator';
+import { ClienteEndereco } from 'src/enderecos/entities/cliente_endereco.entity';
 import { Usuario } from 'src/usuarios/entities/usuario.entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'enderecos' })
 export class Endereco {
