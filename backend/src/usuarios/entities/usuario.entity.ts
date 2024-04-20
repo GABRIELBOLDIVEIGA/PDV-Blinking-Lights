@@ -1,8 +1,11 @@
+import { Endereco } from 'src/enderecos/entities/endereco.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -15,7 +18,7 @@ export enum Permissao {
 
 @Entity({ name: 'usuarios' })
 export class Usuario {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
   @Column({
@@ -33,6 +36,10 @@ export class Usuario {
 
   @Column()
   senha: string;
+
+  @OneToOne(() => Endereco)
+  @JoinColumn()
+  endereco: Endereco;
 
   @CreateDateColumn()
   created_at: Date;

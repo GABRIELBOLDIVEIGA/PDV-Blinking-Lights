@@ -1,6 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsEnum, IsString } from 'class-validator';
-import { Permissao } from 'src/typeorm/entities/Usuario';
+import {
+  IsEmail,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+import { Permissao } from '../entities/usuario.entity';
 
 export class CreateUsuarioDto {
   @ApiProperty({
@@ -20,6 +26,7 @@ export class CreateUsuarioDto {
 
   @ApiProperty({
     description: 'E-mail do usuário.',
+    example: 'email@email.com',
   })
   @IsEmail()
   email: string;
@@ -29,4 +36,11 @@ export class CreateUsuarioDto {
   })
   @IsString()
   senha: string;
+
+  @ApiProperty({
+    description: 'ID do Endereço do usuário.',
+  })
+  @IsOptional()
+  @IsNumber()
+  endereco: number;
 }
