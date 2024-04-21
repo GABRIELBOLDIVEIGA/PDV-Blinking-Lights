@@ -1,8 +1,11 @@
+import { Produto } from 'src/database/produtos/entities/produto.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -25,6 +28,18 @@ export class Estoque {
     nullable: false,
   })
   movimento: string;
+
+  @Column({ type: 'smallint', nullable: false })
+  quantidade: number;
+
+  @Column({ type: 'double' })
+  custo_unitario: number;
+
+  @Column({ type: 'double' })
+  custo_total: number;
+
+  @ManyToOne(() => Produto, (produto) => produto)
+  produto: Produto;
 
   @CreateDateColumn()
   created_at: Date;

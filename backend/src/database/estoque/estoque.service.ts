@@ -21,8 +21,12 @@ export class EstoqueService {
     }
   }
 
-  findAll() {
-    return `This action returns all estoque`;
+  async findAll() {
+    try {
+      return await this.estoqueRepository.find({ relations: ['produto'] });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   findOne(id: number) {
