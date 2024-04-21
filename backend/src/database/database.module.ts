@@ -9,7 +9,7 @@ import { FormaDePagamentoModule } from './forma-de-pagamento/forma-de-pagamento.
 import { VendasModule } from './vendas/vendas.module';
 import { CategoriasModule } from './categorias/categorias.module';
 import { ProdutosModule } from './produtos/produtos.module';
-import { Produto } from './produtos/entities/produto.entity';
+// import { Produto } from './produtos/entities/produto.entity';
 
 @Module({
   imports: [

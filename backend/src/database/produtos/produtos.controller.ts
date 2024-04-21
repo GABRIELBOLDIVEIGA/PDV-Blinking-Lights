@@ -13,6 +13,7 @@ import { CreateProdutoDto } from './dto/create-produto.dto';
 import { UpdateProdutoDto } from './dto/update-produto.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Produto } from './entities/produto.entity';
+import { CreateProdutoParams } from './types/CreateProdutoParams';
 
 @ApiTags('Produtos')
 @Controller('produtos')
@@ -21,7 +22,10 @@ export class ProdutosController {
 
   @Post()
   async create(@Body() createProdutoDto: CreateProdutoDto): Promise<Produto> {
-    return this.produtosService.create(createProdutoDto);
+    const produto_params: CreateProdutoParams = { ...createProdutoDto };
+    const categorias = createProdutoDto.categorias;
+
+    return this.produtosService.create(produto_params, categorias);
   }
 
   @Get()
@@ -34,13 +38,13 @@ export class ProdutosController {
     return this.produtosService.findOne(id);
   }
 
-  @Patch(':id')
-  async update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateProdutoDto: UpdateProdutoDto,
-  ): Promise<Produto> {
-    return this.produtosService.update(id, updateProdutoDto);
-  }
+  // @Patch(':id')
+  // async update(
+  //   @Param('id', ParseIntPipe) id: number,
+  //   @Body() updateProdutoDto: UpdateProdutoDto,
+  // ): Promise<Produto> {
+  //   return this.produtosService.update(id, updateProdutoDto);
+  // }
 
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: number): Promise<string> {

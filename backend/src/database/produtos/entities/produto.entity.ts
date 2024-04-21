@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ProdutoCategoria } from 'src/database/produtos/entities/produto-categoria.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 @Entity({ name: 'produtos' })
 export class Produto {
   @PrimaryGeneratedColumn({ type: 'bigint' })
@@ -12,4 +13,10 @@ export class Produto {
 
   @Column({ type: 'double', nullable: false })
   preco_venda: number;
+
+  @OneToMany(
+    () => ProdutoCategoria,
+    (produto_categoria) => produto_categoria.produto,
+  )
+  categorias: ProdutoCategoria[];
 }
