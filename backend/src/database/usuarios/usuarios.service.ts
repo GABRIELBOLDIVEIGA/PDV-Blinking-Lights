@@ -13,7 +13,8 @@ import { Usuario } from './entities/usuario.entity';
 @Injectable()
 export class UsuariosService {
   constructor(
-    @InjectRepository(Usuario) private usuarioRepository: Repository<Usuario>,
+    @InjectRepository(Usuario)
+    private readonly usuarioRepository: Repository<Usuario>,
   ) {}
 
   async getAll(): Promise<Usuario[]> {
