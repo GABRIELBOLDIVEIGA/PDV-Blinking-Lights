@@ -11,6 +11,7 @@ import { StatusDavendaModule } from './database/status-da-venda/status-da-venda.
 import { FormaDePagamentoModule } from './database/forma-de-pagamento/forma-de-pagamento.module';
 import { CategoriasModule } from './database/categorias/categorias.module';
 import { VendasModule } from './database/vendas/vendas.module';
+import { ProdutosModule } from './database/produtos/produtos.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
@@ -172,6 +173,20 @@ async function bootstrap() {
   });
 
   SwaggerModule.setup('api/vendas', app, docVendas);
+
+  // Produtos
+  const optProdutos = new DocumentBuilder()
+    .setTitle('Produtos')
+    .setDescription('Produtos Model')
+    .setVersion('1.0')
+    .addTag('Produtos')
+    .build();
+
+  const docProdutos = SwaggerModule.createDocument(app, optProdutos, {
+    include: [ProdutosModule],
+  });
+
+  SwaggerModule.setup('api/produtos', app, docProdutos);
 
   // Start app
   await app.listen(process.env.PORT || 3030);

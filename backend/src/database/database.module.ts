@@ -8,6 +8,8 @@ import { ClientesModule } from './clientes/clientes.module';
 import { FormaDePagamentoModule } from './forma-de-pagamento/forma-de-pagamento.module';
 import { VendasModule } from './vendas/vendas.module';
 import { CategoriasModule } from './categorias/categorias.module';
+import { ProdutosModule } from './produtos/produtos.module';
+import { Produto } from './produtos/entities/produto.entity';
 
 @Module({
   imports: [
@@ -21,7 +23,7 @@ import { CategoriasModule } from './categorias/categorias.module';
         password: configService.getOrThrow('MYSQL_PASSWORD'),
         synchronize: configService.getOrThrow('MYSQL_SYNCHRONIZE'),
         autoLoadEntities: true,
-        // entities: [Usuario, Endereco, Cliente, ClienteEndereco],
+        // entities: [Produto],
       }),
       inject: [ConfigService],
     }),
@@ -32,6 +34,7 @@ import { CategoriasModule } from './categorias/categorias.module';
     FormaDePagamentoModule,
     VendasModule,
     CategoriasModule,
+    ProdutosModule,
   ],
 })
 export class DataBaseModule {}
