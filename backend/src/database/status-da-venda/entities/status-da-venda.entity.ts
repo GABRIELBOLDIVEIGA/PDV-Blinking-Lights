@@ -10,7 +10,7 @@ export class StatusDaVenda {
   nome: string;
 
   @OneToMany(() => Venda, (venda) => venda, {
-    nullable: false,
+    // nullable: false,
     onDelete: 'SET NULL',
   })
   venda: Venda;

@@ -7,6 +7,7 @@ import { EnderecosModule } from './enderecos/enderecos.module';
 import { ClientesModule } from './clientes/clientes.module';
 import { FormaDePagamentoModule } from './forma-de-pagamento/forma-de-pagamento.module';
 import { VendasModule } from './vendas/vendas.module';
+import { CategoriasModule } from './categorias/categorias.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { VendasModule } from './vendas/vendas.module';
     ClientesModule,
     FormaDePagamentoModule,
     VendasModule,
+    CategoriasModule,
   ],
 })
 export class DataBaseModule {}

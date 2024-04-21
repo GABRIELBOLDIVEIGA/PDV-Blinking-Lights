@@ -15,7 +15,7 @@ import {
 
 @Entity({ name: 'vendas' })
 export class Venda {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
   @Column({ type: 'smallint', nullable: false })

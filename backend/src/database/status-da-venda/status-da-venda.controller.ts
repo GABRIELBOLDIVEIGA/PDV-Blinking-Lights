@@ -11,6 +11,7 @@ import { StatusdavendaService } from './status-da-venda.service';
 import { CreateStatusDaVendaDto } from './dto/create-statusdavenda.dto';
 import { UpdateStatusDaVendaDto } from './dto/update-statusdavenda.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { StatusDaVenda } from './entities/status-da-venda.entity';
 
 @ApiTags('Status da Venda')
 @Controller('statusdavenda')
@@ -18,30 +19,32 @@ export class StatusdavendaController {
   constructor(private readonly statusdavendaService: StatusdavendaService) {}
 
   @Post()
-  create(@Body() createStatusdavendaDto: CreateStatusDaVendaDto) {
+  async create(
+    @Body() createStatusdavendaDto: CreateStatusDaVendaDto,
+  ): Promise<StatusDaVenda> {
     return this.statusdavendaService.create(createStatusdavendaDto);
   }
 
   @Get()
-  findAll() {
+  async findAll(): Promise<StatusDaVenda[]> {
     return this.statusdavendaService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<StatusDaVenda> {
     return this.statusdavendaService.findOne(+id);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateStatusdavendaDto: UpdateStatusDaVendaDto,
-  ) {
+  ): Promise<StatusDaVenda> {
     return this.statusdavendaService.update(+id, updateStatusdavendaDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string): Promise<string> {
     return this.statusdavendaService.remove(+id);
   }
 }

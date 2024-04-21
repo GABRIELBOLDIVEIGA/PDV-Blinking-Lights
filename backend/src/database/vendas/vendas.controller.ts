@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { VendasService } from './vendas.service';
 import { CreateVendaDto } from './dto/create-venda.dto';
@@ -18,27 +19,30 @@ export class VendasController {
   constructor(private readonly vendasService: VendasService) {}
 
   @Post()
-  create(@Body() createVendaDto: CreateVendaDto) {
+  async create(@Body() createVendaDto: CreateVendaDto) {
     return this.vendasService.create(createVendaDto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.vendasService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.vendasService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.vendasService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVendaDto: UpdateVendaDto) {
-    return this.vendasService.update(+id, updateVendaDto);
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateVendaDto: UpdateVendaDto,
+  ) {
+    return this.vendasService.update(id, updateVendaDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.vendasService.remove(+id);
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    return this.vendasService.remove(id);
   }
 }
