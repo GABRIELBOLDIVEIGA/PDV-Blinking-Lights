@@ -21,22 +21,24 @@ export class UsuariosController {
   constructor(private readonly usuariosService: UsuariosService) {}
 
   @Get()
-  getAll(): Promise<Usuario[]> {
+  async getAll(): Promise<Usuario[]> {
     return this.usuariosService.getAll();
   }
 
   @Get(':id')
-  getUsuarioById(@Param('id', ParseIntPipe) id: number): Promise<Usuario> {
+  async getUsuarioById(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Usuario> {
     return this.usuariosService.getById(id);
   }
 
   @Post()
-  createUsuario(@Body() usuario: CreateUsuarioDto): Promise<Usuario> {
+  async createUsuario(@Body() usuario: CreateUsuarioDto): Promise<Usuario> {
     return this.usuariosService.createUsuario(usuario);
   }
 
   @Patch(':id')
-  updateUsuarioById(
+  async updateUsuarioById(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUsuario: UpdateUsuarioDto,
   ): Promise<Usuario> {
@@ -44,7 +46,7 @@ export class UsuariosController {
   }
 
   @Delete(':id')
-  softDeleteUsuarioById(
+  async softDeleteUsuarioById(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<string> {
     return this.usuariosService.softDeleteById(id);
