@@ -10,6 +10,8 @@ import { VendasModule } from './vendas/vendas.module';
 import { CategoriasModule } from './categorias/categorias.module';
 import { ProdutosModule } from './produtos/produtos.module';
 // import { Produto } from './produtos/entities/produto.entity';
+import { FornecedorModule } from './fornecedor/fornecedor.module';
+import { EstoqueModule } from './estoque/estoque.module';
 
 @Module({
   imports: [
@@ -35,6 +37,8 @@ import { ProdutosModule } from './produtos/produtos.module';
     VendasModule,
     CategoriasModule,
     ProdutosModule,
+    FornecedorModule,
+    EstoqueModule,
   ],
 })
 export class DataBaseModule {}

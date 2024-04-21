@@ -2,17 +2,13 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
-  NotImplementedException,
 } from '@nestjs/common';
-import { CreateProdutoDto } from './dto/create-produto.dto';
-import { UpdateProdutoDto } from './dto/update-produto.dto';
 import { Produto } from './entities/produto.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateProdutoParams } from './types/CreateProdutoParams';
-import { UpdateProdutoParams } from './types/UpdateProdutoParams';
-import { ProdutoCategoria } from './entities/produto-categoria.entity';
 import { Categoria } from '../categorias/entities/categoria.entity';
+import { ProdutoCategoria } from '../common/entities/produto_categoria.entity';
 
 @Injectable()
 export class ProdutosService {
@@ -38,12 +34,16 @@ export class ProdutosService {
               id: categoria_id,
             });
 
-            const novo_produto_categoria =
-              this.produtoCategoriaRepository.create({
-                produto,
-                categoria,
-              });
-            await this.produtoCategoriaRepository.save(novo_produto_categoria);
+            if (categoria) {
+              const novo_produto_categoria =
+                this.produtoCategoriaRepository.create({
+                  produto,
+                  categoria,
+                });
+              await this.produtoCategoriaRepository.save(
+                novo_produto_categoria,
+              );
+            }
           });
 
           return produto;
@@ -70,7 +70,7 @@ export class ProdutosService {
     try {
       const produto = await this.produtoRepository.findOne({
         where: { id },
-        relations: ['categorias.categoria'],
+        relations: ['categorias.categoria', 'fornecedores.fornecedor'],
       });
       if (!produto) throw new NotFoundException();
 

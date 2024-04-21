@@ -8,11 +8,13 @@ export class ProdutoCategoria {
   id: number;
 
   @ManyToOne(() => Produto, (produto) => produto, {
+    nullable: false,
     onDelete: 'CASCADE',
   })
   produto: Produto;
 
   @ManyToOne(() => Categoria, (categoria) => categoria, {
+    nullable: false,
     onDelete: 'CASCADE',
   })
   categoria: Categoria;

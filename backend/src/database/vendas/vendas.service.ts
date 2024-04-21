@@ -73,7 +73,13 @@ export class VendasService {
   async findAll() {
     try {
       const vendas = await this.vendaRepository.find({
-        relations: ['formaDePagamento', 'status', 'cliente', 'usuario'],
+        relations: [
+          'formaDePagamento',
+          'status',
+          'cliente',
+          'usuario',
+          'produtos.produto',
+        ],
       });
 
       return vendas;
@@ -83,7 +89,23 @@ export class VendasService {
   }
 
   async findOne(id: number) {
-    return `This action returns a #${id} venda`;
+    try {
+      const produto = await this.vendaRepository.findOne({
+        where: { id },
+        relations: [
+          'formaDePagamento',
+          'status',
+          'cliente',
+          'usuario',
+          'produtos.produto',
+        ],
+      });
+      if (!produto) throw new NotFoundException();
+
+      return produto;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   async update(id: number, updateVendaDto: UpdateVendaDto) {

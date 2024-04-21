@@ -1,5 +1,5 @@
+import { ClienteEndereco } from 'src/database/common/entities/cliente_endereco.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { ClienteEndereco } from '../../enderecos/entities/cliente_endereco.entity';
 
 @Entity({ name: 'clientes' })
 export class Cliente {

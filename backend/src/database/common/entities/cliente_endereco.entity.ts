@@ -1,3 +1,4 @@
+import { Cliente } from 'src/database/clientes/entities/cliente.entity';
 import { Endereco } from 'src/database/enderecos/entities/endereco.entity';
 import {
   Entity,
@@ -6,7 +7,6 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Cliente } from '../../clientes/entities/cliente.entity';
 
 @Entity({ name: 'cliente_endereco' })
 export class ClienteEndereco {

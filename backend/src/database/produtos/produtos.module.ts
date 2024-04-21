@@ -3,8 +3,8 @@ import { ProdutosService } from './produtos.service';
 import { ProdutosController } from './produtos.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Produto } from './entities/produto.entity';
-import { ProdutoCategoria } from './entities/produto-categoria.entity';
 import { Categoria } from '../categorias/entities/categoria.entity';
+import { ProdutoCategoria } from '../common/entities/produto_categoria.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Produto, ProdutoCategoria, Categoria])],

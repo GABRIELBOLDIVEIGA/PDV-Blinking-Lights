@@ -1,4 +1,6 @@
-import { ProdutoCategoria } from 'src/database/produtos/entities/produto-categoria.entity';
+// import { VendaProduto } from 'src/database/vendas/entities/venda-produto.entity';
+import { ProdutoCategoria } from 'src/database/common/entities/produto_categoria.entity';
+import { ProdutoFornecedor } from 'src/database/common/entities/produto_fornecedor.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 @Entity({ name: 'produtos' })
 export class Produto {
@@ -19,4 +21,13 @@ export class Produto {
     (produto_categoria) => produto_categoria.produto,
   )
   categorias: ProdutoCategoria[];
+
+  @OneToMany(
+    () => ProdutoFornecedor,
+    (produto_fornecedor) => produto_fornecedor.produto,
+  )
+  fornecedores: ProdutoFornecedor[];
+
+  // @OneToMany(() => VendaProduto, (venda_produto) => venda_produto.produto)
+  // venda: VendaProduto[];
 }

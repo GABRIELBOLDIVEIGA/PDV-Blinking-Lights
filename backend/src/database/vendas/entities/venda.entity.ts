@@ -1,4 +1,5 @@
 import { Cliente } from 'src/database/clientes/entities/cliente.entity';
+import { VendaProduto } from 'src/database/common/entities/venda_produto.entity';
 import { FormaDePagamento } from 'src/database/forma-de-pagamento/entities/forma-de-pagamento.entity';
 import { StatusDaVenda } from 'src/database/status-da-venda/entities/status-da-venda.entity';
 import { Usuario } from 'src/database/usuarios/entities/usuario.entity';
@@ -44,6 +45,9 @@ export class Venda {
 
   @ManyToOne(() => FormaDePagamento, (formaDePagamento) => formaDePagamento)
   formaDePagamento: FormaDePagamento;
+
+  @OneToMany(() => VendaProduto, (produto_venda) => produto_venda.venda)
+  produtos: VendaProduto[];
 
   @CreateDateColumn()
   created_at: Date;
