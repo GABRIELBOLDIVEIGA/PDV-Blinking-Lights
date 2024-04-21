@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { FornecedorService } from './fornecedor.service';
 import { CreateFornecedorDto } from './dto/create-fornecedor.dto';
 import { UpdateFornecedorDto } from './dto/update-fornecedor.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Fornecedor } from './entities/fornecedor.entity';
 
 @ApiTags('Fornecedor')
 @Controller('fornecedor')
@@ -18,30 +20,32 @@ export class FornecedorController {
   constructor(private readonly fornecedorService: FornecedorService) {}
 
   @Post()
-  create(@Body() createFornecedorDto: CreateFornecedorDto) {
+  async create(
+    @Body() createFornecedorDto: CreateFornecedorDto,
+  ): Promise<Fornecedor> {
     return this.fornecedorService.create(createFornecedorDto);
   }
 
   @Get()
-  findAll() {
+  async findAll(): Promise<Fornecedor[]> {
     return this.fornecedorService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.fornecedorService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<Fornecedor> {
+    return this.fornecedorService.findOne(id);
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
+  async update(
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateFornecedorDto: UpdateFornecedorDto,
-  ) {
-    return this.fornecedorService.update(+id, updateFornecedorDto);
+  ): Promise<Fornecedor> {
+    return this.fornecedorService.update(id, updateFornecedorDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.fornecedorService.remove(+id);
+  async remove(@Param('id', ParseIntPipe) id: number): Promise<string> {
+    return this.fornecedorService.remove(id);
   }
 }

@@ -38,7 +38,7 @@ export class Estoque {
   @Column({ type: 'double' })
   custo_total: number;
 
-  @ManyToOne(() => Produto, (produto) => produto)
+  @ManyToOne(() => Produto, (produto) => produto, { nullable: false })
   produto: Produto;
 
   @CreateDateColumn()

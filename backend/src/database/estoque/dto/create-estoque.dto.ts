@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Movimento } from '../entities/estoque.entity';
-import { IsEnum } from 'class-validator';
+import { IsEnum, IsNumber } from 'class-validator';
 
 export class CreateEstoqueDto {
   @ApiProperty({
@@ -16,4 +16,20 @@ export class CreateEstoqueDto {
   })
   @IsEnum(Movimento)
   movimento: string;
+
+  @ApiProperty({ type: 'number', description: 'Quantidade de itens.' })
+  @IsNumber()
+  quantidade: number;
+
+  @ApiProperty({ type: 'number', description: 'Custo unitario.' })
+  @IsNumber()
+  custo_unitario: number;
+
+  @ApiProperty({ type: 'number', description: 'Custo total.' })
+  @IsNumber()
+  custo_total: number;
+
+  @ApiProperty({ type: 'number', description: 'ID do produto.' })
+  @IsNumber()
+  produto_id: number;
 }

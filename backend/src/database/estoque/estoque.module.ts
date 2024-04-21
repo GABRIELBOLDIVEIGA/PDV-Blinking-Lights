@@ -4,11 +4,9 @@ import { EstoqueController } from './estoque.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Estoque } from './entities/estoque.entity';
 import { Produto } from '../produtos/entities/produto.entity';
-import { Categoria } from '../categorias/entities/categoria.entity';
-import { ProdutoCategoria } from '../common/entities/produto_categoria.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Estoque])],
+  imports: [TypeOrmModule.forFeature([Estoque, Produto])],
   controllers: [EstoqueController],
   providers: [EstoqueService],
 })
