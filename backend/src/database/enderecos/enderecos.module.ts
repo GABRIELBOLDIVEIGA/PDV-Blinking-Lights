@@ -4,8 +4,8 @@ import { EnderecosController } from './enderecos.controller';
 import { Endereco } from './entities/endereco.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClienteEndereco } from './entities/cliente_endereco.entity';
-import { ClientesModule } from 'src/clientes/clientes.module';
-import { Cliente } from 'src/clientes/entities/cliente.entity';
+import { ClientesModule } from 'src/database/clientes/clientes.module';
+import { Cliente } from 'src/database/clientes/entities/cliente.entity';
 
 @Module({
   imports: [

@@ -1,0 +1,14 @@
+
+services: 
+  mysql:
+    image: mysql 
+    env_file:
+      - .env
+    environment:
+      - host=MYSQL_HOST
+      - username=MYSQL_USER_NAME
+      - password=MYSQL_PASSWORD
+      - database=MYSQL_DATA_BASE
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    ports:
+      - '3306:3306'

@@ -1,4 +1,4 @@
-import { Endereco } from 'src/enderecos/entities/endereco.entity';
+import { Endereco } from 'src/database/enderecos/entities/endereco.entity';
 import {
   Column,
   CreateDateColumn,
@@ -49,4 +49,8 @@ export class Usuario {
 
   @DeleteDateColumn()
   deleted_at: Date;
+
+  constructor(usuario: Partial<Usuario>) {
+    Object.assign(this, usuario);
+  }
 }

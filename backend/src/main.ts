@@ -4,9 +4,9 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import * as session from 'express-session';
 import * as passport from 'passport';
-import { UsuariosModule } from './usuarios/usuarios.module';
-import { EnderecosModule } from './enderecos/enderecos.module';
-import { ClientesModule } from './clientes/clientes.module';
+import { UsuariosModule } from './database/usuarios/usuarios.module';
+import { EnderecosModule } from './database/enderecos/enderecos.module';
+import { ClientesModule } from './database/clientes/clientes.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
@@ -112,7 +112,7 @@ async function bootstrap() {
   // Start app
   await app.listen(process.env.PORT || 3030);
 
-  console.clear();
+  // console.clear();
 
   console.log(`Base Url: http://localhost:${process.env.PORT} 🌐`);
   console.log(`Swagger: http://localhost:${process.env.PORT}/api/ 📜`);

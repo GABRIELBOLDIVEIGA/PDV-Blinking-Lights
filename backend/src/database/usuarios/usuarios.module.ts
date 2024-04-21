@@ -3,7 +3,7 @@ import { UsuariosService } from './usuarios.service';
 import { UsuariosController } from './usuarios.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Usuario } from './entities/usuario.entity';
-import { Endereco } from 'src/enderecos/entities/endereco.entity';
+import { Endereco } from 'src/database/enderecos/entities/endereco.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Usuario])],

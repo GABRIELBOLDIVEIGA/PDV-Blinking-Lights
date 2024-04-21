@@ -11,7 +11,7 @@ import { CreateEnderecoParams } from './types/CreateEnderecoParams';
 import { UpdateEnderecoParams } from './types/UpdateEnderecoParams';
 import { ClienteEndereco } from './entities/cliente_endereco.entity';
 
-import { Cliente } from 'src/clientes/entities/cliente.entity';
+import { Cliente } from 'src/database/clientes/entities/cliente.entity';
 
 @Injectable()
 export class EnderecosService {
@@ -53,6 +53,19 @@ export class EnderecosService {
       });
 
       return await this.clienteEnderecoRepository.save(novoEndereco);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async getEnderecosByClienteId(id: number): Promise<ClienteEndereco[]> {
+    try {
+      const enderecos = await this.clienteEnderecoRepository.find({
+        where: { cliente: { id: id } },
+        relations: ['endereco'],
+      });
+
+      return enderecos;
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

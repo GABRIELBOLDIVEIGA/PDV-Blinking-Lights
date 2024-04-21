@@ -13,6 +13,7 @@ import { CreateEnderecoDto } from './dto/create-endereco.dto';
 import { UpdateEnderecoDto } from './dto/update-endereco.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Endereco } from './entities/endereco.entity';
+import { ClienteEndereco } from './entities/cliente_endereco.entity';
 
 @ApiTags('Endereço')
 @Controller('enderecos')
@@ -33,6 +34,13 @@ export class EnderecosController {
       cliente_id,
       createEnderecoDto,
     );
+  }
+
+  @Get('cliente/:id')
+  enderecosByClienteId(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<ClienteEndereco[]> {
+    return this.enderecosService.getEnderecosByClienteId(id);
   }
 
   @Get()

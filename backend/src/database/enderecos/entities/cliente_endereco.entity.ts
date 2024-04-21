@@ -1,4 +1,4 @@
-import { Endereco } from 'src/enderecos/entities/endereco.entity';
+import { Endereco } from 'src/database/enderecos/entities/endereco.entity';
 import {
   Entity,
   JoinColumn,
