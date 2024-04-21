@@ -26,9 +26,10 @@ import { DataBaseModule } from './database/database.module';
     //   entities: [Usuario, Endereco, Cliente, ClienteEndereco],
     //   synchronize: true,
     // }),
-    UsuariosModule,
-    EnderecosModule,
-    ClientesModule,
+
+    // UsuariosModule,
+    // EnderecosModule,
+    // ClientesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -5,21 +5,21 @@ export class Endereco {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false, default: '' })
   cep: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false, default: '' })
   logradouro: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false, default: '' })
   complemento: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false, default: '' })
   bairro: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false, default: '' })
   localidade: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false, default: '' })
   uf: string;
 }

@@ -7,7 +7,7 @@ export class Cliente {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false })
   nome: string;
 
   @OneToMany(

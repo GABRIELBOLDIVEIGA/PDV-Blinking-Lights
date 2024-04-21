@@ -28,13 +28,13 @@ export class Usuario {
   })
   permissao: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false })
   nome: string;
 
-  @Column({ unique: true })
+  @Column({ type: 'varchar', nullable: false, unique: true })
   email: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false })
   senha: string;
 
   @OneToOne(() => Endereco, (endereco) => endereco, { onDelete: 'SET NULL' })
