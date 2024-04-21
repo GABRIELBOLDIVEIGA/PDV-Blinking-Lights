@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { StatusDavendaModule } from './statusdavenda/status-da-venda.module';
+import { StatusDavendaModule } from './status-da-venda/status-da-venda.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { EnderecosModule } from './enderecos/enderecos.module';
 import { ClientesModule } from './clientes/clientes.module';
 import { FormaDePagamentoModule } from './forma-de-pagamento/forma-de-pagamento.module';
+import { VendasModule } from './vendas/vendas.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { FormaDePagamentoModule } from './forma-de-pagamento/forma-de-pagamento.
     EnderecosModule,
     ClientesModule,
     FormaDePagamentoModule,
+    VendasModule,
   ],
 })
 export class DataBaseModule {}

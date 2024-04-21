@@ -1,4 +1,3 @@
-import { Endereco } from 'src/database/enderecos/entities/endereco.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ClienteEndereco } from '../../enderecos/entities/cliente_endereco.entity';
 

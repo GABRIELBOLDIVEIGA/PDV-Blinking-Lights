@@ -1,11 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { FormaDePagamentoService } from './forma-de-pagamento.service';
 import { CreateFormaDePagamentoDto } from './dto/create-forma-de-pagamento.dto';
 import { UpdateFormaDePagamentoDto } from './dto/update-forma-de-pagamento.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Formas de pagamentos')
 @Controller('forma-de-pagamento')
 export class FormaDePagamentoController {
-  constructor(private readonly formaDePagamentoService: FormaDePagamentoService) {}
+  constructor(
+    private readonly formaDePagamentoService: FormaDePagamentoService,
+  ) {}
 
   @Post()
   create(@Body() createFormaDePagamentoDto: CreateFormaDePagamentoDto) {
@@ -23,7 +35,10 @@ export class FormaDePagamentoController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFormaDePagamentoDto: UpdateFormaDePagamentoDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateFormaDePagamentoDto: UpdateFormaDePagamentoDto,
+  ) {
     return this.formaDePagamentoService.update(+id, updateFormaDePagamentoDto);
   }
 
