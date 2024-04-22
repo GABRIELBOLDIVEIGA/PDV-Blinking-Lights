@@ -10,5 +10,6 @@ import { Endereco } from 'src/database/enderecos/entities/endereco.entity';
   // imports: [TypeOrmModule.forFeature([Usuario, Endereco])],
   controllers: [UsuariosController],
   providers: [UsuariosService],
+  exports: [UsuariosService],
 })
 export class UsuariosModule {}

@@ -25,6 +25,18 @@ export class UsuariosService {
     }
   }
 
+  async getByEmail(email: string): Promise<Usuario> {
+    try {
+      const usuario = await this.usuarioRepository.findOne({
+        where: { email },
+      });
+      if (!usuario) throw new NotFoundException();
+
+      return usuario;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
   async getById(user_id: number): Promise<Usuario> {
     try {
       const usuario = await this.usuarioRepository.findOne({
