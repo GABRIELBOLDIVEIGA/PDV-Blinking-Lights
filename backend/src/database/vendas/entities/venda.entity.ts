@@ -1,7 +1,7 @@
 import { Cliente } from 'src/database/clientes/entities/cliente.entity';
-import { VendaProduto } from 'src/database/common/entities/venda_produto.entity';
+import { VendaProduto } from 'src/database/vendas/entities/venda_produto.entity';
 import { FormaDePagamento } from 'src/database/forma-de-pagamento/entities/forma-de-pagamento.entity';
-import { StatusDaVenda } from 'src/database/status-da-venda/entities/status-da-venda.entity';
+import { Mesa } from 'src/database/mesas/entities/mesa.entity';
 import { Usuario } from 'src/database/usuarios/entities/usuario.entity';
 import {
   Column,
@@ -13,35 +13,43 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { StatusDaVenda } from '../enums/StatusDaVenda';
 
 @Entity({ name: 'vendas' })
 export class Venda {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
-  @Column({ type: 'smallint', nullable: false })
+  @Column({ type: 'smallint', nullable: false, default: 0 })
   parcelas: number;
 
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: false, default: '' })
   observacoes: string;
 
-  @Column({ type: 'double', nullable: false })
+  @Column({ type: 'double', nullable: false, default: 0 })
   valor_total: number;
 
-  @Column({ type: 'double', nullable: false })
+  @Column({ type: 'double', nullable: false, default: 0 })
   desconto: number;
 
-  @Column({ type: 'double', nullable: false })
+  @Column({ type: 'double', nullable: false, default: 0 })
   valor_pago: number;
 
-  @ManyToOne(() => Usuario, (usuario) => usuario)
+  @ManyToOne(() => Usuario, (usuario) => usuario, { nullable: false })
   usuario: Usuario;
 
   @ManyToOne(() => Cliente, (cliente) => cliente)
   cliente: Cliente;
 
-  @ManyToOne(() => StatusDaVenda, (status) => status)
-  status: StatusDaVenda;
+  @ManyToOne(() => Mesa, (mesa) => mesa)
+  mesa: Mesa;
+
+  @Column({
+    type: 'enum',
+    enum: StatusDaVenda,
+    default: StatusDaVenda.ABERTO,
+  })
+  status: string;
 
   @ManyToOne(() => FormaDePagamento, (formaDePagamento) => formaDePagamento)
   formaDePagamento: FormaDePagamento;

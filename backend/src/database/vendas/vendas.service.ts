@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -12,22 +11,30 @@ import { Repository } from 'typeorm';
 import { Cliente } from '../clientes/entities/cliente.entity';
 import { Usuario } from '../usuarios/entities/usuario.entity';
 import { FormaDePagamento } from '../forma-de-pagamento/entities/forma-de-pagamento.entity';
-import { StatusDaVenda } from '../status-da-venda/entities/status-da-venda.entity';
+import { Mesa } from '../mesas/entities/mesa.entity';
+import { VendaProduto } from './entities/venda_produto.entity';
+import { AdicionaProdutoDto } from './dto/adiciona-produto.dto';
+import { Produto } from '../produtos/entities/produto.entity';
 
 @Injectable()
 export class VendasService {
   constructor(
     @InjectRepository(Venda)
     private readonly vendaRepository: Repository<Venda>,
+    @InjectRepository(VendaProduto)
+    private readonly vendaProdutoRepository: Repository<VendaProduto>,
     @InjectRepository(Cliente)
     private readonly clienteRepository: Repository<Cliente>,
+    @InjectRepository(Mesa)
+    private readonly mesaRepository: Repository<Mesa>,
     @InjectRepository(Usuario)
     private readonly usuarioRepository: Repository<Usuario>,
     @InjectRepository(FormaDePagamento)
     private readonly formaDePagamentoRepository: Repository<FormaDePagamento>,
-    @InjectRepository(StatusDaVenda)
-    private readonly statusDaVendaRepository: Repository<StatusDaVenda>,
+    @InjectRepository(Produto)
+    private readonly produtoRepository: Repository<Produto>,
   ) {}
+
   async create(createVendaDto: CreateVendaDto) {
     try {
       const usuario = await this.usuarioRepository.findOneBy({
@@ -42,6 +49,13 @@ export class VendasService {
         });
       }
 
+      let mesa: Mesa | null = null;
+      if (createVendaDto.mesa_id) {
+        mesa = await this.mesaRepository.findOneBy({
+          id: createVendaDto.mesa_id,
+        });
+      }
+
       let formaDePagamento: FormaDePagamento | null = null;
       if (createVendaDto.forma_de_pagamento_id) {
         formaDePagamento = await this.formaDePagamentoRepository.findOneBy({
@@ -49,22 +63,43 @@ export class VendasService {
         });
       }
 
-      let status: StatusDaVenda | null = null;
-      if (createVendaDto.status_da_venda_id) {
-        status = await this.statusDaVendaRepository.findOneBy({
-          id: createVendaDto.status_da_venda_id,
-        });
-      }
-
       const nova_venda = this.vendaRepository.create({
         ...createVendaDto,
         usuario,
         cliente,
-        status,
+
         formaDePagamento,
+        mesa,
       });
 
       return await this.vendaRepository.save(nova_venda);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async adiconarProduto(adicionaProdutoDto: AdicionaProdutoDto) {
+    try {
+      const venda = await this.vendaRepository.findOneBy({
+        id: adicionaProdutoDto.venda_id,
+      });
+      if (!venda) throw new NotFoundException('Venda não encontrada.');
+
+      const produto = await this.produtoRepository.findOneBy({
+        id: adicionaProdutoDto.produto_id,
+      });
+      if (!produto) throw new NotFoundException('Produto não encontrado.');
+
+      const venda_produto = this.vendaProdutoRepository.create({
+        quantidade: adicionaProdutoDto.quantidade,
+        produto,
+        produto_nome: produto.nome,
+        produto_descricao: produto.descricao,
+        produto_preco: produto.preco,
+        venda,
+      });
+
+      return await this.vendaProdutoRepository.save(venda_produto);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
@@ -98,6 +133,7 @@ export class VendasService {
           'cliente',
           'usuario',
           'produtos.produto',
+          'mesa',
         ],
       });
       if (!produto) throw new NotFoundException();
@@ -109,10 +145,29 @@ export class VendasService {
   }
 
   async update(id: number, updateVendaDto: UpdateVendaDto) {
-    return `This action updates a #${id} venda`;
+    try {
+      const result = await this.vendaRepository.update(
+        { id },
+        { ...updateVendaDto },
+      );
+
+      if (result.affected === 0) throw new NotFoundException();
+
+      return await this.findOne(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   async remove(id: number) {
-    return `This action removes a #${id} venda`;
+    try {
+      const result = await this.vendaRepository.softDelete({ id });
+
+      if (result.affected === 0) throw new NotFoundException();
+
+      return 'Venda deletada com sucesso.';
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 }

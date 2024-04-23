@@ -1,6 +1,13 @@
 import { Categoria } from 'src/database/categorias/entities/categoria.entity';
 import { Produto } from 'src/database/produtos/entities/produto.entity';
-import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity({ name: 'produto_categoria' })
 export class ProdutoCategoria {
@@ -18,4 +25,13 @@ export class ProdutoCategoria {
     onDelete: 'CASCADE',
   })
   categoria: Categoria;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
 }

@@ -7,16 +7,20 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ name: 'categorias' })
-export class Categoria {
+@Entity({ name: 'mesas' })
+export class Mesa {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
-  @Column({ type: 'varchar', nullable: false })
+  @Column({
+    type: 'varchar',
+    nullable: false,
+    default: 'Sem Nome',
+  })
   nome: string;
 
-  @Column({ type: 'varchar', nullable: false, default: ' ' })
-  descricao: string;
+  @Column({ type: 'boolean', nullable: false, default: false })
+  aberta: boolean;
 
   @CreateDateColumn()
   created_at: Date;

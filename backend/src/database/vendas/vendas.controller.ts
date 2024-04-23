@@ -12,15 +12,21 @@ import { VendasService } from './vendas.service';
 import { CreateVendaDto } from './dto/create-venda.dto';
 import { UpdateVendaDto } from './dto/update-venda.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { AdicionaProdutoDto } from './dto/adiciona-produto.dto';
 
 @ApiTags('Vendas')
-@Controller('vendas')
+@Controller('venda')
 export class VendasController {
   constructor(private readonly vendasService: VendasService) {}
 
   @Post()
   async create(@Body() createVendaDto: CreateVendaDto) {
     return this.vendasService.create(createVendaDto);
+  }
+
+  @Post('adiciona-produto')
+  async adiconarProduto(@Body() adicionaProdutoDto: AdicionaProdutoDto) {
+    return this.vendasService.adiconarProduto(adicionaProdutoDto);
   }
 
   @Get()

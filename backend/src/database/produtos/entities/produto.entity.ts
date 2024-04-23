@@ -1,8 +1,16 @@
-// import { VendaProduto } from 'src/database/vendas/entities/venda-produto.entity';
 import { ProdutoCategoria } from 'src/database/common/entities/produto_categoria.entity';
 import { ProdutoFornecedor } from 'src/database/common/entities/produto_fornecedor.entity';
 import { Estoque } from 'src/database/estoque/entities/estoque.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
 @Entity({ name: 'produtos' })
 export class Produto {
   @PrimaryGeneratedColumn({ type: 'bigint' })
@@ -15,7 +23,7 @@ export class Produto {
   descricao: string;
 
   @Column({ type: 'double', nullable: false })
-  preco_venda: number;
+  preco: number;
 
   @OneToMany(
     () => ProdutoCategoria,
@@ -30,11 +38,16 @@ export class Produto {
   fornecedores: ProdutoFornecedor[];
 
   @OneToMany(() => Estoque, (estoque) => estoque, {
-    // nullable: false,
     onDelete: 'SET NULL',
   })
   estoque: Estoque;
 
-  // @OneToMany(() => VendaProduto, (venda_produto) => venda_produto.produto)
-  // venda: VendaProduto[];
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
 }

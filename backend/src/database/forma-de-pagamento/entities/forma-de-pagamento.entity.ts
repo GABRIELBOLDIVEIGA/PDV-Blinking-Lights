@@ -1,5 +1,13 @@
 import { Venda } from 'src/database/vendas/entities/venda.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity({ name: 'forma_de_pagamento' })
 export class FormaDePagamento {
@@ -10,8 +18,16 @@ export class FormaDePagamento {
   nome: string;
 
   @OneToMany(() => Venda, (venda) => venda, {
-    // nullable: false,
     onDelete: 'SET NULL',
   })
   venda: Venda;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
 }

@@ -14,8 +14,8 @@ import { UpdateClienteDto } from './dto/update-cliente.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Cliente } from './entities/cliente.entity';
 
-@ApiTags('Cliente')
-@Controller('clientes')
+@ApiTags('Clientes')
+@Controller('cliente')
 export class ClientesController {
   constructor(private readonly clientesService: ClientesService) {}
 

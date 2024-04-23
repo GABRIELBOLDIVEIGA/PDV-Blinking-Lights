@@ -11,6 +11,14 @@ export class CreateVendaDto {
   cliente_id: number | null;
 
   @ApiProperty({
+    description: 'ID do Mesa.',
+    example: 1,
+  })
+  @IsNumber()
+  @IsOptional()
+  mesa_id: number | null;
+
+  @ApiProperty({
     description: 'ID do Usuario.',
     example: 1,
   })
@@ -24,14 +32,6 @@ export class CreateVendaDto {
   @IsNumber()
   @IsOptional()
   forma_de_pagamento_id: number;
-
-  @ApiProperty({
-    description: 'ID do Status da venda.',
-    example: 1,
-  })
-  @IsNumber()
-  @IsOptional()
-  status_da_venda_id: number;
 
   @ApiProperty({
     description: 'Parcelas.',

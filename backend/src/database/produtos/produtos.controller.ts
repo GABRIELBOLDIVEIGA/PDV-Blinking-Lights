@@ -16,7 +16,7 @@ import { Produto } from './entities/produto.entity';
 import { CreateProdutoParams } from './types/CreateProdutoParams';
 
 @ApiTags('Produtos')
-@Controller('produtos')
+@Controller('produto')
 export class ProdutosController {
   constructor(private readonly produtosService: ProdutosService) {}
 

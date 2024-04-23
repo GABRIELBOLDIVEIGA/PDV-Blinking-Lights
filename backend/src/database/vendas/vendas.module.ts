@@ -6,16 +6,20 @@ import { Venda } from './entities/venda.entity';
 import { Cliente } from '../clientes/entities/cliente.entity';
 import { Usuario } from '../usuarios/entities/usuario.entity';
 import { FormaDePagamento } from '../forma-de-pagamento/entities/forma-de-pagamento.entity';
-import { StatusDaVenda } from '../status-da-venda/entities/status-da-venda.entity';
+import { Mesa } from '../mesas/entities/mesa.entity';
+import { VendaProduto } from './entities/venda_produto.entity';
+import { Produto } from '../produtos/entities/produto.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       Venda,
       Cliente,
+      Mesa,
       Usuario,
       FormaDePagamento,
-      StatusDaVenda,
+      VendaProduto,
+      Produto,
     ]),
   ],
   controllers: [VendasController],

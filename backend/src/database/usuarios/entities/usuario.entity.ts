@@ -9,12 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-
-export enum Permissao {
-  DEV = 'DEV',
-  ADMIN = 'ADMIN',
-  USER = 'USER',
-}
+import { Permissao } from '../enums/Permissao';
 
 @Entity({ name: 'usuarios' })
 export class Usuario {
@@ -49,8 +44,4 @@ export class Usuario {
 
   @DeleteDateColumn()
   deleted_at: Date;
-
-  constructor(usuario: Partial<Usuario>) {
-    Object.assign(this, usuario);
-  }
 }

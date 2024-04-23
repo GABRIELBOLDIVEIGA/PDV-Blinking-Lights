@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { StatusDavendaModule } from './status-da-venda/status-da-venda.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { EnderecosModule } from './enderecos/enderecos.module';
 import { ClientesModule } from './clientes/clientes.module';
@@ -9,9 +8,10 @@ import { FormaDePagamentoModule } from './forma-de-pagamento/forma-de-pagamento.
 import { VendasModule } from './vendas/vendas.module';
 import { CategoriasModule } from './categorias/categorias.module';
 import { ProdutosModule } from './produtos/produtos.module';
-// import { Produto } from './produtos/entities/produto.entity';
 import { FornecedorModule } from './fornecedor/fornecedor.module';
 import { EstoqueModule } from './estoque/estoque.module';
+import { MesasModule } from './mesas/mesas.module';
+import { SubCategoriasModule } from './sub-categorias/sub-categorias.module';
 
 @Module({
   imports: [
@@ -29,16 +29,17 @@ import { EstoqueModule } from './estoque/estoque.module';
       }),
       inject: [ConfigService],
     }),
-    StatusDavendaModule,
-    UsuariosModule,
-    EnderecosModule,
-    ClientesModule,
-    FormaDePagamentoModule,
-    VendasModule,
     CategoriasModule,
-    ProdutosModule,
-    FornecedorModule,
+    ClientesModule,
+    EnderecosModule,
     EstoqueModule,
+    FormaDePagamentoModule,
+    FornecedorModule,
+    MesasModule,
+    ProdutosModule,
+    UsuariosModule,
+    VendasModule,
+    SubCategoriasModule,
   ],
 })
 export class DataBaseModule {}

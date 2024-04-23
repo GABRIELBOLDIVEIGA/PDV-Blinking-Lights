@@ -15,8 +15,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { Endereco } from './entities/endereco.entity';
 import { ClienteEndereco } from '../common/entities/cliente_endereco.entity';
 
-@ApiTags('Endereço')
-@Controller('enderecos')
+@ApiTags('Endereços')
+@Controller('endereco')
 export class EnderecosController {
   constructor(private readonly enderecosService: EnderecosService) {}
 

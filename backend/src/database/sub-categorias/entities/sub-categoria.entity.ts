@@ -7,8 +7,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ name: 'categorias' })
-export class Categoria {
+@Entity({ name: 'sub-categorias' })
+export class SubCategoria {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 

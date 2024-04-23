@@ -7,7 +7,7 @@ import * as passport from 'passport';
 import { UsuariosModule } from './database/usuarios/usuarios.module';
 import { EnderecosModule } from './database/enderecos/enderecos.module';
 import { ClientesModule } from './database/clientes/clientes.module';
-import { StatusDavendaModule } from './database/status-da-venda/status-da-venda.module';
+// import { StatusDavendaModule } from './database/status-da-venda/status-da-venda.module';
 import { FormaDePagamentoModule } from './database/forma-de-pagamento/forma-de-pagamento.module';
 import { CategoriasModule } from './database/categorias/categorias.module';
 import { VendasModule } from './database/vendas/vendas.module';
@@ -72,6 +72,20 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
+  // Categorias
+  const optCategorias = new DocumentBuilder()
+    .setTitle('Categorias')
+    .setDescription('Categorias Model')
+    .setVersion('1.0')
+    .addTag('Categorias')
+    .build();
+
+  const docCategorias = SwaggerModule.createDocument(app, optCategorias, {
+    include: [CategoriasModule],
+  });
+
+  SwaggerModule.setup('api/categorias', app, docCategorias);
+
   // Usuários
   const optUser = new DocumentBuilder()
     .setTitle('Usuário')
@@ -114,20 +128,6 @@ async function bootstrap() {
 
   SwaggerModule.setup('api/clientes', app, docClientes);
 
-  // Status da Venda
-  const optStatusDaVenda = new DocumentBuilder()
-    .setTitle('Status Da Venda')
-    .setDescription('Status Da Venda Model')
-    .setVersion('1.0')
-    .addTag('Status Da Venda')
-    .build();
-
-  const docStatusDaVenda = SwaggerModule.createDocument(app, optStatusDaVenda, {
-    include: [StatusDavendaModule],
-  });
-
-  SwaggerModule.setup('api/statusDaVenda', app, docStatusDaVenda);
-
   // Forma de pagamento
   const optFormaDePagamento = new DocumentBuilder()
     .setTitle('Forma De Pagamento')
@@ -145,20 +145,6 @@ async function bootstrap() {
   );
 
   SwaggerModule.setup('api/formaDePagamento', app, docFormaDePagamento);
-
-  // Categorias
-  const optCategorias = new DocumentBuilder()
-    .setTitle('Categorias')
-    .setDescription('Categorias Model')
-    .setVersion('1.0')
-    .addTag('Categorias')
-    .build();
-
-  const docCategorias = SwaggerModule.createDocument(app, optCategorias, {
-    include: [CategoriasModule],
-  });
-
-  SwaggerModule.setup('api/categorias', app, docCategorias);
 
   // Vendas
   const optVendas = new DocumentBuilder()

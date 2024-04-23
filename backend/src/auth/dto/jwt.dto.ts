@@ -5,7 +5,7 @@ import {
   IsNumber,
   IsString,
 } from 'class-validator';
-import { Permissao } from 'src/database/usuarios/entities/usuario.entity';
+import { Permissao } from 'src/database/usuarios/enums/Permissao';
 
 export class JwtDTO {
   @IsNumber()

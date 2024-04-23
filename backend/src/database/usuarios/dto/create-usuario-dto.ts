@@ -6,7 +6,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { Permissao } from '../entities/usuario.entity';
+import { Permissao } from '../enums/Permissao';
 
 export class CreateUsuarioDto {
   @ApiProperty({

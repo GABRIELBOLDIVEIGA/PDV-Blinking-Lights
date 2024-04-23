@@ -1,5 +1,13 @@
 import { ClienteEndereco } from 'src/database/common/entities/cliente_endereco.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity({ name: 'clientes' })
 export class Cliente {
@@ -14,4 +22,13 @@ export class Cliente {
     (cliente_endereco) => cliente_endereco.cliente,
   )
   enderecos: ClienteEndereco[];
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
 }
