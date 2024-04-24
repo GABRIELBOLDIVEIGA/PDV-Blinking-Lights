@@ -1,4 +1,4 @@
-import { ProdutoCategoria } from 'src/database/common/entities/produto_categoria.entity';
+import { ProdutoCategoria } from 'src/database/produtos/entities/produto_categoria.entity';
 import { ProdutoFornecedor } from 'src/database/produtos/entities/produto_fornecedor.entity';
 import { Estoque } from 'src/database/estoque/entities/estoque.entity';
 import {
@@ -10,6 +10,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { ProdutoSubCategoria } from './produto_subcategoria.entity';
 
 @Entity({ name: 'produtos' })
 export class Produto {
@@ -30,6 +31,12 @@ export class Produto {
     (produto_categoria) => produto_categoria.produto,
   )
   categorias: ProdutoCategoria[];
+
+  @OneToMany(
+    () => ProdutoSubCategoria,
+    (produto_subcategoria) => produto_subcategoria.produto,
+  )
+  subCategorias: ProdutoSubCategoria[];
 
   @OneToMany(
     () => ProdutoFornecedor,

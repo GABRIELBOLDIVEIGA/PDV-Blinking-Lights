@@ -1,13 +1,6 @@
 import { Categoria } from 'src/database/categorias/entities/categoria.entity';
 import { Produto } from 'src/database/produtos/entities/produto.entity';
-import {
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'produto_categoria' })
 export class ProdutoCategoria {

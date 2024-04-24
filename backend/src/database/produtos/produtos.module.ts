@@ -4,7 +4,7 @@ import { ProdutosController } from './produtos.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Produto } from './entities/produto.entity';
 import { Categoria } from '../categorias/entities/categoria.entity';
-import { ProdutoCategoria } from '../common/entities/produto_categoria.entity';
+import { ProdutoCategoria } from './entities/produto_categoria.entity';
 import { Fornecedor } from '../fornecedor/entities/fornecedor.entity';
 
 @Module({

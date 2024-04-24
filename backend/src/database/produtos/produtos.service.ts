@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Categoria } from '../categorias/entities/categoria.entity';
-import { ProdutoCategoria } from '../common/entities/produto_categoria.entity';
+import { ProdutoCategoria } from './entities/produto_categoria.entity';
 import { UpdateProdutoParams } from './types/UpdateProdutoParams';
 import { ProdutoFornecedor } from './entities/produto_fornecedor.entity';
 import { CreateProdutoDto } from './dto/create-produto.dto';
@@ -82,7 +82,11 @@ export class ProdutosService {
   async findAll(): Promise<Produto[]> {
     try {
       return await this.produtoRepository.find({
-        relations: ['categorias.categoria', 'fornecedores.fornecedor'],
+        relations: [
+          'categorias.categoria.subCategorias.subCategoria',
+          'fornecedores.fornecedor',
+          'subCategorias.subCategoria',
+        ],
       });
     } catch (error) {
       throw new InternalServerErrorException(error);
@@ -93,7 +97,11 @@ export class ProdutosService {
     try {
       const produto = await this.produtoRepository.findOne({
         where: { id },
-        relations: ['categorias.categoria', 'fornecedores.fornecedor'],
+        relations: [
+          'categorias.categoria',
+          'subCategorias.subCategoria',
+          'fornecedores.fornecedor',
+        ],
       });
       if (!produto) throw new NotFoundException();
 
