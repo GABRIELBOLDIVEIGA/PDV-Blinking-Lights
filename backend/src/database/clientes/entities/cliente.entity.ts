@@ -1,4 +1,4 @@
-import { ClienteEndereco } from 'src/database/common/entities/cliente_endereco.entity';
+import { ClienteEndereco } from 'src/database/enderecos/entities/cliente_endereco.entity';
 import {
   Column,
   CreateDateColumn,

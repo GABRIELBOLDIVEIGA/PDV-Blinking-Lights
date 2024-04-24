@@ -4,8 +4,10 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -22,23 +24,30 @@ export class Estoque {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
-  @Column({
-    type: 'enum',
-    enum: Movimento,
-    nullable: false,
-  })
-  movimento: string;
+  // @Column({
+  //   type: 'enum',
+  //   enum: Movimento,
+  //   nullable: false,
+  // })
+  // movimento: string;
 
   @Column({ type: 'smallint', nullable: false })
   quantidade: number;
 
-  @Column({ type: 'double' })
-  custo_unitario: number;
+  // @Column({ type: 'double' })
+  // custo_unitario: number;
 
-  @Column({ type: 'double' })
-  custo_total: number;
+  // @Column({ type: 'double' })
+  // custo_total: number;
 
-  @ManyToOne(() => Produto, (produto) => produto, { nullable: false })
+  // @ManyToOne(() => Produto, (produto) => produto, { nullable: false })
+  // produto: Produto;
+
+  @OneToOne(() => Produto, (produto) => produto, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn()
   produto: Produto;
 
   @CreateDateColumn()

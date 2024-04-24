@@ -5,7 +5,7 @@ import { Endereco } from './entities/endereco.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClientesModule } from 'src/database/clientes/clientes.module';
 import { Cliente } from 'src/database/clientes/entities/cliente.entity';
-import { ClienteEndereco } from '../common/entities/cliente_endereco.entity';
+import { ClienteEndereco } from './entities/cliente_endereco.entity';
 
 @Module({
   imports: [

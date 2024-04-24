@@ -8,7 +8,7 @@ import { UpdateCategoriaDto } from './dto/update-categoria.dto';
 import { Categoria } from './entities/categoria.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CategoriaSubCategoria } from '../common/entities/categoria_sub-categoria.entity';
+import { CategoriaSubCategoria } from './entities/categoria_subcategoria.entity';
 import { SubCategoria } from '../sub-categorias/entities/sub-categoria.entity';
 
 @Injectable()

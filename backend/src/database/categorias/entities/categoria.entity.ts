@@ -1,4 +1,4 @@
-import { CategoriaSubCategoria } from 'src/database/common/entities/categoria_sub-categoria.entity';
+import { CategoriaSubCategoria } from 'src/database/categorias/entities/categoria_subcategoria.entity';
 import {
   Column,
   CreateDateColumn,

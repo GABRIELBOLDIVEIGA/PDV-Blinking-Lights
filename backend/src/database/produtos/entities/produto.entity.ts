@@ -17,6 +17,9 @@ export class Produto {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
+  @Column({ type: 'varchar', nullable: false, unique: true })
+  codigo: string;
+
   @Column({ type: 'varchar', nullable: false })
   nome: string;
 

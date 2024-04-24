@@ -11,7 +11,7 @@ import { CreateEnderecoParams } from './types/CreateEnderecoParams';
 import { UpdateEnderecoParams } from './types/UpdateEnderecoParams';
 
 import { Cliente } from 'src/database/clientes/entities/cliente.entity';
-import { ClienteEndereco } from '../common/entities/cliente_endereco.entity';
+import { ClienteEndereco } from './entities/cliente_endereco.entity';
 
 @Injectable()
 export class EnderecosService {

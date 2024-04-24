@@ -13,7 +13,7 @@ import { CreateEnderecoDto } from './dto/create-endereco.dto';
 import { UpdateEnderecoDto } from './dto/update-endereco.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Endereco } from './entities/endereco.entity';
-import { ClienteEndereco } from '../common/entities/cliente_endereco.entity';
+import { ClienteEndereco } from './entities/cliente_endereco.entity';
 
 @ApiTags('Endereços')
 @Controller('endereco')

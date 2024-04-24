@@ -4,7 +4,7 @@ import { CategoriasController } from './categorias.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Categoria } from './entities/categoria.entity';
 import { SubCategoria } from '../sub-categorias/entities/sub-categoria.entity';
-import { CategoriaSubCategoria } from '../common/entities/categoria_sub-categoria.entity';
+import { CategoriaSubCategoria } from './entities/categoria_subcategoria.entity';
 
 @Module({
   imports: [
