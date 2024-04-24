@@ -3,7 +3,7 @@ export type CreateProdutoParams = {
 
   descricao: string;
 
-  preco_venda: number;
+  preco: number;
 
   // categorias: number[];
 };

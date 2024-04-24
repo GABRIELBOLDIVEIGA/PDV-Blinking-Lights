@@ -20,6 +20,11 @@ import { Usuario } from './entities/usuario.entity';
 export class UsuariosController {
   constructor(private readonly usuariosService: UsuariosService) {}
 
+  @Post()
+  async createUsuario(@Body() usuario: CreateUsuarioDto): Promise<Usuario> {
+    return this.usuariosService.createUsuario(usuario);
+  }
+
   @Get()
   async getAll(): Promise<Usuario[]> {
     return this.usuariosService.getAll();
@@ -30,11 +35,6 @@ export class UsuariosController {
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Usuario> {
     return this.usuariosService.getById(id);
-  }
-
-  @Post()
-  async createUsuario(@Body() usuario: CreateUsuarioDto): Promise<Usuario> {
-    return this.usuariosService.createUsuario(usuario);
   }
 
   @Patch(':id')

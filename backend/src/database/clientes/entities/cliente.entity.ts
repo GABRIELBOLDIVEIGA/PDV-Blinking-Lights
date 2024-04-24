@@ -17,6 +17,21 @@ export class Cliente {
   @Column({ type: 'varchar', nullable: false })
   nome: string;
 
+  @Column({ type: 'varchar', nullable: false, default: '' })
+  documento: string;
+
+  @Column({ type: 'varchar', nullable: false, default: '' })
+  email: string;
+
+  @Column({ type: 'varchar', nullable: false, default: '' })
+  tel1: string;
+
+  @Column({ type: 'varchar', nullable: false, default: '' })
+  tel2: string;
+
+  @Column({ type: 'varchar', nullable: false, default: '' })
+  tel3: string;
+
   @OneToMany(
     () => ClienteEndereco,
     (cliente_endereco) => cliente_endereco.cliente,

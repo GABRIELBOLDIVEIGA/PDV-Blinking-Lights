@@ -10,7 +10,7 @@ export class CreateFornecedorDto {
 
   @ApiProperty({
     type: 'string',
-    example: ' ',
+    example: 'Pedir desconto.',
     description: 'Observções sobre o Fornecedor.',
   })
   observacoes: string;

@@ -24,13 +24,4 @@ export class ClienteEndereco {
   @OneToOne(() => Endereco, (endereco) => endereco, { onDelete: 'CASCADE' })
   @JoinColumn()
   endereco: Endereco;
-
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  updated_at: Date;
-
-  @DeleteDateColumn()
-  deleted_at: Date;
 }

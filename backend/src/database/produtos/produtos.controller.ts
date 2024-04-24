@@ -25,7 +25,8 @@ export class ProdutosController {
     const produto_params: CreateProdutoParams = { ...createProdutoDto };
     const categorias = createProdutoDto.categorias;
 
-    return this.produtosService.create(produto_params, categorias);
+    return this.produtosService.create(createProdutoDto);
+    // return this.produtosService.create(produto_params, categorias);
   }
 
   @Get()
@@ -38,13 +39,13 @@ export class ProdutosController {
     return this.produtosService.findOne(id);
   }
 
-  // @Patch(':id')
-  // async update(
-  //   @Param('id', ParseIntPipe) id: number,
-  //   @Body() updateProdutoDto: UpdateProdutoDto,
-  // ): Promise<Produto> {
-  //   return this.produtosService.update(id, updateProdutoDto);
-  // }
+  @Patch(':id')
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateProdutoDto: UpdateProdutoDto,
+  ): Promise<Produto> {
+    return this.produtosService.update(id, updateProdutoDto);
+  }
 
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: number): Promise<string> {

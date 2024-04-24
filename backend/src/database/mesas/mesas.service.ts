@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -18,6 +19,14 @@ export class MesasService {
 
   async create(createMesaDto: CreateMesaDto): Promise<Mesa> {
     try {
+      const existe = await this.mesaRepository.findOne({
+        where: { nome: createMesaDto.nome },
+      });
+      if (existe)
+        throw new BadRequestException(
+          `Mesa de nome ${existe.nome} já cadastrada no sistema.`,
+        );
+
       const novaMesa = this.mesaRepository.create(createMesaDto);
 
       return this.mesaRepository.save(novaMesa);

@@ -67,7 +67,6 @@ export class VendasService {
         ...createVendaDto,
         usuario,
         cliente,
-
         formaDePagamento,
         mesa,
       });
@@ -110,7 +109,6 @@ export class VendasService {
       const vendas = await this.vendaRepository.find({
         relations: [
           'formaDePagamento',
-          'status',
           'cliente',
           'usuario',
           'produtos.produto',

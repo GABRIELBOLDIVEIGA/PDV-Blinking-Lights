@@ -6,9 +6,13 @@ import {
 import { Produto } from './entities/produto.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateProdutoParams } from './types/CreateProdutoParams';
+
 import { Categoria } from '../categorias/entities/categoria.entity';
 import { ProdutoCategoria } from '../common/entities/produto_categoria.entity';
+import { UpdateProdutoParams } from './types/UpdateProdutoParams';
+import { ProdutoFornecedor } from './entities/produto_fornecedor.entity';
+import { CreateProdutoDto } from './dto/create-produto.dto';
+import { Fornecedor } from '../fornecedor/entities/fornecedor.entity';
 
 @Injectable()
 export class ProdutosService {
@@ -21,27 +25,46 @@ export class ProdutosService {
     private readonly categoriaRepository: Repository<Categoria>,
   ) {}
 
-  async create(createProdutoParams: CreateProdutoParams, categorias: number[]) {
+  async create(
+    // createProdutoParams: CreateProdutoParams,
+    // categorias: number[],
+    createProdutoDto: CreateProdutoDto,
+  ): Promise<Produto> {
     try {
       const transaction = await this.produtoRepository.manager.transaction(
-        async () => {
-          const novo_produto =
-            this.produtoRepository.create(createProdutoParams);
-          const produto = await this.produtoRepository.save(novo_produto);
+        async (manager) => {
+          const novo_produto = manager.create(Produto, {
+            nome: createProdutoDto.nome,
+            descricao: createProdutoDto.descricao,
+            preco: createProdutoDto.preco,
+          });
+          const produto = await manager.save(Produto, novo_produto);
 
-          categorias.forEach(async (categoria_id) => {
-            const categoria = await this.categoriaRepository.findOneBy({
+          // const produto = await manager.save(Produto, novo_produto);
+          // const novo_produto = manager.create(ProdutoFornecedor, createProdutoParams);
+
+          createProdutoDto.categorias.forEach(async (categoria_id) => {
+            const categoria = await manager.findOneBy(Categoria, {
               id: categoria_id,
             });
 
             if (categoria) {
-              const novo_produto_categoria =
-                this.produtoCategoriaRepository.create({
-                  produto,
-                  categoria,
-                });
-              await this.produtoCategoriaRepository.save(
-                novo_produto_categoria,
+              const novo_produto_categoria = manager.create(ProdutoCategoria, {
+                produto,
+                categoria,
+              });
+              await manager.save(ProdutoCategoria, novo_produto_categoria);
+            }
+          });
+
+          createProdutoDto.fornecedores.forEach(async (fornecedor_id) => {
+            const fornecedor = await manager.findOne(Fornecedor, {
+              where: { id: fornecedor_id },
+            });
+            if (fornecedor) {
+              await manager.save(
+                ProdutoFornecedor,
+                manager.create(ProdutoFornecedor, { fornecedor, produto }),
               );
             }
           });
@@ -56,17 +79,17 @@ export class ProdutosService {
     }
   }
 
-  async findAll() {
+  async findAll(): Promise<Produto[]> {
     try {
       return await this.produtoRepository.find({
-        relations: ['categorias.categoria'],
+        relations: ['categorias.categoria', 'fornecedores.fornecedor'],
       });
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<Produto> {
     try {
       const produto = await this.produtoRepository.findOne({
         where: { id },
@@ -80,22 +103,25 @@ export class ProdutosService {
     }
   }
 
-  // async update(id: number, updateProdutoParams: UpdateProdutoParams) {
-  //   try {
-  //     const result = await this.produtoRepository.update(
-  //       { id },
-  //       { ...updateProdutoParams },
-  //     );
+  async update(
+    id: number,
+    updateProdutoParams: UpdateProdutoParams,
+  ): Promise<Produto> {
+    try {
+      const result = await this.produtoRepository.update(
+        { id },
+        { ...updateProdutoParams },
+      );
 
-  //     if (result.affected === 0) throw new NotFoundException();
+      if (result.affected === 0) throw new NotFoundException();
 
-  //     return await this.findOne(id);
-  //   } catch (error) {
-  //     throw new InternalServerErrorException(error);
-  //   }
-  // }
+      return await this.findOne(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<string> {
     try {
       const result = await this.produtoRepository.delete({ id });
 

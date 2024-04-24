@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ name: 'sub-categorias' })
+@Entity({ name: 'sub_categorias' })
 export class SubCategoria {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
@@ -15,7 +15,7 @@ export class SubCategoria {
   @Column({ type: 'varchar', nullable: false })
   nome: string;
 
-  @Column({ type: 'varchar', nullable: false, default: ' ' })
+  @Column({ type: 'varchar', nullable: false, default: '' })
   descricao: string;
 
   @CreateDateColumn()

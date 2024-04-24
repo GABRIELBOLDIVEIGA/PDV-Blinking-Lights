@@ -1,5 +1,5 @@
 import { ProdutoCategoria } from 'src/database/common/entities/produto_categoria.entity';
-import { ProdutoFornecedor } from 'src/database/common/entities/produto_fornecedor.entity';
+import { ProdutoFornecedor } from 'src/database/produtos/entities/produto_fornecedor.entity';
 import { Estoque } from 'src/database/estoque/entities/estoque.entity';
 import {
   Column,

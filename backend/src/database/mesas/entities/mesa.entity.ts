@@ -16,6 +16,7 @@ export class Mesa {
     type: 'varchar',
     nullable: false,
     default: 'Sem Nome',
+    unique: true,
   })
   nome: string;
 

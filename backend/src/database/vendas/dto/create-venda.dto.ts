@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import { StatusDaVenda } from '../enums/StatusDaVenda';
 
 export class CreateVendaDto {
   @ApiProperty({
@@ -9,6 +10,16 @@ export class CreateVendaDto {
   @IsNumber()
   @IsOptional()
   cliente_id: number | null;
+
+  @ApiProperty({
+    enum: StatusDaVenda,
+    isArray: true,
+    example: `"${StatusDaVenda.ABERTO} | ${StatusDaVenda.FIADO} | ${StatusDaVenda.CANCELADA} | ${StatusDaVenda.FINALIZADA}"`,
+    description: 'Status Da Venda',
+    default: StatusDaVenda.ABERTO,
+  })
+  @IsEnum(StatusDaVenda)
+  status: string;
 
   @ApiProperty({
     description: 'ID do Mesa.',
