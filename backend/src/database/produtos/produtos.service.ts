@@ -1,12 +1,12 @@
 import {
+  HttpException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { Produto } from './entities/produto.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Not, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-
 import { Categoria } from '../categorias/entities/categoria.entity';
 import { ProdutoCategoria } from './entities/produto_categoria.entity';
 import { UpdateProdutoParams } from './types/UpdateProdutoParams';
@@ -19,17 +19,9 @@ export class ProdutosService {
   constructor(
     @InjectRepository(Produto)
     private readonly produtoRepository: Repository<Produto>,
-    @InjectRepository(ProdutoCategoria)
-    private readonly produtoCategoriaRepository: Repository<ProdutoCategoria>,
-    @InjectRepository(Categoria)
-    private readonly categoriaRepository: Repository<Categoria>,
   ) {}
 
-  async create(
-    // createProdutoParams: CreateProdutoParams,
-    // categorias: number[],
-    createProdutoDto: CreateProdutoDto,
-  ): Promise<Produto> {
+  async create(createProdutoDto: CreateProdutoDto): Promise<Produto> {
     try {
       const transaction = await this.produtoRepository.manager.transaction(
         async (manager) => {
@@ -37,11 +29,9 @@ export class ProdutosService {
             nome: createProdutoDto.nome,
             descricao: createProdutoDto.descricao,
             preco: createProdutoDto.preco,
+            codigo: createProdutoDto.codigo,
           });
           const produto = await manager.save(Produto, novo_produto);
-
-          // const produto = await manager.save(Produto, novo_produto);
-          // const novo_produto = manager.create(ProdutoFornecedor, createProdutoParams);
 
           createProdutoDto.categorias.forEach(async (categoria_id) => {
             const categoria = await manager.findOneBy(Categoria, {
@@ -131,11 +121,35 @@ export class ProdutosService {
 
   async remove(id: number): Promise<string> {
     try {
-      const result = await this.produtoRepository.delete({ id });
+      const result = await this.produtoRepository.softDelete({ id });
 
       if (result.affected === 0) throw new NotFoundException();
 
       return 'Produto deletado com sucesso.';
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async findAllDeleted() {
+    const produtos = await this.produtoRepository.find({
+      where: {
+        deleted_at: Not(IsNull()),
+      },
+      withDeleted: true,
+    });
+
+    return produtos;
+  }
+
+  async restore(id: number): Promise<Produto> {
+    try {
+      await this.produtoRepository.restore({ id });
+      const produto = await this.produtoRepository.findOneBy({ id });
+
+      if (!produto) throw new NotFoundException('Produto não encontrado.');
+
+      return produto;
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

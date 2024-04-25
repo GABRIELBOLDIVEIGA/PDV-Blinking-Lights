@@ -24,24 +24,11 @@ export class Estoque {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
-  // @Column({
-  //   type: 'enum',
-  //   enum: Movimento,
-  //   nullable: false,
-  // })
-  // movimento: string;
-
-  @Column({ type: 'smallint', nullable: false })
+  @Column({ type: 'smallint', nullable: false, default: 0 })
   quantidade: number;
 
-  // @Column({ type: 'double' })
-  // custo_unitario: number;
-
-  // @Column({ type: 'double' })
-  // custo_total: number;
-
-  // @ManyToOne(() => Produto, (produto) => produto, { nullable: false })
-  // produto: Produto;
+  @Column({ type: 'smallint', nullable: false, default: 0 })
+  quantidade_min: number;
 
   @OneToOne(() => Produto, (produto) => produto, {
     nullable: true,
