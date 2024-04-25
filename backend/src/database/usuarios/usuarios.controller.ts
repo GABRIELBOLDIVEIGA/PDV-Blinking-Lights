@@ -11,9 +11,10 @@ import {
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/create-usuario-dto';
 import { UpdateUsuarioDto } from './dto/update-usuario-dto';
-
 import { ApiTags } from '@nestjs/swagger';
 import { Usuario } from './entities/usuario.entity';
+import { UsuarioResponseDto } from './dto/usuario-response.tdo';
+import { plainToInstance } from 'class-transformer';
 
 @ApiTags('Usuarios')
 @Controller('usuario')
@@ -33,8 +34,9 @@ export class UsuariosController {
   @Get(':id')
   async getUsuarioById(
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<Usuario> {
-    return this.usuariosService.getById(id);
+  ): Promise<UsuarioResponseDto> {
+    const usuario = this.usuariosService.getById(id);
+    return plainToInstance(UsuarioResponseDto, usuario);
   }
 
   @Patch(':id')

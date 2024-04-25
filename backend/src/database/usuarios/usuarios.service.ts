@@ -9,6 +9,7 @@ import { CreateUsuarioParams } from './types/CreateUsuarioParams';
 import * as bcrypt from 'bcrypt';
 import { UpdateUsuarioParams } from './types/UpdateUsuarioParams';
 import { Usuario } from './entities/usuario.entity';
+import { UsuarioResponseDto } from './dto/usuario-response.tdo';
 
 @Injectable()
 export class UsuariosService {
