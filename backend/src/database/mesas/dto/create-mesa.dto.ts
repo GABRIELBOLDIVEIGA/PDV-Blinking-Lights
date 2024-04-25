@@ -7,4 +7,10 @@ export class CreateMesaDto {
     description: 'Nome da mesa.',
   })
   nome: string;
+
+  @ApiProperty({
+    type: 'boolean',
+    example: true,
+  })
+  aberta: boolean;
 }

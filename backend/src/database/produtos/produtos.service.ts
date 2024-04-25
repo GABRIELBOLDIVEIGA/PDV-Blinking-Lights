@@ -28,7 +28,8 @@ export class ProdutosService {
           const novo_produto = manager.create(Produto, {
             nome: createProdutoDto.nome,
             descricao: createProdutoDto.descricao,
-            preco: createProdutoDto.preco,
+            preco_venda: createProdutoDto.preco_venda,
+            preco_compra: createProdutoDto.preco_compra,
             codigo: createProdutoDto.codigo,
           });
           const produto = await manager.save(Produto, novo_produto);

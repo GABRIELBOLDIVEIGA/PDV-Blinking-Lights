@@ -17,15 +17,28 @@ export class CreateProdutoDto {
   @ApiProperty({ description: 'Preço de venda do Produto.', example: 10.35 })
   @IsNumber()
   @Min(0)
-  preco: number;
+  preco_venda: number;
+
+  @ApiProperty({ description: 'Custo de compra do Produto.', example: 8.95 })
+  @IsNumber()
+  @Min(0)
+  preco_compra: number;
 
   @ApiProperty({
     description: 'Categorias do Produto.',
-    example: [1, 2, 3, 4, 5],
+    example: [1, 2, 3],
     default: [],
   })
   @IsArray()
   categorias: number[];
+
+  @ApiProperty({
+    description: 'Sub-Categorias do Produto.',
+    example: [1, 2],
+    default: [],
+  })
+  @IsArray()
+  subCategorias: number[];
 
   @ApiProperty({
     description: 'Fornecedores.',

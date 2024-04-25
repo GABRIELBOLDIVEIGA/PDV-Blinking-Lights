@@ -18,6 +18,13 @@ import { ApiTags } from '@nestjs/swagger';
 import { Mesa } from './entities/mesa.entity';
 import { Observable, defer, map, repeat, tap } from 'rxjs';
 import { Response } from 'express';
+import {
+  MesaProdutoResponseDto,
+  MesaResponseDto,
+} from './dto/mesa-response.tdo';
+import { plainToInstance } from 'class-transformer';
+import { AdicionarProdutoDto } from './dto/adicionar-produto.dto';
+import { EditarQuantidadeDto } from './dto/editar-quandidade.dto';
 
 @ApiTags('Mesas')
 @Controller('mesa')
@@ -30,13 +37,36 @@ export class MesasController {
   }
 
   @Get()
-  async findAll(): Promise<Mesa[]> {
-    return this.mesasService.findAll();
+  async findAll(): Promise<MesaResponseDto[]> {
+    const mesas = await this.mesasService.findAll();
+    return plainToInstance(MesaResponseDto, mesas);
   }
 
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<Mesa> {
-    return this.mesasService.findOne(id);
+  async findOne(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<MesaResponseDto> {
+    const mesa = await this.mesasService.findOne(id);
+    return plainToInstance(MesaResponseDto, mesa);
+  }
+
+  @Post('adicionar-produto')
+  async adicionarProduto(
+    @Body() adicionarProdutoDto: AdicionarProdutoDto,
+  ): Promise<MesaProdutoResponseDto> {
+    const response =
+      await this.mesasService.adicionarProduto(adicionarProdutoDto);
+
+    return plainToInstance(MesaProdutoResponseDto, response);
+  }
+
+  @Post('editar-quantidade-produto')
+  async editarQuantidade(
+    @Body() EditarQuantidadeDto: EditarQuantidadeDto,
+  ): Promise<MesaProdutoResponseDto> {
+    const response =
+      await this.mesasService.editarQuantidade(EditarQuantidadeDto);
+    return plainToInstance(MesaProdutoResponseDto, response);
   }
 
   @Patch(':id')

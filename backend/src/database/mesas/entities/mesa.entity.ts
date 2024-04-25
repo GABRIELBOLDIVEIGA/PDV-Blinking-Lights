@@ -3,9 +3,11 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { MesaProduto } from './mesa_produto.entity';
 
 @Entity({ name: 'mesas' })
 export class Mesa {
@@ -22,6 +24,9 @@ export class Mesa {
 
   @Column({ type: 'boolean', nullable: false, default: false })
   aberta: boolean;
+
+  @OneToMany(() => MesaProduto, (mesa_produto) => mesa_produto.mesa)
+  produtos: MesaProduto[];
 
   @CreateDateColumn()
   created_at: Date;

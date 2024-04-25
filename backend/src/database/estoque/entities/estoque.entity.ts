@@ -15,10 +15,10 @@ export class Estoque {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
-  @Column({ type: 'smallint', nullable: false, default: 0 })
+  @Column({ type: 'double', nullable: false, default: 0 })
   preco_compra: number;
 
-  @Column({ type: 'smallint', nullable: false, default: 0 })
+  @Column({ type: 'double', nullable: false, default: 0 })
   preco_venda: number;
 
   @Column({ type: 'smallint', nullable: false, default: 0 })

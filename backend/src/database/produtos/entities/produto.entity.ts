@@ -29,6 +29,9 @@ export class Produto {
   @Column({ type: 'double', nullable: false })
   preco_venda: number;
 
+  @Column({ type: 'double', nullable: false })
+  preco_compra: number;
+
   @OneToMany(
     () => ProdutoCategoria,
     (produto_categoria) => produto_categoria.produto,
