@@ -27,6 +27,9 @@ export class EstoqueHistorico {
   })
   movimento: string;
 
+  @Column({ type: 'smallint', nullable: false, default: 0 })
+  quantidade: number;
+
   @Column({ type: 'varchar', nullable: false })
   codigo: string;
 
@@ -36,8 +39,11 @@ export class EstoqueHistorico {
   @Column({ type: 'varchar', nullable: false })
   descricao: string;
 
-  @Column({ type: 'double', nullable: false })
-  preco: number;
+  @Column({ type: 'double', nullable: false, default: 0 })
+  preco_compra: number;
+
+  @Column({ type: 'double', nullable: false, default: 0 })
+  preco_venda: number;
 
   @CreateDateColumn()
   created_at: Date;

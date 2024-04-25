@@ -13,6 +13,7 @@ import { CreateVendaDto } from './dto/create-venda.dto';
 import { UpdateVendaDto } from './dto/update-venda.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { AdicionaProdutoDto } from './dto/adiciona-produto.dto';
+import { RemoveProdutoDto } from './dto/remove-produto.dto';
 
 @ApiTags('Vendas')
 @Controller('venda')
@@ -27,6 +28,13 @@ export class VendasController {
   @Post('adiciona-produto')
   async adiconarProduto(@Body() adicionaProdutoDto: AdicionaProdutoDto) {
     return this.vendasService.adiconarProduto(adicionaProdutoDto);
+  }
+  @Post('remove-produto')
+  async removeProduto(@Body() removeProduto: RemoveProdutoDto) {
+    return this.vendasService.removeProduto(
+      removeProduto.venda_id,
+      removeProduto.produto_id,
+    );
   }
 
   @Get()

@@ -79,29 +79,58 @@ export class VendasService {
 
   async adiconarProduto(adicionaProdutoDto: AdicionaProdutoDto) {
     try {
-      const venda = await this.vendaRepository.findOneBy({
-        id: adicionaProdutoDto.venda_id,
-      });
-      if (!venda) throw new NotFoundException('Venda não encontrada.');
-
-      const produto = await this.produtoRepository.findOneBy({
-        id: adicionaProdutoDto.produto_id,
-      });
-      if (!produto) throw new NotFoundException('Produto não encontrado.');
-
-      const venda_produto = this.vendaProdutoRepository.create({
-        quantidade: adicionaProdutoDto.quantidade,
-        produto,
-        produto_nome: produto.nome,
-        produto_descricao: produto.descricao,
-        produto_preco: produto.preco,
-        venda,
+      const existe = await this.vendaProdutoRepository.findOne({
+        where: {
+          venda: { id: adicionaProdutoDto.venda_id },
+          produto: { id: adicionaProdutoDto.produto_id },
+        },
       });
 
-      return await this.vendaProdutoRepository.save(venda_produto);
+      if (existe) {
+        console.log('Atualizar quantidade de produtos', existe);
+        const result = await this.vendaProdutoRepository.update(existe.id, {
+          quantidade: adicionaProdutoDto.quantidade + existe.quantidade,
+        });
+        if (result.affected === 0) throw new NotFoundException();
+
+        return await this.vendaProdutoRepository.findOneBy({ id: existe.id });
+      } else {
+        const venda = await this.vendaRepository.findOneBy({
+          id: adicionaProdutoDto.venda_id,
+        });
+        if (!venda) throw new NotFoundException('Venda não encontrada.');
+
+        const produto = await this.produtoRepository.findOneBy({
+          id: adicionaProdutoDto.produto_id,
+        });
+        if (!produto) throw new NotFoundException('Produto não encontrado.');
+
+        const venda_produto = this.vendaProdutoRepository.create({
+          quantidade: adicionaProdutoDto.quantidade,
+          produto,
+          produto_nome: produto.nome,
+          produto_descricao: produto.descricao,
+          produto_preco: produto.preco_venda,
+          venda,
+        });
+
+        return await this.vendaProdutoRepository.save(venda_produto);
+      }
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
+  }
+
+  async removeProduto(venda_id: number, produto_id: number) {
+    const venda_produto = await this.vendaProdutoRepository.findOne({
+      where: { venda: { id: venda_id }, produto: { id: produto_id } },
+    });
+
+    if (!venda_produto) throw new NotFoundException('Não encontrado.');
+
+    const result = await this.vendaProdutoRepository.delete({
+      id: venda_produto.id,
+    });
   }
 
   async findAll() {

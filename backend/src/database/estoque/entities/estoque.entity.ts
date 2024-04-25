@@ -5,19 +5,10 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
-  ManyToOne,
-  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-
-export enum Movimento {
-  ENTRADA = 'ENTRADA',
-  SAIDA = 'SAIDA',
-  DEFEITO = 'DEFEITO',
-  VENCIDO = 'VENCIDO',
-}
 
 @Entity({ name: 'estoque' })
 export class Estoque {
@@ -25,12 +16,18 @@ export class Estoque {
   id: number;
 
   @Column({ type: 'smallint', nullable: false, default: 0 })
+  preco_compra: number;
+
+  @Column({ type: 'smallint', nullable: false, default: 0 })
+  preco_venda: number;
+
+  @Column({ type: 'smallint', nullable: false, default: 0 })
   quantidade: number;
 
   @Column({ type: 'smallint', nullable: false, default: 0 })
   quantidade_min: number;
 
-  @OneToOne(() => Produto, (produto) => produto, {
+  @OneToOne(() => Produto, (produto) => produto.id, {
     nullable: true,
     onDelete: 'SET NULL',
   })

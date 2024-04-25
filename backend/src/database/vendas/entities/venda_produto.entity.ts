@@ -5,12 +5,15 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Index,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({ name: 'venda_produto' })
+@Unique('prod_venda', ['produto', 'venda'])
 export class VendaProduto {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;

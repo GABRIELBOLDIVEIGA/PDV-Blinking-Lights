@@ -27,7 +27,7 @@ export class Produto {
   descricao: string;
 
   @Column({ type: 'double', nullable: false })
-  preco: number;
+  preco_venda: number;
 
   @OneToMany(
     () => ProdutoCategoria,

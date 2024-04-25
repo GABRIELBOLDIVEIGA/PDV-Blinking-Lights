@@ -27,10 +27,12 @@ export class ProdutoSubscriber implements EntitySubscriberInterface<Produto> {
     console.log(`BEFORE Produto INSERTED: `, event.entity);
   }
 
-  async afterInsert(event: InsertEvent<Produto>): Promise<void> {
+  async afterInsert(event: InsertEvent<Produto>): Promise<any> {
+    console.log(`AFTER Produto INSERTED: `, event.entity);
     const novo = this.estoqueRepository.create({
       produto: event.entity,
       quantidade: 0,
+      quantidade_min: 0,
     });
 
     this.estoqueRepository.save(novo);
