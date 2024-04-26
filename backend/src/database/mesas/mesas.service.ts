@@ -204,15 +204,6 @@ export class MesasService {
         cliente_id: null,
         ...fecharMesaDto,
       });
-      // .then((venda) => {
-      //   mesaProdutos.forEach(async (mesaProduto) => {
-      //     await this.vendasService.adiconarProduto({
-      //       venda_id: 14,
-      //       produto_id: 2,
-      //       quantidade: 0,
-      //     });
-      //   });
-      // });
 
       mesaProdutos.forEach(async (produto) => {
         await this.vendasService.adiconarProduto({
@@ -222,17 +213,10 @@ export class MesasService {
         });
       });
 
-      // this.vendasService.adiconarProduto({
-      //   venda_id: mesaProdutos[0].mesa.id,
-      //   produto_id: mesaProdutos[0].produto.id,
-      //   quantidade: 2,
-      // });
-
-      // if (!venda) throw new NotImplementedException('Erro ao criar venda.');
-      // console.log('[Venda] => ', venda);
+      await this.mesaProdutoRepository.delete({ mesa: { id: mesa.id } });
+      await this.update(mesa.id, { aberta: false });
 
       // transaction criar row vendas, criar rows venda_produto, deletar rows mesa_produto where mesa_id
-
       // const transaction = await this.dataSource.manager.transaction(
       //   async (manager) => {
       //     const create_venda = manager.create(Venda, {
@@ -244,8 +228,8 @@ export class MesasService {
       //     });
       //   },
       // );
-
       // console.log('[Transaction] => ', transaction);
+      return 'Venda realizada com sucesso';
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

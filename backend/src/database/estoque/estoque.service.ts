@@ -58,19 +58,23 @@ export class EstoqueService {
     }
   }
 
-  async update(
-    id: number,
-    updateEstoqueDto: UpdateEstoqueDto,
-  ): Promise<Estoque> {
+  async update(updateEstoqueDto: UpdateEstoqueDto): Promise<Estoque> {
     try {
+      const estoque = await this.findOne(updateEstoqueDto.produto_id);
+
       const result = await this.estoqueRepository.update(
-        { id },
-        { ...updateEstoqueDto },
+        { id: estoque.id },
+        {
+          preco_compra: updateEstoqueDto.preco_compra,
+          preco_venda: updateEstoqueDto.preco_venda,
+          quantidade_min: updateEstoqueDto.quantidade_min,
+          quantidade: updateEstoqueDto.quantidade,
+        },
       );
 
       if (result.affected === 0) throw new NotFoundException();
 
-      return await this.findOne(id);
+      return await this.findOne(estoque.id);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

@@ -34,12 +34,12 @@ export class EstoqueController {
     return this.estoqueService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch('patch-produto')
   async update(
-    @Param('id', ParseIntPipe) id: number,
+    // @Param('id', ParseIntPipe) id: number,
     @Body() updateEstoqueDto: UpdateEstoqueDto,
   ) {
-    return this.estoqueService.update(id, updateEstoqueDto);
+    return this.estoqueService.update(updateEstoqueDto);
   }
 
   @Delete(':id')
