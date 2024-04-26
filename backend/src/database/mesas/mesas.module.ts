@@ -5,9 +5,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Mesa } from './entities/mesa.entity';
 import { MesaProduto } from './entities/mesa_produto.entity';
 import { Produto } from '../produtos/entities/produto.entity';
+import { VendasModule } from '../vendas/vendas.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Mesa, MesaProduto, Produto])],
+  imports: [
+    TypeOrmModule.forFeature([Mesa, MesaProduto, Produto]),
+    VendasModule,
+  ],
   controllers: [MesasController],
   providers: [MesasService],
 })

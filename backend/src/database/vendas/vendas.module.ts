@@ -24,5 +24,6 @@ import { Produto } from '../produtos/entities/produto.entity';
   ],
   controllers: [VendasController],
   providers: [VendasService],
+  exports: [VendasService],
 })
 export class VendasModule {}

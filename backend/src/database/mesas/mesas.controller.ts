@@ -25,6 +25,7 @@ import {
 import { plainToInstance } from 'class-transformer';
 import { AdicionarProdutoDto } from './dto/adicionar-produto.dto';
 import { EditarQuantidadeDto } from './dto/editar-quandidade.dto';
+import { FecharMesaDto } from './dto/fechar-mesa.tdo';
 
 @ApiTags('Mesas')
 @Controller('mesa')
@@ -67,6 +68,11 @@ export class MesasController {
     const response =
       await this.mesasService.editarQuantidade(EditarQuantidadeDto);
     return plainToInstance(MesaProdutoResponseDto, response);
+  }
+
+  @Post('fechar-mesa')
+  async fecharMesa(@Body() fecharMesaDto: FecharMesaDto) {
+    return this.mesasService.fecharMesa(fecharMesaDto);
   }
 
   @Patch(':id')

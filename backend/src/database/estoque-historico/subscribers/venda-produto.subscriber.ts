@@ -13,6 +13,7 @@ import { EstoqueHistorico } from '../entities/estoque-historico.entity';
 import { Estoque } from 'src/database/estoque/entities/estoque.entity';
 import { Produto } from 'src/database/produtos/entities/produto.entity';
 import { Movimento } from '../enums/Movimento';
+import { InternalServerErrorException } from '@nestjs/common';
 
 @EventSubscriber()
 export class VendaProdutoSubscriber
@@ -34,9 +35,9 @@ export class VendaProdutoSubscriber
     return VendaProduto;
   }
 
-  beforeInsert(event: InsertEvent<VendaProduto>) {
-    console.log(`BEFORE Produto INSERTED: `, event.entity);
-  }
+  // beforeInsert(event: InsertEvent<VendaProduto>) {
+  //   // console.log(`BEFORE Produto INSERTED: `, event.entity);
+  // }
 
   afterRemove(event: RemoveEvent<VendaProduto>): void | Promise<any> {
     console.log(`AFTER Remove: `, event.entity);
@@ -47,42 +48,47 @@ export class VendaProdutoSubscriber
   }
 
   async afterInsert(event: InsertEvent<VendaProduto>): Promise<void> {
-    console.log(
-      '[Event afterInsert VendaProduto] => ',
-      event.entity.quantidade,
-    );
+    try {
+      console.log(event.entity);
 
-    const produto = await this.produtoRepository.findOneBy({
-      id: event.entity.produto.id,
-    });
-    console.log('[Produto] => ', produto);
+      const produto = await this.produtoRepository.findOneBy({
+        id: event.entity.produto.id,
+      });
+      console.log('[Produto] => ', produto);
 
-    const estoque = await this.estoqueRepository.findOne({
-      where: { produto: { id: produto.id } },
-    });
-    console.log('[Estoque] => ', estoque);
+      const estoque = await this.estoqueRepository.findOne({
+        where: { produto: { id: produto.id } },
+      });
+      console.log('[Estoque] => ', estoque);
 
-    const result = await this.estoqueRepository.update(estoque.id, {
-      quantidade: estoque.quantidade - event.entity.quantidade,
-    });
-    console.log('[Result] => ', result);
+      if (estoque) {
+        await this.estoqueRepository.update(
+          { id: estoque.id },
+          {
+            quantidade: estoque.quantidade - event.entity.quantidade,
+          },
+        );
 
-    const novoEstoqueHistorico = this.estoqueHistoricoRepository.create({
-      movimento: Movimento.SAIDA,
-      quantidade: event.entity.quantidade,
-      codigo: produto.codigo,
-      nome: produto.nome,
-      descricao: produto.descricao,
-      preco_venda: produto.preco_venda,
-      preco_compra: 0,
-      estoque,
-    });
+        const novoEstoqueHistorico = this.estoqueHistoricoRepository.create({
+          estoque,
+          movimento: 'SAIDA',
+          quantidade: event.entity.quantidade,
+          codigo: event.entity.produto.codigo,
+          nome: event.entity.produto.nome,
+          descricao: event.entity.produto.descricao,
+          preco_compra: estoque.preco_compra,
+          preco_venda: estoque.preco_venda,
+        });
 
-    await this.estoqueHistoricoRepository.save(novoEstoqueHistorico);
+        await this.estoqueHistoricoRepository.save(novoEstoqueHistorico);
 
-    const estoque_atualizado = await this.estoqueRepository.findOneBy({
-      id: estoque.id,
-    });
-    console.log('[Estoque Atualizado] => ', estoque_atualizado);
+        const estoque_atualizado = await this.estoqueRepository.findOneBy({
+          id: estoque.id,
+        });
+        console.log('[Estoque Atualizado] => ', estoque_atualizado);
+      }
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 }

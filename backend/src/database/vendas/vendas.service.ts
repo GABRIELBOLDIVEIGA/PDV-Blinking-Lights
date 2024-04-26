@@ -87,7 +87,6 @@ export class VendasService {
       });
 
       if (existe) {
-        console.log('Atualizar quantidade de produtos', existe);
         const result = await this.vendaProdutoRepository.update(existe.id, {
           quantidade: adicionaProdutoDto.quantidade + existe.quantidade,
         });
@@ -98,11 +97,13 @@ export class VendasService {
         const venda = await this.vendaRepository.findOneBy({
           id: adicionaProdutoDto.venda_id,
         });
+
         if (!venda) throw new NotFoundException('Venda não encontrada.');
 
         const produto = await this.produtoRepository.findOneBy({
           id: adicionaProdutoDto.produto_id,
         });
+
         if (!produto) throw new NotFoundException('Produto não encontrado.');
 
         const venda_produto = this.vendaProdutoRepository.create({
@@ -110,6 +111,7 @@ export class VendasService {
           produto,
           produto_nome: produto.nome,
           produto_descricao: produto.descricao,
+
           produto_preco: produto.preco_venda,
           venda,
         });

@@ -3,16 +3,20 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  NotImplementedException,
 } from '@nestjs/common';
 import { CreateMesaDto } from './dto/create-mesa.dto';
 import { UpdateMesaDto } from './dto/update-mesa.dto';
 import { Mesa } from './entities/mesa.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AdicionarProdutoDto } from './dto/adicionar-produto.dto';
 import { MesaProduto } from './entities/mesa_produto.entity';
 import { Produto } from 'src/database/produtos/entities/produto.entity';
 import { EditarQuantidadeDto } from './dto/editar-quandidade.dto';
+import { FecharMesaDto } from './dto/fechar-mesa.tdo';
+import { Venda } from '../vendas/entities/venda.entity';
+import { VendasService } from '../vendas/vendas.service';
 
 @Injectable()
 export class MesasService {
@@ -23,6 +27,9 @@ export class MesasService {
     private readonly mesaProdutoRepository: Repository<MesaProduto>,
     @InjectRepository(Produto)
     private readonly produtoRepository: Repository<Produto>,
+
+    private readonly dataSource: DataSource,
+    private readonly vendasService: VendasService,
   ) {}
 
   async create(createMesaDto: CreateMesaDto): Promise<Mesa> {
@@ -174,6 +181,71 @@ export class MesasService {
           },
         });
       }
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async fecharMesa(fecharMesaDto: FecharMesaDto) {
+    try {
+      const mesaProdutos = await this.mesaProdutoRepository.find({
+        where: { mesa: { id: fecharMesaDto.mesa_id } },
+        relations: ['produto'],
+      });
+
+      const mesa = await this.mesaRepository.findOneBy({
+        id: fecharMesaDto.mesa_id,
+      });
+      if (!mesa || !mesa.aberta)
+        throw new NotFoundException('Mesa não encontrada ou mesa fechada.');
+
+      const venda = await this.vendasService.create({
+        mesa_id: mesa.id,
+        cliente_id: null,
+        ...fecharMesaDto,
+      });
+      // .then((venda) => {
+      //   mesaProdutos.forEach(async (mesaProduto) => {
+      //     await this.vendasService.adiconarProduto({
+      //       venda_id: 14,
+      //       produto_id: 2,
+      //       quantidade: 0,
+      //     });
+      //   });
+      // });
+
+      mesaProdutos.forEach(async (produto) => {
+        await this.vendasService.adiconarProduto({
+          venda_id: venda.id,
+          produto_id: produto.produto.id,
+          quantidade: produto.quantidade,
+        });
+      });
+
+      // this.vendasService.adiconarProduto({
+      //   venda_id: mesaProdutos[0].mesa.id,
+      //   produto_id: mesaProdutos[0].produto.id,
+      //   quantidade: 2,
+      // });
+
+      // if (!venda) throw new NotImplementedException('Erro ao criar venda.');
+      // console.log('[Venda] => ', venda);
+
+      // transaction criar row vendas, criar rows venda_produto, deletar rows mesa_produto where mesa_id
+
+      // const transaction = await this.dataSource.manager.transaction(
+      //   async (manager) => {
+      //     const create_venda = manager.create(Venda, {
+      //       ...createVendaDto,
+      //       usuario,
+      //       cliente,
+      //       formaDePagamento,
+      //       mesa,
+      //     });
+      //   },
+      // );
+
+      // console.log('[Transaction] => ', transaction);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
