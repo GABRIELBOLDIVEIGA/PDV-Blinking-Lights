@@ -56,7 +56,9 @@ export class MesasService {
 
   async findAll(): Promise<Mesa[]> {
     try {
-      return await this.mesaRepository.find();
+      return await this.mesaRepository.find({
+        relations: ['produtos.produto'],
+      });
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

@@ -10,11 +10,12 @@ import {
   Sse,
   MessageEvent,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { MesasService } from './mesas.service';
 import { CreateMesaDto } from './dto/create-mesa.dto';
 import { UpdateMesaDto } from './dto/update-mesa.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Mesa } from './entities/mesa.entity';
 import { Observable, defer, map, repeat, tap } from 'rxjs';
 import { Response } from 'express';
@@ -26,8 +27,11 @@ import { plainToInstance } from 'class-transformer';
 import { AdicionarProdutoDto } from './dto/adicionar-produto.dto';
 import { EditarQuantidadeDto } from './dto/editar-quandidade.dto';
 import { FecharMesaDto } from './dto/fechar-mesa.tdo';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Mesas')
+@ApiBearerAuth('JWT-auth')
+@UseGuards(AuthGuard)
 @Controller('mesa')
 export class MesasController {
   constructor(private readonly mesasService: MesasService) {}

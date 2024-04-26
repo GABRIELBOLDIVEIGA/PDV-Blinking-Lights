@@ -7,6 +7,7 @@ import { MesaProduto } from './entities/mesa_produto.entity';
 import { Produto } from '../produtos/entities/produto.entity';
 import { VendasModule } from '../vendas/vendas.module';
 import { Usuario } from '../usuarios/entities/usuario.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -14,6 +15,6 @@ import { Usuario } from '../usuarios/entities/usuario.entity';
     VendasModule,
   ],
   controllers: [MesasController],
-  providers: [MesasService],
+  providers: [MesasService, JwtService],
 })
 export class MesasModule {}

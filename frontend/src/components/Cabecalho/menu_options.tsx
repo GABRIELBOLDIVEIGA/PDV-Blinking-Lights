@@ -1,6 +1,12 @@
 export type Menu = {
   id: string;
-  menu_title: "Pedidos" | "Orçamentos" | "Clientes" | "Produtos" | "Usuários";
+  menu_title:
+    | "Mesas"
+    | "Pedidos"
+    | "Orçamentos"
+    | "Clientes"
+    | "Produtos"
+    | "Usuários";
   options: Array<{
     title: string;
     href: string;
@@ -77,6 +83,17 @@ export const menu_user: Menu = [
 ];
 
 export const menu_adm: Menu = [
+  {
+    id: "mesas",
+    menu_title: "Mesas",
+    options: [
+      {
+        title: "Todas as Mesas",
+        href: "/mesas/todas-mesas",
+        description: "Visualize todas as mesas",
+      },
+    ],
+  },
   {
     id: "pedido",
     menu_title: "Pedidos",

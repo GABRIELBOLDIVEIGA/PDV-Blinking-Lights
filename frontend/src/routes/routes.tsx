@@ -7,7 +7,6 @@ import { Login } from "@/pages/Public/Login/Login";
 import { EditarCliente } from "@/pages/Private/Clientes/EditarCliente/EditarCliente";
 import { PedidosDoUsuario } from "@/pages/Private/Pedidos/PedidosDoUsuario/PedidosDoUsuario";
 import { TodosOsClientes } from "@/pages/Private/Clientes/TodosOsClientes/TodosOsClientes";
-
 import { PrivateRoutes } from "@/routes/PrivateRoutes";
 import { CardEsqueciMinhaSenha } from "@/pages/Public/CardEsqueciMinhaSenha/CardEsqueciMinhaSenha";
 import { TodosOsProdutos } from "@/pages/Private/Produtos/TodosOsProdutos/TodosOsProdutos";
@@ -26,8 +25,7 @@ import { PedidoPDF } from "@/pages/Private/Pedidos/PedidoPDF/PedidoPDF";
 import { EditarPedidoOrcamento } from "@/pages/Private/Editar-Pedido-Orcamento/EditarPedidoOrcamento";
 import { ErrorPage } from "@/pages/Public/404";
 import { Configuracoes } from "@/pages/Private/Configuracoes/Configuracoes";
-// import { DEVRoutes } from "./DEV-Routes";
-// import { Teste } from "@/pages/teste/teste";
+import { TodasMesas } from "@/pages/Private/Mesas/todas-mesas/TodasMesas";
 
 export const routes = createBrowserRouter([
   {
@@ -71,6 +69,15 @@ export const routes = createBrowserRouter([
       {
         path: "/configuracoes",
         element: <Configuracoes />,
+      },
+      {
+        path: "/mesas",
+        children: [
+          {
+            path: "/mesas/todas-mesas",
+            element: <TodasMesas />,
+          },
+        ],
       },
       {
         path: "/pedido",
