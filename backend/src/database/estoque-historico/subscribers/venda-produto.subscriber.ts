@@ -88,6 +88,7 @@ export class VendaProdutoSubscriber
         console.log('[Estoque Atualizado] => ', estoque_atualizado);
       }
     } catch (error) {
+      console.log('[Error] => ', error);
       throw new InternalServerErrorException(error);
     }
   }

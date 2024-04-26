@@ -111,7 +111,6 @@ export class VendasService {
           produto,
           produto_nome: produto.nome,
           produto_descricao: produto.descricao,
-
           produto_preco: produto.preco_venda,
           venda,
         });

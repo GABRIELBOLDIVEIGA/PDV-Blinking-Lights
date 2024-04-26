@@ -17,6 +17,8 @@ import { EditarQuantidadeDto } from './dto/editar-quandidade.dto';
 import { FecharMesaDto } from './dto/fechar-mesa.tdo';
 import { Venda } from '../vendas/entities/venda.entity';
 import { VendasService } from '../vendas/vendas.service';
+import { VendaProduto } from '../vendas/entities/venda_produto.entity';
+import { Usuario } from '../usuarios/entities/usuario.entity';
 
 @Injectable()
 export class MesasService {
@@ -27,6 +29,8 @@ export class MesasService {
     private readonly mesaProdutoRepository: Repository<MesaProduto>,
     @InjectRepository(Produto)
     private readonly produtoRepository: Repository<Produto>,
+    @InjectRepository(Usuario)
+    private readonly usuarioRepository: Repository<Usuario>,
 
     private readonly dataSource: DataSource,
     private readonly vendasService: VendasService,
@@ -188,47 +192,82 @@ export class MesasService {
 
   async fecharMesa(fecharMesaDto: FecharMesaDto) {
     try {
-      const mesaProdutos = await this.mesaProdutoRepository.find({
-        where: { mesa: { id: fecharMesaDto.mesa_id } },
-        relations: ['produto'],
-      });
+      // const mesaProdutos = await this.mesaProdutoRepository.find({
+      //   where: { mesa: { id: fecharMesaDto.mesa_id } },
+      //   relations: ['produto'],
+      // });
 
-      const mesa = await this.mesaRepository.findOneBy({
-        id: fecharMesaDto.mesa_id,
-      });
-      if (!mesa || !mesa.aberta)
-        throw new NotFoundException('Mesa não encontrada ou mesa fechada.');
+      // const mesa = await this.mesaRepository.findOneBy({
+      //   id: fecharMesaDto.mesa_id,
+      // });
+      // if (!mesa || !mesa.aberta)
+      //   throw new NotFoundException('Mesa não encontrada ou mesa fechada.');
 
-      const venda = await this.vendasService.create({
-        mesa_id: mesa.id,
-        cliente_id: null,
-        ...fecharMesaDto,
-      });
+      // const venda = await this.vendasService.create({
+      //   mesa_id: mesa.id,
+      //   cliente_id: null,
+      //   ...fecharMesaDto,
+      // });
 
-      mesaProdutos.forEach(async (produto) => {
-        await this.vendasService.adiconarProduto({
-          venda_id: venda.id,
-          produto_id: produto.produto.id,
-          quantidade: produto.quantidade,
-        });
-      });
+      // mesaProdutos.forEach(async (produto) => {
+      //   await this.vendasService.adiconarProduto({
+      //     venda_id: venda.id,
+      //     produto_id: produto.produto.id,
+      //     quantidade: produto.quantidade,
+      //   });
+      // });
 
-      await this.mesaProdutoRepository.delete({ mesa: { id: mesa.id } });
-      await this.update(mesa.id, { aberta: false });
+      // await this.mesaProdutoRepository.delete({ mesa: { id: mesa.id } });
+      // await this.update(mesa.id, { aberta: false });
 
       // transaction criar row vendas, criar rows venda_produto, deletar rows mesa_produto where mesa_id
-      // const transaction = await this.dataSource.manager.transaction(
-      //   async (manager) => {
-      //     const create_venda = manager.create(Venda, {
-      //       ...createVendaDto,
-      //       usuario,
-      //       cliente,
-      //       formaDePagamento,
-      //       mesa,
-      //     });
-      //   },
-      // );
-      // console.log('[Transaction] => ', transaction);
+      const transaction = await this.dataSource.manager.transaction(
+        async (manager) => {
+          const mesaProdutos = await manager.find(MesaProduto, {
+            where: { mesa: { id: fecharMesaDto.mesa_id } },
+            relations: ['produto'],
+          });
+
+          const mesa = await manager.findOneBy(Mesa, {
+            id: fecharMesaDto.mesa_id,
+          });
+          if (!mesa || !mesa.aberta)
+            throw new NotFoundException('Mesa não encontrada ou mesa fechada.');
+
+          const usuario = await manager.findOneBy(Usuario, {
+            id: fecharMesaDto.usuario_id,
+          });
+          if (!usuario) throw new NotFoundException('Usuario não encontrado.');
+
+          const create_venda = manager.create(Venda, {
+            mesa_id: mesa.id,
+            cliente_id: null,
+            ...fecharMesaDto,
+            mesa,
+            usuario,
+          });
+          await manager.save(Venda, create_venda);
+
+          mesaProdutos.forEach(async (item) => {
+            const produto = await manager.findOneBy(Produto, {
+              id: item.produto.id,
+            });
+            const venda_produto = manager.create(VendaProduto, {
+              quantidade: item.quantidade,
+              produto: produto,
+              produto_nome: item.produto.nome,
+              produto_descricao: item.produto.descricao,
+              produto_preco: item.produto.preco_venda,
+              venda: create_venda,
+            });
+            await manager.save(VendaProduto, venda_produto);
+          });
+
+          await manager.delete(MesaProduto, { mesa: { id: mesa.id } });
+          await manager.update(Mesa, { id: mesa.id }, { aberta: false });
+        },
+      );
+      console.log('[Transaction] => ', transaction);
       return 'Venda realizada com sucesso';
     } catch (error) {
       throw new InternalServerErrorException(error);

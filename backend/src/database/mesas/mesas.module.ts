@@ -6,10 +6,11 @@ import { Mesa } from './entities/mesa.entity';
 import { MesaProduto } from './entities/mesa_produto.entity';
 import { Produto } from '../produtos/entities/produto.entity';
 import { VendasModule } from '../vendas/vendas.module';
+import { Usuario } from '../usuarios/entities/usuario.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Mesa, MesaProduto, Produto]),
+    TypeOrmModule.forFeature([Mesa, MesaProduto, Produto, Usuario]),
     VendasModule,
   ],
   controllers: [MesasController],
