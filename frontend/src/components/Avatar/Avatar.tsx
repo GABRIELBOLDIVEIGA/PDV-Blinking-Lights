@@ -4,6 +4,7 @@ import {
   AvatarImage,
   Avatar as AvatarSchadcn,
 } from "../ui/avatar";
+import defaultAvatar from "@/assets/default-avatar.gif";
 
 interface IAvatar {
   className?: string;
@@ -13,7 +14,7 @@ interface IAvatar {
 export const Avatar = ({ ...props }: IAvatar) => {
   return (
     <AvatarSchadcn className={props.className}>
-      <AvatarImage src={props.src} />
+      <AvatarImage src={props.src ? props.src : defaultAvatar} />
       <AvatarFallback>
         <CircleUser size={18} />
       </AvatarFallback>

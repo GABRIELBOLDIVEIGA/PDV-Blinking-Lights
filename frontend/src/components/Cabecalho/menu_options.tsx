@@ -94,75 +94,75 @@ export const menu_adm: Menu = [
       },
     ],
   },
-  {
-    id: "pedido",
-    menu_title: "Pedidos",
-    options: [
-      {
-        title: "Todos os Pedidos",
-        href: "/pedido/todos-pedidos",
-        description: "Visualize todos os pedidos",
-      },
-      ...getOptions(menu_user, "Pedidos"),
-    ],
-  },
-  {
-    id: "orcamento",
-    menu_title: "Orçamentos",
-    options: [
-      {
-        title: "Todos os Orçamentos",
-        href: "/orcamento/todos-orcamentos",
-        description: "Visualize todos os orçamentos",
-      },
-      ...getOptions(menu_user, "Orçamentos"),
-    ],
-  },
-  {
-    id: "cliente",
-    menu_title: "Clientes",
-    options: [
-      {
-        title: "Todos os Clientes",
-        href: "/cliente/todos-clientes",
-        description: "Visualize todos os clientes",
-      },
-      ...getOptions(menu_user, "Clientes"),
-    ],
-  },
-  {
-    id: "produto",
-    menu_title: "Produtos",
-    options: [
-      ...getOptions(menu_user, "Produtos"),
-      {
-        title: "Novo Produto",
-        href: "/produto/novo-produto",
-        description: "Cadastre um novo produto",
-      },
-      {
-        title: "Tabela de Produtos",
-        href: "/produto/todos-detalhes",
-        description: "Tabela de produtos e detalhes",
-      },
-    ],
-  },
-  {
-    id: "usuario",
-    menu_title: "Usuários",
-    options: [
-      {
-        title: "Todos Usuários",
-        href: "/usuario/todos-usuarios",
-        description: "Visualize todos os usuários",
-      },
-      {
-        title: "Novo Usuário",
-        href: "/usuario/novo-usuario",
-        description: "Cadastre um novo usuário",
-      },
-    ],
-  },
+  // {
+  //   id: "pedido",
+  //   menu_title: "Pedidos",
+  //   options: [
+  //     {
+  //       title: "Todos os Pedidos",
+  //       href: "/pedido/todos-pedidos",
+  //       description: "Visualize todos os pedidos",
+  //     },
+  //     ...getOptions(menu_user, "Pedidos"),
+  //   ],
+  // },
+  // {
+  //   id: "orcamento",
+  //   menu_title: "Orçamentos",
+  //   options: [
+  //     {
+  //       title: "Todos os Orçamentos",
+  //       href: "/orcamento/todos-orcamentos",
+  //       description: "Visualize todos os orçamentos",
+  //     },
+  //     ...getOptions(menu_user, "Orçamentos"),
+  //   ],
+  // },
+  // {
+  //   id: "cliente",
+  //   menu_title: "Clientes",
+  //   options: [
+  //     {
+  //       title: "Todos os Clientes",
+  //       href: "/cliente/todos-clientes",
+  //       description: "Visualize todos os clientes",
+  //     },
+  //     ...getOptions(menu_user, "Clientes"),
+  //   ],
+  // },
+  // {
+  //   id: "produto",
+  //   menu_title: "Produtos",
+  //   options: [
+  //     ...getOptions(menu_user, "Produtos"),
+  //     {
+  //       title: "Novo Produto",
+  //       href: "/produto/novo-produto",
+  //       description: "Cadastre um novo produto",
+  //     },
+  //     {
+  //       title: "Tabela de Produtos",
+  //       href: "/produto/todos-detalhes",
+  //       description: "Tabela de produtos e detalhes",
+  //     },
+  //   ],
+  // },
+  // {
+  //   id: "usuario",
+  //   menu_title: "Usuários",
+  //   options: [
+  //     {
+  //       title: "Todos Usuários",
+  //       href: "/usuario/todos-usuarios",
+  //       description: "Visualize todos os usuários",
+  //     },
+  //     {
+  //       title: "Novo Usuário",
+  //       href: "/usuario/novo-usuario",
+  //       description: "Cadastre um novo usuário",
+  //     },
+  //   ],
+  // },
 ];
 
 export const menu_dev: Menu = [...menu_adm];

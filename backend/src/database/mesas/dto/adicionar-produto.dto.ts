@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber } from 'class-validator';
+import { IsNumber, Min } from 'class-validator';
 
 export class AdicionarProdutoDto {
   @ApiProperty({ type: 'number', example: 1 })
@@ -12,5 +12,6 @@ export class AdicionarProdutoDto {
 
   @ApiProperty({ type: 'number', example: 1 })
   @IsNumber()
+  @Min(1)
   quantidade: number;
 }

@@ -40,7 +40,7 @@ export const MenuPerfil = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="link" className="pr-2" size="icon">
-          <Avatar src={user?.avatar} />
+          <Avatar />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mr-10 mt-2 w-56 mobile:mr-5 mobile:w-40">

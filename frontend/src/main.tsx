@@ -12,7 +12,7 @@ import { queryClient } from "./lib/react-query/queryClient.tsx";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="dark" storageKey="kmb-theme">
+      <ThemeProvider defaultTheme="dark" storageKey="pdv-ui-theme">
         {/* <div className="-mb-6"> */}
         <AuthProvider>
           <RouterProvider router={routes} />

@@ -7,7 +7,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-
 import { AuthContext } from "@/context/Auth/AuthContext";
 import { cn } from "@/lib/utils";
 import { AlignJustify } from "lucide-react";
@@ -56,7 +55,7 @@ export const MenuMobile = ({ className }: IProps) => {
             <AlignJustify />
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="flex flex-col justify-between">
+        <SheetContent side="left" className="flex flex-col">
           <SheetHeader>
             <SheetTitle>Menu</SheetTitle>
           </SheetHeader>

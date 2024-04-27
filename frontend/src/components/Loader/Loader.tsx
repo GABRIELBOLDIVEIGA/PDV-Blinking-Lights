@@ -8,9 +8,8 @@ interface IProps {
 
 export const Loader = (props: IProps) => {
   return (
-    <Loader2
-      className={cn("animate-spin", props.className)}
-      size={props.size}
-    />
+    <div className={cn("flex justify-center", props.className)}>
+      <Loader2 className="animate-spin" size={props.size} />
+    </div>
   );
 };
