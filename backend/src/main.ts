@@ -180,6 +180,12 @@ async function bootstrap() {
 
   SwaggerModule.setup('api/produtos', app, docProdutos);
 
+  app.enableCors({
+    allowedHeaders: ['Content-Type', 'Origin', 'Authorization'],
+    origin: ['*', 'http://localhost:5173'],
+    credentials: true,
+  });
+
   // Start app
   await app.listen(process.env.PORT || 3030);
 

@@ -16,5 +16,6 @@ import { JwtService } from '@nestjs/jwt';
   ],
   controllers: [MesasController],
   providers: [MesasService, JwtService],
+  exports: [MesasService],
 })
 export class MesasModule {}

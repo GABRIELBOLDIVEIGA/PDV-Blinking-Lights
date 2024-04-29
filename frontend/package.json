@@ -58,6 +58,7 @@
     "react-icons": "^5.0.1",
     "react-intersection-observer": "^9.8.1",
     "react-router-dom": "^6.22.2",
+    "socket.io-client": "^4.7.5",
     "sonner": "^1.4.3",
     "tailwind-merge": "^2.2.1",
     "tailwind-scrollbar": "^3.1.0",
