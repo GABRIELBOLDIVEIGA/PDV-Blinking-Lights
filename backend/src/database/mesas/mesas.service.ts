@@ -92,53 +92,59 @@ export class MesasService {
           'Mesa não encontrada. Verifique se a mesa está aberta.',
         );
 
-      const produto = await this.produtoRepository.findOneBy({
-        id: adicionarProdutoDto.produto_id,
-      });
+      await Promise.all(
+        adicionarProdutoDto.prods.map(async (item) => {
+          const produto = await this.produtoRepository.findOneBy({
+            id: item.produto_id,
+          });
 
-      if (!produto) throw new NotFoundException('Produto não encontrado.');
+          if (!produto) throw new NotFoundException('Produto não encontrado.');
 
-      const mesaProduto = await this.mesaProdutoRepository.findOne({
-        where: {
-          mesa: { id: adicionarProdutoDto.mesa_id },
-          produto: { id: adicionarProdutoDto.produto_id },
-        },
-      });
+          const mesaProduto = await this.mesaProdutoRepository.findOne({
+            where: {
+              mesa: { id: adicionarProdutoDto.mesa_id },
+              produto: { id: item.produto_id },
+            },
+          });
 
-      // se mesa e produto existirem na mesma row, a quantidade de produto será atualizada
-      if (mesaProduto) {
-        const result = await this.mesaProdutoRepository.update(
-          { id: mesaProduto.id },
-          {
-            quantidade: adicionarProdutoDto.quantidade + mesaProduto.quantidade,
-          },
-        );
+          // se mesa e produto existirem na mesma row, a quantidade de produto será atualizada
+          if (mesaProduto) {
+            const result = await this.mesaProdutoRepository.update(
+              { id: mesaProduto.id },
+              {
+                quantidade: item.quantidade + mesaProduto.quantidade,
+              },
+            );
 
-        if (result.affected === 0) throw new NotFoundException();
+            if (result.affected === 0) throw new NotFoundException();
 
-        return await this.mesaProdutoRepository.findOneBy({
-          id: mesaProduto.id,
-        });
-      }
+            return await this.mesaProdutoRepository.findOneBy({
+              id: mesaProduto.id,
+            });
+          }
 
-      // se mesa e produto NÃO existirem na mesma row, uma nova row sera criada.
-      if (!mesaProduto) {
-        const create_mesa_produto = this.mesaProdutoRepository.create({
-          quantidade: adicionarProdutoDto.quantidade,
-          produto,
-          mesa,
-        });
+          // se mesa e produto NÃO existirem na mesma row, uma nova row sera criada.
+          if (!mesaProduto) {
+            const create_mesa_produto = this.mesaProdutoRepository.create({
+              quantidade: item.quantidade,
+              produto,
+              mesa,
+            });
 
-        const novo_mesa_produto =
-          await this.mesaProdutoRepository.save(create_mesa_produto);
+            const novo_mesa_produto =
+              await this.mesaProdutoRepository.save(create_mesa_produto);
 
-        return await this.mesaProdutoRepository.findOne({
-          where: {
-            id: novo_mesa_produto.id,
-          },
-          relations: ['produto', 'mesa'],
-        });
-      }
+            return await this.mesaProdutoRepository.findOne({
+              where: {
+                id: novo_mesa_produto.id,
+              },
+              relations: ['produto', 'mesa'],
+            });
+          }
+
+          return Promise.resolve();
+        }),
+      );
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
@@ -194,35 +200,6 @@ export class MesasService {
 
   async fecharMesa(fecharMesaDto: FecharMesaDto) {
     try {
-      // const mesaProdutos = await this.mesaProdutoRepository.find({
-      //   where: { mesa: { id: fecharMesaDto.mesa_id } },
-      //   relations: ['produto'],
-      // });
-
-      // const mesa = await this.mesaRepository.findOneBy({
-      //   id: fecharMesaDto.mesa_id,
-      // });
-      // if (!mesa || !mesa.aberta)
-      //   throw new NotFoundException('Mesa não encontrada ou mesa fechada.');
-
-      // const venda = await this.vendasService.create({
-      //   mesa_id: mesa.id,
-      //   cliente_id: null,
-      //   ...fecharMesaDto,
-      // });
-
-      // mesaProdutos.forEach(async (produto) => {
-      //   await this.vendasService.adiconarProduto({
-      //     venda_id: venda.id,
-      //     produto_id: produto.produto.id,
-      //     quantidade: produto.quantidade,
-      //   });
-      // });
-
-      // await this.mesaProdutoRepository.delete({ mesa: { id: mesa.id } });
-      // await this.update(mesa.id, { aberta: false });
-
-      // transaction criar row vendas, criar rows venda_produto, deletar rows mesa_produto where mesa_id
       const transaction = await this.dataSource.manager.transaction(
         async (manager) => {
           const mesaProdutos = await manager.find(MesaProduto, {

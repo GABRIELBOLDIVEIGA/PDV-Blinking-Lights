@@ -35,7 +35,6 @@ export class VendasService {
     private readonly formaDePagamentoRepository: Repository<FormaDePagamento>,
     @InjectRepository(Produto)
     private readonly produtoRepository: Repository<Produto>,
-
     private dataSource: DataSource,
   ) {}
 
@@ -69,7 +68,6 @@ export class VendasService {
         });
       }
 
-      // console.log('[createVendaParams] => ', createVendaParams);
       const nova_venda = this.vendaRepository.create({
         ...createVendaParams,
         usuario,
@@ -83,7 +81,7 @@ export class VendasService {
       await Promise.all(
         await this.dataSource.manager.transaction(async (manager) => {
           const venda_produto = createVendaDto.prods.map(async (item) => {
-            const produto = await this.produtoRepository.findOneBy({
+            const produto = await manager.findOneBy(Produto, {
               id: item.id,
             });
             if (!produto || !venda_salva) return;
