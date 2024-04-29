@@ -12,6 +12,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  Generated,
 } from 'typeorm';
 import { StatusDaVenda } from '../enums/StatusDaVenda';
 
@@ -19,6 +20,10 @@ import { StatusDaVenda } from '../enums/StatusDaVenda';
 export class Venda {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
+
+  @Column({ type: 'varchar', nullable: false, unique: true })
+  @Generated('uuid')
+  uuid: string;
 
   @Column({ type: 'smallint', nullable: false, default: 0 })
   parcelas: number;

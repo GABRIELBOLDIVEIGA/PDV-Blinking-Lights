@@ -7,7 +7,7 @@ import { CreateVendaDto } from './dto/create-venda.dto';
 import { UpdateVendaDto } from './dto/update-venda.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Venda } from './entities/venda.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { Cliente } from '../clientes/entities/cliente.entity';
 import { Usuario } from '../usuarios/entities/usuario.entity';
 import { FormaDePagamento } from '../forma-de-pagamento/entities/forma-de-pagamento.entity';
@@ -15,6 +15,8 @@ import { Mesa } from '../mesas/entities/mesa.entity';
 import { VendaProduto } from './entities/venda_produto.entity';
 import { AdicionaProdutoDto } from './dto/adiciona-produto.dto';
 import { Produto } from '../produtos/entities/produto.entity';
+import { CreateVendaParams } from './types/create-venda.params';
+import { UpdateVendaParams } from './types/update-venda.params';
 
 @Injectable()
 export class VendasService {
@@ -33,46 +35,79 @@ export class VendasService {
     private readonly formaDePagamentoRepository: Repository<FormaDePagamento>,
     @InjectRepository(Produto)
     private readonly produtoRepository: Repository<Produto>,
+
+    private dataSource: DataSource,
   ) {}
 
   async create(createVendaDto: CreateVendaDto) {
+    const createVendaParams: CreateVendaParams = createVendaDto;
+
     try {
       const usuario = await this.usuarioRepository.findOneBy({
-        id: createVendaDto.usuario_id,
+        id: createVendaParams.usuario_id,
       });
       if (!usuario) throw new NotFoundException('Usuário não encontrado.');
 
       let cliente: Cliente | null = null;
-      if (createVendaDto.cliente_id) {
+      if (createVendaParams.cliente_id) {
         cliente = await this.clienteRepository.findOneBy({
-          id: createVendaDto.cliente_id,
+          id: createVendaParams.cliente_id,
         });
       }
 
       let mesa: Mesa | null = null;
-      if (createVendaDto.mesa_id) {
+      if (createVendaParams.mesa_id) {
         mesa = await this.mesaRepository.findOneBy({
-          id: createVendaDto.mesa_id,
+          id: createVendaParams.mesa_id,
         });
       }
 
       let formaDePagamento: FormaDePagamento | null = null;
-      if (createVendaDto.forma_de_pagamento_id) {
+      if (createVendaParams.forma_de_pagamento_id) {
         formaDePagamento = await this.formaDePagamentoRepository.findOneBy({
-          id: createVendaDto.forma_de_pagamento_id,
+          id: createVendaParams.forma_de_pagamento_id,
         });
       }
 
+      // console.log('[createVendaParams] => ', createVendaParams);
       const nova_venda = this.vendaRepository.create({
-        ...createVendaDto,
+        ...createVendaParams,
         usuario,
         cliente,
         formaDePagamento,
         mesa,
       });
 
-      return await this.vendaRepository.save(nova_venda);
+      const venda_salva = await this.vendaRepository.save(nova_venda);
+
+      await Promise.all(
+        await this.dataSource.manager.transaction(async (manager) => {
+          const venda_produto = createVendaDto.prods.map(async (item) => {
+            const produto = await this.produtoRepository.findOneBy({
+              id: item.id,
+            });
+            if (!produto || !venda_salva) return;
+
+            const venda_produto = this.vendaProdutoRepository.create({
+              quantidade: item.quantidade,
+              venda: venda_salva,
+              produto,
+              produto_nome: produto.nome,
+              produto_descricao: produto.descricao,
+              produto_preco: produto.preco_venda,
+            });
+            await this.vendaProdutoRepository.save(venda_produto);
+
+            return venda_produto;
+          });
+
+          return Promise.resolve(venda_produto);
+        }),
+      );
+
+      return await this.findOne(venda_salva.id);
     } catch (error) {
+      console.warn(error);
       throw new InternalServerErrorException(error);
     }
   }
@@ -90,6 +125,7 @@ export class VendasService {
         const result = await this.vendaProdutoRepository.update(existe.id, {
           quantidade: adicionaProdutoDto.quantidade + existe.quantidade,
         });
+
         if (result.affected === 0) throw new NotFoundException();
 
         return await this.vendaProdutoRepository.findOneBy({ id: existe.id });
@@ -118,6 +154,7 @@ export class VendasService {
         return await this.vendaProdutoRepository.save(venda_produto);
       }
     } catch (error) {
+      console.log('[Error] => ', error);
       throw new InternalServerErrorException(error);
     }
   }
@@ -157,7 +194,6 @@ export class VendasService {
         where: { id },
         relations: [
           'formaDePagamento',
-          'status',
           'cliente',
           'usuario',
           'produtos.produto',
@@ -172,11 +208,11 @@ export class VendasService {
     }
   }
 
-  async update(id: number, updateVendaDto: UpdateVendaDto) {
+  async update(id: number, updateVendaParams: UpdateVendaParams) {
     try {
       const result = await this.vendaRepository.update(
         { id },
-        { ...updateVendaDto },
+        { ...updateVendaParams },
       );
 
       if (result.affected === 0) throw new NotFoundException();

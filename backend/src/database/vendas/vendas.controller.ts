@@ -14,6 +14,8 @@ import { UpdateVendaDto } from './dto/update-venda.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { AdicionaProdutoDto } from './dto/adiciona-produto.dto';
 import { RemoveProdutoDto } from './dto/remove-produto.dto';
+import { CreateVendaParams } from './types/create-venda.params';
+import { UpdateVendaParams } from './types/update-venda.params';
 
 @ApiTags('Vendas')
 @Controller('venda')
@@ -52,7 +54,8 @@ export class VendasController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updateVendaDto: UpdateVendaDto,
   ) {
-    return this.vendasService.update(id, updateVendaDto);
+    const updateVendaParams: UpdateVendaParams = updateVendaDto;
+    return this.vendasService.update(id, updateVendaParams);
   }
 
   @Delete(':id')

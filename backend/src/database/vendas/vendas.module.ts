@@ -9,6 +9,7 @@ import { FormaDePagamento } from '../forma-de-pagamento/entities/forma-de-pagame
 import { Mesa } from '../mesas/entities/mesa.entity';
 import { VendaProduto } from './entities/venda_produto.entity';
 import { Produto } from '../produtos/entities/produto.entity';
+import { SubCategoria } from '../sub-categorias/entities/sub-categoria.entity';
 
 @Module({
   imports: [

@@ -1,6 +1,24 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsEnum,
+  IsInt,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Min,
+} from 'class-validator';
 import { StatusDaVenda } from '../enums/StatusDaVenda';
+import { Type } from 'class-transformer';
+
+class ProdutoQuantidadeDto {
+  @IsInt()
+  id: number;
+
+  @IsInt()
+  @Min(1)
+  quantidade: number;
+}
 
 export class CreateVendaDto {
   @ApiProperty({
@@ -19,7 +37,7 @@ export class CreateVendaDto {
     default: StatusDaVenda.ABERTO,
   })
   @IsEnum(StatusDaVenda)
-  status: string;
+  status: StatusDaVenda;
 
   @ApiProperty({
     description: 'ID do Mesa.',
@@ -78,4 +96,17 @@ export class CreateVendaDto {
   })
   @IsNumber()
   valor_pago: number;
+
+  @ApiProperty({
+    description: 'Produtos.',
+    type: Array<ProdutoQuantidadeDto>,
+    example: [
+      { id: 1, quantidade: 1 },
+      { id: 2, quantidade: 2 },
+      { id: 3, quantidade: 4 },
+    ],
+  })
+  @IsArray()
+  @Type(() => ProdutoQuantidadeDto)
+  prods: ProdutoQuantidadeDto[];
 }
