@@ -13,6 +13,7 @@ import { EstoqueModule } from './estoque/estoque.module';
 import { MesasModule } from './mesas/mesas.module';
 import { SubCategoriasModule } from './sub-categorias/sub-categorias.module';
 import { EstoqueHistoricoModule } from './estoque-historico/estoque-historico.module';
+import { ComandasModule } from './comandas/comandas.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { EstoqueHistoricoModule } from './estoque-historico/estoque-historico.mo
     VendasModule,
     SubCategoriasModule,
     EstoqueHistoricoModule,
+    ComandasModule,
   ],
 })
 export class DataBaseModule {}

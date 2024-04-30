@@ -4,11 +4,13 @@ import {
   DeleteDateColumn,
   Entity,
   Generated,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { MesaProduto } from './mesa_produto.entity';
+import { MesaComanda } from './mesa_comanda.entity';
+import { Comanda } from 'src/database/comandas/entities/comanda.entity';
 
 @Entity({ name: 'mesas' })
 export class Mesa {
@@ -24,20 +26,19 @@ export class Mesa {
   nome: string;
 
   @Column({ type: 'boolean', nullable: false, default: false })
-  aberta: boolean;
+  disponivel: boolean;
 
-  @Column({ type: 'varchar', nullable: true, unique: true })
-  @Generated('uuid')
-  comanda: string;
+  @ManyToOne(() => Comanda, (comanda) => comanda, { nullable: true })
+  comanda: Comanda;
 
-  @OneToMany(() => MesaProduto, (mesa_produto) => mesa_produto.mesa)
-  produtos: MesaProduto[];
+  @OneToMany(() => MesaComanda, (mesa_produto) => mesa_produto.mesa)
+  comandas: MesaComanda[];
 
-  // @CreateDateColumn()
-  // created_at: Date;
+  @CreateDateColumn()
+  created_at: Date;
 
-  // @UpdateDateColumn()
-  // updated_at: Date;
+  @UpdateDateColumn()
+  updated_at: Date;
 
   @DeleteDateColumn()
   deleted_at: Date;

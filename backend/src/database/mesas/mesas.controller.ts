@@ -19,20 +19,15 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Mesa } from './entities/mesa.entity';
 import { Observable, defer, map, repeat, tap } from 'rxjs';
 import { Response } from 'express';
-import {
-  MesaProdutoResponseDto,
-  MesaResponseDto,
-} from './dto/mesa-response.tdo';
+import { MesaResponseDto } from './dto/response/mesa-response.dto';
 import { plainToInstance } from 'class-transformer';
-import { AdicionarProdutoDto } from './dto/adicionar-produto.dto';
-import { EditarQuantidadeDto } from './dto/editar-quandidade.dto';
-import { FecharMesaDto } from './dto/fechar-mesa.tdo';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { FecharMesaDto } from './dto/fechar-mesa.dto';
 import { MesaGateway } from 'src/database/mesas/mesas.gateway';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Mesas')
-@ApiBearerAuth('JWT-auth')
-@UseGuards(AuthGuard)
+// @ApiBearerAuth('JWT-auth')
+// @UseGuards(AuthGuard)
 @Controller('mesa')
 export class MesasController {
   constructor(
@@ -56,26 +51,8 @@ export class MesasController {
     @Param('id', ParseIntPipe) id: number,
   ): Promise<MesaResponseDto> {
     const mesa = await this.mesasService.findOne(id);
+
     return plainToInstance(MesaResponseDto, mesa);
-  }
-
-  @Post('adicionar-produto')
-  async adicionarProduto(
-    @Body() adicionarProdutoDto: AdicionarProdutoDto,
-  ): Promise<string> {
-    const response =
-      await this.mesasService.adicionarProduto(adicionarProdutoDto);
-
-    return response;
-  }
-
-  @Post('editar-quantidade-produto')
-  async editarQuantidade(
-    @Body() EditarQuantidadeDto: EditarQuantidadeDto,
-  ): Promise<MesaProdutoResponseDto> {
-    const response =
-      await this.mesasService.editarQuantidade(EditarQuantidadeDto);
-    return plainToInstance(MesaProdutoResponseDto, response);
   }
 
   @Patch('abrir-mesa/:id')
@@ -83,9 +60,9 @@ export class MesasController {
     return this.mesasService.abrirMesa(id);
   }
 
-  @Post('fechar-mesa')
-  async fecharMesa(@Body() fecharMesaDto: FecharMesaDto) {
-    return this.mesasService.fecharMesa(fecharMesaDto);
+  @Patch('fechar-mesa/:id')
+  async fecharMesa(@Param('id', ParseIntPipe) id: number) {
+    return this.mesasService.fecharMesa(id);
   }
 
   @Patch(':id')
@@ -94,17 +71,11 @@ export class MesasController {
     @Body() updateMesaDto: UpdateMesaDto,
   ): Promise<Mesa> {
     const mesa = await this.mesasService.update(id, updateMesaDto);
-
-    if (updateMesaDto.aberta != null) {
-      this.mesaGateway.disponibilidadeMesa(mesa.id, mesa.aberta);
+    if (updateMesaDto.disponivel != null) {
+      this.mesaGateway.disponibilidadeMesa(mesa.id, mesa.disponivel);
     }
-
     return mesa;
   }
-
-  // @Patch('abrir-mesa/:id')
-  // async abrirMesa(@Param('id', ParseIntPipe) id: number,) {
-  // }
 
   @Sse('sse/:id/events')
   events(
@@ -114,7 +85,7 @@ export class MesasController {
     return defer(() => this.mesasService.findOne(id)).pipe(
       repeat({ delay: 1000 }),
       tap((report) => {
-        if (report.aberta === true) {
+        if (report.disponivel === true) {
           setTimeout(() => {
             console.log('[Aberto]');
             response.end();

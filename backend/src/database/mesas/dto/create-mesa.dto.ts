@@ -12,5 +12,5 @@ export class CreateMesaDto {
     type: 'boolean',
     example: true,
   })
-  aberta: boolean;
+  disponivel: boolean;
 }
