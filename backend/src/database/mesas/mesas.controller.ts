@@ -78,6 +78,11 @@ export class MesasController {
     return plainToInstance(MesaProdutoResponseDto, response);
   }
 
+  @Patch('abrir-mesa/:id')
+  async abrirMesa(@Param('id', ParseIntPipe) id: number) {
+    return this.mesasService.abrirMesa(id);
+  }
+
   @Post('fechar-mesa')
   async fecharMesa(@Body() fecharMesaDto: FecharMesaDto) {
     return this.mesasService.fecharMesa(fecharMesaDto);

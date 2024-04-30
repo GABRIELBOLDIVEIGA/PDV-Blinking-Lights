@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Inject,
   Injectable,
   InternalServerErrorException,
@@ -20,7 +21,7 @@ import { Venda } from '../vendas/entities/venda.entity';
 import { VendasService } from '../vendas/vendas.service';
 import { VendaProduto } from '../vendas/entities/venda_produto.entity';
 import { Usuario } from '../usuarios/entities/usuario.entity';
-import { MesaGateway } from './mesas.gateway';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class MesasService {
@@ -204,6 +205,24 @@ export class MesasService {
     }
   }
 
+  async abrirMesa(id: number) {
+    try {
+      const mesa = await this.mesaRepository.findOneBy({ id: id });
+      if (!mesa) throw new NotFoundException('Mesa não encontrada.');
+      if (mesa.aberta)
+        throw new ForbiddenException('Mesa já se encontra aberta.');
+
+      await this.mesaRepository.update(id, {
+        comanda: uuidv4(),
+        aberta: true,
+      });
+
+      return await this.findOne(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async fecharMesa(fecharMesaDto: FecharMesaDto) {
     try {
       const transaction = await this.dataSource.manager.transaction(
@@ -249,7 +268,11 @@ export class MesasService {
           });
 
           await manager.delete(MesaProduto, { mesa: { id: mesa.id } });
-          await manager.update(Mesa, { id: mesa.id }, { aberta: false });
+          await manager.update(
+            Mesa,
+            { id: mesa.id },
+            { aberta: false, comanda: null },
+          );
         },
       );
       console.log('[Transaction] => ', transaction);

@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Generated,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -25,14 +26,18 @@ export class Mesa {
   @Column({ type: 'boolean', nullable: false, default: false })
   aberta: boolean;
 
+  @Column({ type: 'varchar', nullable: true, unique: true })
+  @Generated('uuid')
+  comanda: string;
+
   @OneToMany(() => MesaProduto, (mesa_produto) => mesa_produto.mesa)
   produtos: MesaProduto[];
 
-  @CreateDateColumn()
-  created_at: Date;
+  // @CreateDateColumn()
+  // created_at: Date;
 
-  @UpdateDateColumn()
-  updated_at: Date;
+  // @UpdateDateColumn()
+  // updated_at: Date;
 
   @DeleteDateColumn()
   deleted_at: Date;
