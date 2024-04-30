@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -19,6 +20,7 @@ import { Venda } from '../vendas/entities/venda.entity';
 import { VendasService } from '../vendas/vendas.service';
 import { VendaProduto } from '../vendas/entities/venda_produto.entity';
 import { Usuario } from '../usuarios/entities/usuario.entity';
+import { MesaGateway } from './mesas.gateway';
 
 @Injectable()
 export class MesasService {
@@ -78,7 +80,9 @@ export class MesasService {
     }
   }
 
-  async adicionarProduto(adicionarProdutoDto: AdicionarProdutoDto) {
+  async adicionarProduto(
+    adicionarProdutoDto: AdicionarProdutoDto,
+  ): Promise<string> {
     try {
       const mesa = await this.mesaRepository.findOne({
         where: {
@@ -145,6 +149,8 @@ export class MesasService {
           return Promise.resolve();
         }),
       );
+
+      return 'Pedido gerado com sucesso';
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

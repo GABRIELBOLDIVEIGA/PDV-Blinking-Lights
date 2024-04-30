@@ -14,11 +14,11 @@ export type Menu = {
   }>;
 }[];
 
-const getOptions = (menu: Menu, title: Menu[0]["menu_title"]) => {
-  const secao = menu.filter((secao) => secao.menu_title === title);
+// const getOptions = (menu: Menu, title: Menu[0]["menu_title"]) => {
+//   const secao = menu.filter((secao) => secao.menu_title === title);
 
-  return secao[0].options;
-};
+//   return secao[0].options;
+// };
 
 export const menu_user: Menu = [
   {

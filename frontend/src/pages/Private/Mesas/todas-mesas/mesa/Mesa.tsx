@@ -1,9 +1,8 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
@@ -13,17 +12,17 @@ import { useAbrirMesa } from "@/hooks/new/mutations/mesas/useAbrirMesa.mutation"
 import { Loader } from "@/components/Loader/Loader";
 import { queryClient } from "@/lib/react-query/queryClient";
 import { MesaValidator } from "@/utils/validators/new/Mesa/Mesa";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { AlignJustify, X } from "lucide-react";
-import { ProdutosTabsContent } from "./ProdutosTabsContent";
-import { AccordionCategorias } from "./AccordionCategorias";
-import { useMesaStore } from "@/store/new/useMesaStore";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AlignJustify } from "lucide-react";
+import { useMesasStore } from "@/store/new/useMesaStore";
 import { MenuMesa } from "./Menu";
+import { TabsContentComanda } from "./Tabs/TabsContentComanda";
+import { TabsContentProdutos } from "./Tabs/TabsContentProdutos";
+import { TabsContentPedido } from "./Tabs/TabsContentPedido";
 
 export const Mesa = (mesa: MesaValidator) => {
   const { mutate, isPending } = useAbrirMesa(mesa.id);
-  const setMesaId = useMesaStore((state) => state.setMesaId);
+  const setMesaId = useMesasStore((state) => state.setMesaIdFocus);
 
   const abrirMesa = () => {
     mutate(mesa.id, {
@@ -43,12 +42,14 @@ export const Mesa = (mesa: MesaValidator) => {
       <DrawerTrigger asChild onClick={() => setMesaId(mesa.id)}>
         <Card
           className={cn(
-            "flex h-[100px] w-[100px] items-center justify-center border-none bg-muted",
-            { "bg-primary text-primary-foreground": mesa.aberta },
+            "flex h-[100px] w-[100px] items-center justify-center border-none bg-muted  transition-all duration-1000",
+            {
+              "bg-primary text-primary-foreground ": mesa.aberta,
+            },
           )}
         >
           <p
-            className={cn("w-fit font-bold capitalize opacity-50", {
+            className={cn("w-fit font-bold capitalize opacity-30", {
               "opacity-100": mesa.aberta,
             })}
           >
@@ -59,17 +60,10 @@ export const Mesa = (mesa: MesaValidator) => {
       <DrawerContent className="h-[90%]">
         <div className="h-full px-4 mobile:px-2">
           <DrawerHeader className="relative flex w-full justify-center">
-            <div className="absolute left-0 top-0">
-              <DrawerClose asChild>
-                <Button variant="ghost" size="icon">
-                  <X size={16} />
-                </Button>
-              </DrawerClose>
-            </div>
             <div className="flex flex-col items-center">
               <DrawerTitle>{mesa.nome}</DrawerTitle>
             </div>
-            <div className="absolute right-0 top-0">
+            <div className="absolute right-0 top-2">
               <MenuMesa>
                 <Button variant="ghost" size="icon">
                   <AlignJustify size={18} />
@@ -95,38 +89,17 @@ export const Mesa = (mesa: MesaValidator) => {
                 defaultValue="comanda"
                 className="mobile:w-full tablet:w-full laptop:w-3/4 desktop:w-1/2"
               >
-                <TabsList className="grid w-full grid-cols-2">
+                <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="comanda">Comanda</TabsTrigger>
-                  <TabsTrigger value="produtos">Adicionar Produto</TabsTrigger>
+                  <TabsTrigger value="produtos">Produtos</TabsTrigger>
+                  <TabsTrigger value="pedido">Pedido</TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="comanda" className="h-[98%]">
-                  <Card className="h-full border-none shadow-inner">
-                    <ScrollArea className="h-full">
-                      <CardContent className="pt-6">
-                        {mesa.produtos.map((produto) => (
-                          <div key={produto.produto.id}>
-                            <div className="flex gap-6">
-                              <p className="">{produto.produto.nome}</p>
-                              <p className="">x {produto.quantidade}</p>
-                            </div>
-                          </div>
-                        ))}
-                      </CardContent>
-                    </ScrollArea>
-                  </Card>
-                </TabsContent>
+                <TabsContentComanda mesa={mesa} value="comanda" />
 
-                <TabsContent value="produtos" className="h-[98%]">
-                  <Card className="h-full border-none shadow-inner">
-                    <CardContent className="pt-6 mobile:px-4 mobile:pt-4">
-                      <Tabs defaultValue="todos">
-                        <AccordionCategorias />
-                        <ProdutosTabsContent />
-                      </Tabs>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
+                <TabsContentProdutos value="produtos" />
+
+                <TabsContentPedido value="pedido" />
               </Tabs>
             )}
           </div>

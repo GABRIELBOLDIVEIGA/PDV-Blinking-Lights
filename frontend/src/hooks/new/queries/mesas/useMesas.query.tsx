@@ -7,7 +7,7 @@ export const useMesasQuery = () => {
 
   const mesasQuery = useQuery({
     queryKey: ["todas-mesas"],
-    staleTime: 0,
+
     queryFn: async () => {
       const { data } = await pdvApi.get<MesaValidator[]>("/mesa");
 

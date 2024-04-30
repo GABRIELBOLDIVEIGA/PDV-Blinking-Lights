@@ -28,13 +28,17 @@ import { AdicionarProdutoDto } from './dto/adicionar-produto.dto';
 import { EditarQuantidadeDto } from './dto/editar-quandidade.dto';
 import { FecharMesaDto } from './dto/fechar-mesa.tdo';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { MesaGateway } from 'src/database/mesas/mesas.gateway';
 
 @ApiTags('Mesas')
 @ApiBearerAuth('JWT-auth')
 @UseGuards(AuthGuard)
 @Controller('mesa')
 export class MesasController {
-  constructor(private readonly mesasService: MesasService) {}
+  constructor(
+    private readonly mesasService: MesasService,
+    private readonly mesaGateway: MesaGateway,
+  ) {}
 
   @Post()
   async create(@Body() createMesaDto: CreateMesaDto): Promise<Mesa> {
@@ -58,11 +62,11 @@ export class MesasController {
   @Post('adicionar-produto')
   async adicionarProduto(
     @Body() adicionarProdutoDto: AdicionarProdutoDto,
-  ): Promise<MesaProdutoResponseDto> {
+  ): Promise<string> {
     const response =
       await this.mesasService.adicionarProduto(adicionarProdutoDto);
 
-    return plainToInstance(MesaProdutoResponseDto, response);
+    return response;
   }
 
   @Post('editar-quantidade-produto')
@@ -84,7 +88,13 @@ export class MesasController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updateMesaDto: UpdateMesaDto,
   ): Promise<Mesa> {
-    return this.mesasService.update(id, updateMesaDto);
+    const mesa = await this.mesasService.update(id, updateMesaDto);
+
+    if (updateMesaDto.aberta != null) {
+      this.mesaGateway.disponibilidadeMesa(mesa.id, mesa.aberta);
+    }
+
+    return mesa;
   }
 
   // @Patch('abrir-mesa/:id')

@@ -114,51 +114,51 @@ export const useFormEditarPerfil = () => {
 
   const { uploadAvatarMutation } = useUploadAvatarMutation();
   const submit = (data: EditarPerfilFormType) => {
-    if (data.file && user) {
-      uploadAvatarMutation.mutate(
-        { id: user.user_id, file: data.file },
-        {
-          onSuccess: () => {
-            toast.success(
-              "Imagens podem demorar um pouco para serem atualizadas.",
-              { duration: 3000 },
-            );
-          },
-          onError: (error) => {
-            toast.error(`Erro ao atualizar imagem. ${error.message}`, {
-              duration: 6000,
-            });
-          },
-        },
-      );
-    }
-    if (user)
-      editarPerfilMutation.mutate(
-        { id: user.user_id, ...data },
-        {
-          onSuccess: () => {
-            if (user.permissao === permissaoSchema.Enum.ADM) {
-              queryClient.invalidateQueries({
-                predicate: (query) =>
-                  query.queryKey[0] === "todos_usuario" ||
-                  query.queryKey[0] === "usuario",
-              });
-            } else {
-              queryClient.invalidateQueries({
-                predicate: (query) => query.queryKey[0] === "usuario",
-              });
-            }
-            setStatusResponse({
-              isSuccess: true,
-              title: "Dados do usuário atualizados com sucesso.",
-              description: "",
-            });
-          },
-          onError: (error) => {
-            setStatusResponse(errorHandler(error));
-          },
-        },
-      );
+    // if (data.file && user) {
+    //   uploadAvatarMutation.mutate(
+    //     { id: user.user_id, file: data.file },
+    //     {
+    //       onSuccess: () => {
+    //         toast.success(
+    //           "Imagens podem demorar um pouco para serem atualizadas.",
+    //           { duration: 3000 },
+    //         );
+    //       },
+    //       onError: (error) => {
+    //         toast.error(`Erro ao atualizar imagem. ${error.message}`, {
+    //           duration: 6000,
+    //         });
+    //       },
+    //     },
+    //   );
+    // }
+    // if (user)
+    //   editarPerfilMutation.mutate(
+    //     { id: user.sub, ...data },
+    //     {
+    //       onSuccess: () => {
+    //         if (user.permissao === permissaoSchema.Enum.ADM) {
+    //           queryClient.invalidateQueries({
+    //             predicate: (query) =>
+    //               query.queryKey[0] === "todos_usuario" ||
+    //               query.queryKey[0] === "usuario",
+    //           });
+    //         } else {
+    //           queryClient.invalidateQueries({
+    //             predicate: (query) => query.queryKey[0] === "usuario",
+    //           });
+    //         }
+    //         setStatusResponse({
+    //           isSuccess: true,
+    //           title: "Dados do usuário atualizados com sucesso.",
+    //           description: "",
+    //         });
+    //       },
+    //       onError: (error) => {
+    //         setStatusResponse(errorHandler(error));
+    //       },
+    //     },
+    //   );
   };
 
   const resetStatus = () => {
