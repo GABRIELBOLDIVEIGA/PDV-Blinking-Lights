@@ -13,7 +13,6 @@ import { useAdicionarProduto } from "@/hooks/new/mutations/mesas/useAdicionarPro
 import { useState } from "react";
 import { Loader } from "@/components/Loader/Loader";
 import { cn } from "@/lib/utils";
-import { queryClient } from "@/lib/react-query/queryClient";
 import { useMesasQuery } from "@/hooks/new/queries/mesas/useMesas.query";
 import { useMesasStore } from "@/store/new/useMesaStore";
 import { Button } from "@/components/ui/button";
@@ -54,9 +53,6 @@ export const AlertConfirmarPedido = ({ children }: IAlertConfirmarPedido) => {
               setIsOpen(false);
             }, 1000);
             resetMesa(mesaIdFocus);
-            queryClient.invalidateQueries({
-              predicate: ({ queryKey }) => queryKey[0] === "todas-mesas",
-            });
           },
           onError: (error) => {
             toast.error(`Error: ${error.message}`, { duration: 5000 });

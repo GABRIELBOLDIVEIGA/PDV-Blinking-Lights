@@ -2,11 +2,13 @@ import { usePdvApi } from "@/lib/axios/new/usePdvApi";
 import { MesaValidator, mesa_schema } from "@/utils/validators/new/Mesa/Mesa";
 import { useQuery } from "@tanstack/react-query";
 
+export const TODAS_MESAS_QUERY_KEY = "todas-mesas";
+
 export const useMesasQuery = () => {
   const { pdvApi } = usePdvApi();
 
   const mesasQuery = useQuery({
-    queryKey: ["todas-mesas"],
+    queryKey: [TODAS_MESAS_QUERY_KEY],
 
     queryFn: async () => {
       const { data } = await pdvApi.get<MesaValidator[]>("/mesa");
@@ -20,6 +22,7 @@ export const useMesasQuery = () => {
           return false;
         }
       });
+      console.log("[Mesas] => ", mesas);
 
       return mesas;
     },

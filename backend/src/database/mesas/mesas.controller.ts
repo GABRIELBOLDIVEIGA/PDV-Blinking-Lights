@@ -59,15 +59,25 @@ export class MesasController {
 
   @Patch('abrir-mesa/:id')
   async abrirMesa(@Param('id', ParseIntPipe) id: number) {
-    return plainToInstance(MesaResponseDto, this.mesasService.abrirMesa(id));
+    const mesa = await this.mesasService.abrirMesa(id);
+    this.mesaGateway.disponibilidadeMesa(mesa.id, mesa.nome, mesa.disponivel);
+
+    return plainToInstance(MesaResponseDto, mesa);
   }
 
   @Patch('fechar-mesa/:id')
   async fecharMesa(@Param('id', ParseIntPipe) id: number) {
-    return plainToInstance(
+    const comanda_mesa = plainToInstance(
       FecharMesaResponseDto,
-      this.mesasService.fecharMesa(id),
+      await this.mesasService.fecharMesa(id),
     );
+
+    this.mesaGateway.disponibilidadeMesa(
+      comanda_mesa.comanda.mesa.id,
+      comanda_mesa.comanda.mesa.nome,
+      comanda_mesa.comanda.mesa.disponivel,
+    );
+    return comanda_mesa;
   }
 
   @Patch(':id')
@@ -77,7 +87,11 @@ export class MesasController {
   ): Promise<Mesa> {
     const mesa = await this.mesasService.update(id, updateMesaDto);
     if (updateMesaDto.disponivel != null) {
-      this.mesaGateway.disponibilidadeMesa(mesa.id, mesa.disponivel);
+      this.mesaGateway.disponibilidadeMesa(
+        mesa.id,
+        mesa.comanda.mesa.nome,
+        mesa.disponivel,
+      );
     }
     return mesa;
   }

@@ -14,7 +14,7 @@ import { queryClient } from "@/lib/react-query/queryClient";
 import { MesaValidator } from "@/utils/validators/new/Mesa/Mesa";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useMesasStore } from "@/store/new/useMesaStore";
-import { TabsContentComanda } from "./Tabs/TabsContentComanda";
+import { TabsContentComanda } from "./Tabs/TabsContentComanda/TabsContentComanda";
 import { TabsContentProdutos } from "./Tabs/TabsContentProdutos/TabsContentProdutos";
 import { TabsContentPedido } from "./Tabs/TabsContentPedido/TabsContentPedido";
 

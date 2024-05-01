@@ -14,16 +14,21 @@ import { ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import { ComandaResponseDto } from './dto/response/comanda-response.dto';
 import { AdicionaProdutoDto } from './dto/adiciona-produto.dto';
+import { MesaGateway } from '../mesas/mesas.gateway';
 
 @ApiTags('Comandas')
 @Controller('comandas')
 export class ComandasController {
-  constructor(private readonly comandasService: ComandasService) {}
+  constructor(
+    private readonly comandasService: ComandasService,
+    private readonly mesaGateway: MesaGateway,
+  ) {}
 
   @Post('adicionar-produtos')
   async adicionarProduto(
     @Body() adicionaProdutoDto: AdicionaProdutoDto,
   ): Promise<string> {
+    this.mesaGateway.atualizaProdutosMesa();
     return this.comandasService.adicionarProduto(adicionaProdutoDto);
   }
 

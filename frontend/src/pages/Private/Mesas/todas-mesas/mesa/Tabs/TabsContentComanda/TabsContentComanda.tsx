@@ -2,10 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { TabsContent } from "@/components/ui/tabs";
-import { useFecharMesa } from "@/hooks/new/mutations/mesas/useFecharMesa.mutation";
-import { queryClient } from "@/lib/react-query/queryClient";
 import { MesaValidator } from "@/utils/validators/new/Mesa/Mesa";
-import { toast } from "sonner";
+import { AlertFecharComanda } from "./AlertFecharComanda";
 
 interface IProps {
   mesa: MesaValidator;
@@ -13,22 +11,6 @@ interface IProps {
 }
 
 export const TabsContentComanda = ({ mesa, value }: IProps) => {
-  const { mutate } = useFecharMesa();
-
-  const submit = () => {
-    mutate(mesa.id, {
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          predicate: ({ queryKey }) => queryKey[0] === "todas-mesas",
-        });
-        toast.success("Comanda Fechada.", { duration: 1500 });
-      },
-      onError: (error) => {
-        toast.error(`${error.message}`, { duration: 3500 });
-      },
-    });
-  };
-
   return (
     <TabsContent value={value} className="h-[98%]">
       <Card className="relative h-full border-none pb-16 shadow-inner">
@@ -54,9 +36,9 @@ export const TabsContentComanda = ({ mesa, value }: IProps) => {
             ))}
           </CardContent>
         </ScrollArea>
-        <Button onClick={submit} className="absolute bottom-5 w-full">
-          Fechar Comanda
-        </Button>
+        <AlertFecharComanda mesa_id={mesa.id}>
+          <Button className="absolute bottom-5 w-full">Fechar Comanda</Button>
+        </AlertFecharComanda>
       </Card>
     </TabsContent>
   );

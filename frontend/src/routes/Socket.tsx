@@ -2,7 +2,10 @@ import { io } from "socket.io-client";
 import { useEffect } from "react";
 import { MesaValidator } from "@/utils/validators/new/Mesa/Mesa";
 import { queryClient } from "@/lib/react-query/queryClient";
-import { useMesasQuery } from "@/hooks/new/queries/mesas/useMesas.query";
+import {
+  TODAS_MESAS_QUERY_KEY,
+  useMesasQuery,
+} from "@/hooks/new/queries/mesas/useMesas.query";
 import { Toaster, toast } from "sonner";
 
 export const Socket = () => {
@@ -22,16 +25,25 @@ export const Socket = () => {
 
   const socket = io(`${URL}`, socketOptions);
 
-  const recebeMsg = (status_mesa: { id: number; aberta: boolean }) => {
-    toast.success(`Mesa ${status_mesa.id}, ${status_mesa.aberta}`);
+  const statusMesa = (status_mesa: {
+    id: number;
+    nome: string;
+    disponivel: boolean;
+  }) => {
+    toast.success(
+      `Mesa ${status_mesa.nome} ${status_mesa.disponivel ? "disponível" : "Ocupada"}`,
+      { position: "top-center", dismissible: true },
+    );
 
     const data_filtrada = data?.map((mesa) => {
       if (mesa.id != status_mesa.id) {
         return mesa;
       } else {
         const mesa_atualizada: MesaValidator = {
-          ...mesa,
-          disponivel: status_mesa.aberta,
+          id: mesa.id,
+          nome: mesa.nome,
+          disponivel: status_mesa.disponivel,
+          comanda: null,
         };
         return mesa_atualizada;
       }
@@ -40,14 +52,33 @@ export const Socket = () => {
     queryClient.setQueryData(["todas-mesas"], data_filtrada);
   };
 
+  const atualizaProdutosMesa = () => {
+    console.log("[Atualiza Produtos]");
+
+    setTimeout(() => {
+      queryClient.invalidateQueries({
+        predicate: ({ queryKey }) => queryKey[0] === TODAS_MESAS_QUERY_KEY,
+      });
+    }, 1000);
+  };
+
   useEffect(() => {
-    socket?.on("status-mesas", recebeMsg);
+    socket?.on("status-mesas", statusMesa);
 
     return () => {
-      socket?.off("status-mesas", recebeMsg);
+      socket?.off("status-mesas", statusMesa);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [recebeMsg]);
+  }, [statusMesa, atualizaProdutosMesa]);
+
+  useEffect(() => {
+    socket?.on("atualiza-produtos-mesas", atualizaProdutosMesa);
+
+    return () => {
+      socket?.off("atualiza-produtos-mesas", atualizaProdutosMesa);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [atualizaProdutosMesa]);
 
   return <Toaster />;
 };

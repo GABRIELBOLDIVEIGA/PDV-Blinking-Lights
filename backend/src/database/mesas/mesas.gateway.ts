@@ -19,19 +19,14 @@ import {
   allowEIO3: true,
 })
 export class MesaGateway {
-  // constructor(private readonly mesasService: MesasService) {}
-
   @WebSocketServer()
   server;
 
-  // @SubscribeMessage('message')
-  // async handleMessage(@MessageBody() mesa: { id: number; aberta: boolean }) {
-  //   await this.mesasService.update(mesa.id, { aberta: mesa.aberta });
+  async disponibilidadeMesa(id: number, nome: string, disponivel: boolean) {
+    this.server.emit('status-mesas', { id, nome, disponivel });
+  }
 
-  //   this.server.emit('message', mesa);
-  // }
-
-  async disponibilidadeMesa(id: number, aberta: boolean) {
-    this.server.emit('status-mesas', { id, aberta });
+  async atualizaProdutosMesa() {
+    this.server.emit('atualiza-produtos-mesas');
   }
 }
