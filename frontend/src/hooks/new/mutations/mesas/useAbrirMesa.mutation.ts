@@ -8,9 +8,9 @@ export const useAbrirMesa = (mesa_id: number) => {
   const abirMesa = useMutation({
     mutationKey: ["abrir-mesa", mesa_id],
     mutationFn: async (id: number) => {
-      const { data } = await pdvApi.patch<MesaValidator>(`/mesa/${id}`, {
-        aberta: true,
-      });
+      const { data } = await pdvApi.patch<MesaValidator>(
+        `/mesa/abrir-mesa/${id}`,
+      );
       return data;
     },
   });

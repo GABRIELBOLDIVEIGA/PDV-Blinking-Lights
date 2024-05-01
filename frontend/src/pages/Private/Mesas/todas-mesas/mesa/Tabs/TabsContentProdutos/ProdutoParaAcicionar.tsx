@@ -1,10 +1,5 @@
 import { MinusIcon, PlusIcon } from "lucide-react";
-import { useProdutosQuery } from "@/hooks/new/queries/produtos/useProdutos.query";
-import { useCategoriasQuery } from "@/hooks/new/queries/categorias/useCategorias.query";
-import { TabsContent } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { Loader } from "@/components/Loader/Loader";
 import { Input } from "@/components/ui/input";
 import { ProdutoValidator } from "@/utils/validators/new/Produto/Produto";
 import { useEffect, useState } from "react";
@@ -13,6 +8,7 @@ import { useMesasStore } from "@/store/new/useMesaStore";
 export const ProdutoParaAcicionar = (produto: ProdutoValidator) => {
   const mesaId = useMesasStore((state) => state.mesaIdFocus);
   const addProduto = useMesasStore((state) => state.addProduto);
+  const removeProduto = useMesasStore((state) => state.removeProduto);
   const mesas = useMesasStore((state) => state.mesas);
   const [quantidade, setQuantidade] = useState<number>();
 
@@ -21,9 +17,11 @@ export const ProdutoParaAcicionar = (produto: ProdutoValidator) => {
   };
 
   useEffect(() => {
-    if (quantidade === 0) setQuantidade(undefined);
+    if (quantidade === 0) {
+      removeProduto(mesaId, produto, quantidade);
+    }
 
-    if (quantidade) {
+    if (quantidade && quantidade > 0) {
       addProduto(mesaId, produto, quantidade);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -92,60 +90,5 @@ export const ProdutoParaAcicionar = (produto: ProdutoValidator) => {
         </Button>
       </div>
     </div>
-  );
-};
-
-export const ProdutosTabsContent = () => {
-  const { data: produtos, isLoading: isLoadingProdutos } = useProdutosQuery();
-  const { data: categorias, isLoading: isLoadingCategorias } =
-    useCategoriasQuery();
-
-  return (
-    <section className="h-screen">
-      <TabsContent value="todos" className="h-[69%]">
-        <ScrollArea className="h-[100%]">
-          <div className="space-y-4">
-            {produtos?.map((produto) => (
-              <ProdutoParaAcicionar key={produto.id} {...produto} />
-            ))}
-          </div>
-        </ScrollArea>
-      </TabsContent>
-
-      {(isLoadingProdutos || isLoadingCategorias) && <Loader />}
-
-      {categorias?.map((categoria) => (
-        <TabsContent
-          key={categoria.id}
-          value={categoria.nome}
-          className="h-[69%]"
-        >
-          <ScrollArea className="h-[100%]">
-            <div className="space-y-4">
-              {produtos?.map(
-                (produto) =>
-                  produto.categorias.find(
-                    (cat) => cat.categoria.nome === categoria.nome,
-                  ) && (
-                    <div
-                      key={produto.id}
-                      className="flex items-center justify-between pr-3"
-                    >
-                      <div className="w-[80%] capitalize">
-                        <p className="truncate font-bold tracking-wide">
-                          {produto.nome.toLowerCase()}
-                        </p>
-                        <p className="truncate text-sm font-semibold tracking-wide opacity-70">
-                          {produto.descricao.toLowerCase()}
-                        </p>
-                      </div>
-                    </div>
-                  ),
-              )}
-            </div>
-          </ScrollArea>
-        </TabsContent>
-      ))}
-    </section>
   );
 };

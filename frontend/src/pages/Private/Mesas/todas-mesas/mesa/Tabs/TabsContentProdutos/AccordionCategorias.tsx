@@ -22,7 +22,7 @@ export const AccordionCategorias = () => {
             <Loader />
           ) : (
             <TabsList className="h-full w-full mobile:h-[100px]">
-              <ScrollArea className="mobile:h-[100px]">
+              <ScrollArea className="w-full mobile:h-[100px]">
                 <div className="grid bg-muted px-2 py-1 mobile:grid-cols-3 tablet:grid-cols-5 laptop:grid-cols-6 desktop:grid-cols-7">
                   <TabsTrigger value="todos">
                     <p className="truncate">Todos</p>

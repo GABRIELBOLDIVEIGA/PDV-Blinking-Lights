@@ -4,6 +4,7 @@ import { z } from "zod";
 
 const add_produto_schema = z.object({
   mesa_id: z.coerce.number(),
+  comanda_id: z.coerce.number(),
   prods: z.array(
     z.object({
       produto_id: z.coerce.number(),
@@ -21,7 +22,7 @@ export const useAdicionarProduto = () => {
     mutationKey: ["adiciona-produto"],
     mutationFn: async (form: AddProdutoValidator) => {
       const { data } = await pdvApi.post<string>(
-        "/mesa/adicionar-produto",
+        "/comandas/adicionar-produtos",
         form,
       );
 

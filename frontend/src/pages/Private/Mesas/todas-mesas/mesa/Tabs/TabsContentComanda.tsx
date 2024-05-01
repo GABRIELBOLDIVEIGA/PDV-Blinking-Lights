@@ -1,7 +1,11 @@
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { TabsContent } from "@/components/ui/tabs";
+import { useFecharMesa } from "@/hooks/new/mutations/mesas/useFecharMesa.mutation";
+import { queryClient } from "@/lib/react-query/queryClient";
 import { MesaValidator } from "@/utils/validators/new/Mesa/Mesa";
+import { toast } from "sonner";
 
 interface IProps {
   mesa: MesaValidator;
@@ -9,14 +13,30 @@ interface IProps {
 }
 
 export const TabsContentComanda = ({ mesa, value }: IProps) => {
+  const { mutate } = useFecharMesa();
+
+  const submit = () => {
+    mutate(mesa.id, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          predicate: ({ queryKey }) => queryKey[0] === "todas-mesas",
+        });
+        toast.success("Comanda Fechada.", { duration: 1500 });
+      },
+      onError: (error) => {
+        toast.error(`${error.message}`, { duration: 3500 });
+      },
+    });
+  };
+
   return (
     <TabsContent value={value} className="h-[98%]">
-      <Card className="h-full border-none shadow-inner">
+      <Card className="relative h-full border-none pb-16 shadow-inner">
         <ScrollArea className="h-full">
           <CardContent className="space-y-2 pt-6">
-            {mesa.produtos.map((item) => (
+            {mesa.comanda?.produtos.map((item, index) => (
               <div
-                key={item.produto.id}
+                key={index}
                 className="flex items-center justify-between pr-3"
               >
                 <div className="w-[80%] capitalize">
@@ -28,12 +48,15 @@ export const TabsContentComanda = ({ mesa, value }: IProps) => {
                   </p>
                 </div>
                 <div>
-                  <p>x {item.quantidade}</p>
+                  <p>x 1</p>
                 </div>
               </div>
             ))}
           </CardContent>
         </ScrollArea>
+        <Button onClick={submit} className="absolute bottom-5 w-full">
+          Fechar Comanda
+        </Button>
       </Card>
     </TabsContent>
   );

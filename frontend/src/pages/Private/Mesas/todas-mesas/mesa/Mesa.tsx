@@ -13,16 +13,15 @@ import { Loader } from "@/components/Loader/Loader";
 import { queryClient } from "@/lib/react-query/queryClient";
 import { MesaValidator } from "@/utils/validators/new/Mesa/Mesa";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AlignJustify } from "lucide-react";
 import { useMesasStore } from "@/store/new/useMesaStore";
-import { MenuMesa } from "./Menu";
 import { TabsContentComanda } from "./Tabs/TabsContentComanda";
-import { TabsContentProdutos } from "./Tabs/TabsContentProdutos";
-import { TabsContentPedido } from "./Tabs/TabsContentPedido";
+import { TabsContentProdutos } from "./Tabs/TabsContentProdutos/TabsContentProdutos";
+import { TabsContentPedido } from "./Tabs/TabsContentPedido/TabsContentPedido";
 
 export const Mesa = (mesa: MesaValidator) => {
   const { mutate, isPending } = useAbrirMesa(mesa.id);
   const setMesaId = useMesasStore((state) => state.setMesaIdFocus);
+  // const setComandaIdFocus = useMesasStore((state) => state.setComandaIdFocus);
 
   const abrirMesa = () => {
     mutate(mesa.id, {
@@ -39,18 +38,23 @@ export const Mesa = (mesa: MesaValidator) => {
 
   return (
     <Drawer>
-      <DrawerTrigger asChild onClick={() => setMesaId(mesa.id)}>
+      <DrawerTrigger
+        asChild
+        onClick={() => {
+          setMesaId(mesa.id);
+        }}
+      >
         <Card
           className={cn(
-            "flex h-[100px] w-[100px] items-center justify-center border-none bg-muted  transition-all duration-1000",
+            "flex h-[100px] w-[100px] items-center justify-center border-none bg-muted transition-all duration-1000 ",
             {
-              "bg-primary text-primary-foreground ": mesa.aberta,
+              "bg-primary text-primary-foreground": !mesa.disponivel,
             },
           )}
         >
           <p
             className={cn("w-fit font-bold capitalize opacity-30", {
-              "opacity-100": mesa.aberta,
+              "opacity-100": !mesa.disponivel,
             })}
           >
             {mesa.nome.toLowerCase()}
@@ -60,20 +64,11 @@ export const Mesa = (mesa: MesaValidator) => {
       <DrawerContent className="h-[90%]">
         <div className="h-full px-4 mobile:px-2">
           <DrawerHeader className="relative flex w-full justify-center">
-            <div className="flex flex-col items-center">
-              <DrawerTitle>{mesa.nome}</DrawerTitle>
-            </div>
-            <div className="absolute right-0 top-2">
-              <MenuMesa>
-                <Button variant="ghost" size="icon">
-                  <AlignJustify size={18} />
-                </Button>
-              </MenuMesa>
-            </div>
+            <DrawerTitle>{mesa.nome}</DrawerTitle>
           </DrawerHeader>
 
           <div className="flex h-[90%] justify-center">
-            {!mesa.aberta ? (
+            {mesa.disponivel ? (
               <div className="flex flex-col items-center gap-4">
                 <p>Mesa sem comanda, deseja abrir comanda para {mesa.nome}</p>
                 <Button

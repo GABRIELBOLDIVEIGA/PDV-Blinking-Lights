@@ -20,6 +20,8 @@ import {
 import { useLocation, Link } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Label } from "@/components/ui/label";
+import { SwitchThema } from "@/components/SwitchThema/SwitchThema";
 
 interface IProps {
   className?: string;
@@ -100,6 +102,14 @@ export const MenuMobile = ({ className }: IProps) => {
                 );
               })}
             </ScrollArea>
+          </div>
+
+          <Separator />
+          <div className="flex items-center justify-between">
+            <Label htmlFor="switch-thema" className="w-full">
+              Tema
+            </Label>
+            <SwitchThema id="switch-thema" />
           </div>
         </SheetContent>
       </Sheet>

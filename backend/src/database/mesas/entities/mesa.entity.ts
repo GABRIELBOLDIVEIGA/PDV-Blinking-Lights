@@ -6,13 +6,16 @@ import {
   Generated,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 import { MesaComanda } from './mesa_comanda.entity';
 import { Comanda } from 'src/database/comandas/entities/comanda.entity';
 
 @Entity({ name: 'mesas' })
+@Unique('comanda-id', ['comanda'])
 export class Mesa {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;

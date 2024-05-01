@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { TypographyMuted } from "@/components/typography/typographyMuted";
 import { TypographyH3 } from "@/components/typography/typographyH3";
 import { Card } from "@/components/ui/card";
-import { SwitchThema } from "@/components/SwitchThema/SwitchThema";
+import { SelectThema } from "@/components/SelectThema/SelectThema";
 import { Loader } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
@@ -33,7 +33,7 @@ export const CardLogin = ({ className }: IProps) => {
       )}
     >
       <div className="flex w-full items-center justify-end">
-        <SwitchThema />
+        <SelectThema />
       </div>
       <div className="flex h-full items-center justify-center ">
         <Card className="h-fit border-none p-8 mobile:border-none mobile:p-0 mobile:shadow-none">

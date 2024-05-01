@@ -1,4 +1,4 @@
-import { SwitchThema } from "@/components/SwitchThema/SwitchThema";
+import { SelectThema } from "@/components/SelectThema/SelectThema";
 import { TypographyH3 } from "@/components/typography/typographyH3";
 import { TypographyMuted } from "@/components/typography/typographyMuted";
 import { Card } from "@/components/ui/card";
@@ -32,7 +32,7 @@ export const CardEsqueciMinhaSenha = () => {
     <section className="flex w-fit flex-col items-center mobile:w-full mobile:p-2">
       <Toaster />
       <div className="flex w-full items-center justify-end">
-        <SwitchThema />
+        <SelectThema />
       </div>
 
       <div className="flex items-center justify-center mobile:block mobile:p-0">

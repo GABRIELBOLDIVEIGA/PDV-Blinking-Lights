@@ -1,33 +1,28 @@
 import {
   BadRequestException,
-  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
-  NotImplementedException,
 } from '@nestjs/common';
 import { CreateMesaDto } from './dto/create-mesa.dto';
 import { UpdateMesaDto } from './dto/update-mesa.dto';
 import { Mesa } from './entities/mesa.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Comanda } from '../comandas/entities/comanda.entity';
-import { ComandaRepository } from '../comandas/comanda.repository';
 import { MesaRepository } from './mesa.repository';
 
 @Injectable()
 export class MesasService {
   constructor(
     @InjectRepository(Mesa)
-    private readonly mesaRepository: Repository<Mesa>,
-    @InjectRepository(Comanda)
-    private comandaRepository: ComandaRepository,
-    private mesaRepository_teste: MesaRepository,
+    private readonly mesaDirectRepository: Repository<Mesa>,
+
+    private mesaRepository: MesaRepository,
   ) {}
 
   async create(createMesaDto: CreateMesaDto): Promise<Mesa> {
     try {
-      const existe = await this.mesaRepository.findOne({
+      const existe = await this.mesaDirectRepository.findOne({
         where: { nome: createMesaDto.nome },
       });
       if (existe)
@@ -35,9 +30,9 @@ export class MesasService {
           `Mesa de nome ${existe.nome} já cadastrada no sistema.`,
         );
 
-      const novaMesa = this.mesaRepository.create(createMesaDto);
+      const novaMesa = this.mesaDirectRepository.create(createMesaDto);
 
-      return this.mesaRepository.save(novaMesa);
+      return this.mesaDirectRepository.save(novaMesa);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
@@ -45,7 +40,7 @@ export class MesasService {
 
   async findAll(): Promise<Mesa[]> {
     try {
-      return await this.mesaRepository.find({
+      return await this.mesaDirectRepository.find({
         relations: ['comanda.produtos.produto'],
       });
     } catch (error) {
@@ -55,7 +50,7 @@ export class MesasService {
 
   async findOne(id: number): Promise<Mesa> {
     try {
-      const mesa = await this.mesaRepository.findOne({
+      const mesa = await this.mesaDirectRepository.findOne({
         where: { id },
         relations: ['comanda.produtos.produto'],
       });
@@ -195,57 +190,16 @@ export class MesasService {
   // }
 
   async abrirMesa(id: number) {
-    try {
-      const mesa = await this.mesaRepository.findOneBy({ id: id });
-      if (!mesa) throw new NotFoundException('Mesa não encontrada.');
-      if (!mesa.disponivel)
-        throw new ForbiddenException('Mesa já se encontra disponível.');
-
-      await this.mesaRepository.update(id, {
-        // comanda: uuidv4(),
-        disponivel: false,
-      });
-
-      return await this.mesaRepository.findOneBy({
-        id,
-      });
-    } catch (error) {
-      throw new InternalServerErrorException(error);
-    }
+    return await this.mesaRepository.abrirMesa(id);
   }
 
   async fecharMesa(mesa_id: number) {
-    try {
-      const mesa = await this.mesaRepository.findOne({
-        where: { id: mesa_id },
-        relations: ['comanda.produtos.produto'],
-      });
-      if (!mesa) throw new NotFoundException('Mesa não encontrada.');
-
-      if (!mesa.comanda) {
-        const result = await this.mesaRepository.update(
-          { id: mesa_id },
-          { disponivel: true },
-        );
-        if (result.affected === 0)
-          throw new NotImplementedException('Mudanças não foram aplicadas.');
-
-        return 'Mesa disponível.';
-      }
-
-      await this.comandaRepository.fecharComanda(mesa.comanda.id);
-
-      await this.mesaRepository_teste.fecharMesa(mesa.id);
-
-      return 'Venda realizada com sucesso';
-    } catch (error) {
-      throw new InternalServerErrorException(error);
-    }
+    return await this.mesaRepository.fecharMesa(mesa_id);
   }
 
   async update(id: number, updateMesaDto: UpdateMesaDto): Promise<Mesa> {
     try {
-      const result = await this.mesaRepository.update(
+      const result = await this.mesaDirectRepository.update(
         { id },
         { ...updateMesaDto },
       );
@@ -260,7 +214,7 @@ export class MesasService {
 
   async remove(id: number): Promise<string> {
     try {
-      const result = await this.mesaRepository.softDelete({ id });
+      const result = await this.mesaDirectRepository.softDelete({ id });
 
       if (result.affected === 0) throw new NotFoundException();
 

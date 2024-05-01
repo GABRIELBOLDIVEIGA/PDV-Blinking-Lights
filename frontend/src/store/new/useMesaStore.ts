@@ -8,6 +8,7 @@ type Item = {
 };
 
 type Mesa = {
+  comanda_id: number | null;
   mesa_id: number;
   prods: Item[];
 };
@@ -19,11 +20,20 @@ type MesasStore = {
     produto: ProdutoValidator,
     quantidade: number,
   ) => void;
+  removeProduto: (
+    mesa_id: number,
+    produto: ProdutoValidator,
+    quantidade: number,
+  ) => void;
 
   resetMesa: (mesa_id: number) => void;
 
   mesaIdFocus: number;
   setMesaIdFocus: (id: number) => void;
+
+  // comandaIdFocus: number;
+  // setComandaIdFocus: (id: number) => void;
+
   reset: () => void;
 };
 
@@ -38,6 +48,7 @@ export const useMesasStore = create<MesasStore>()(
 
         if (!mesa_existe) {
           const mesa = {
+            comanda_id: null,
             mesa_id,
             prods: [
               {
@@ -71,6 +82,7 @@ export const useMesasStore = create<MesasStore>()(
                 return m;
               } else {
                 return {
+                  comanda_id: m.comanda_id,
                   mesa_id: m.mesa_id,
                   prods: produtos_atualizados,
                 };
@@ -78,7 +90,9 @@ export const useMesasStore = create<MesasStore>()(
             });
 
             set(() => ({ mesas: mesas_atualizadas }));
-          } else {
+          }
+
+          if (produto_existe) {
             const prods: Item[] = mesa_existe.prods.map((p) => {
               if (p.produto.id != produto.id) {
                 return p;
@@ -89,11 +103,13 @@ export const useMesasStore = create<MesasStore>()(
                 };
               }
             });
+
             const mesas_atualizada: Mesa[] = get().mesas.map((m) => {
               if (m.mesa_id != mesa_existe.mesa_id) {
                 return m;
               } else {
                 return {
+                  comanda_id: m.comanda_id,
                   mesa_id: mesa_existe.mesa_id,
                   prods,
                 };
@@ -102,6 +118,30 @@ export const useMesasStore = create<MesasStore>()(
 
             set(() => ({ mesas: mesas_atualizada }));
           }
+        }
+      },
+
+      removeProduto: (mesa_id, produto, quant) => {
+        const mesa_existe = get().mesas.find((m) => m.mesa_id === mesa_id);
+
+        if (mesa_existe && quant === 0) {
+          const prods = mesa_existe.prods.filter(
+            (pro) => pro.produto.id != produto.id,
+          );
+
+          const mesas_atualizada: Mesa[] = get().mesas.map((m) => {
+            if (m.mesa_id != mesa_existe.mesa_id) {
+              return m;
+            } else {
+              return {
+                comanda_id: m.comanda_id,
+                mesa_id: mesa_existe.mesa_id,
+                prods,
+              };
+            }
+          });
+
+          set(() => ({ mesas: mesas_atualizada }));
         }
       },
 

@@ -24,6 +24,8 @@ import { plainToInstance } from 'class-transformer';
 import { FecharMesaDto } from './dto/fechar-mesa.dto';
 import { MesaGateway } from 'src/database/mesas/mesas.gateway';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { MesaComandaResponseDto } from './dto/response/mesa-comanda-response.dto';
+import { FecharMesaResponseDto } from './dto/response/fechar-mesa-response.dto';
 
 @ApiTags('Mesas')
 // @ApiBearerAuth('JWT-auth')
@@ -57,12 +59,15 @@ export class MesasController {
 
   @Patch('abrir-mesa/:id')
   async abrirMesa(@Param('id', ParseIntPipe) id: number) {
-    return this.mesasService.abrirMesa(id);
+    return plainToInstance(MesaResponseDto, this.mesasService.abrirMesa(id));
   }
 
   @Patch('fechar-mesa/:id')
   async fecharMesa(@Param('id', ParseIntPipe) id: number) {
-    return this.mesasService.fecharMesa(id);
+    return plainToInstance(
+      FecharMesaResponseDto,
+      this.mesasService.fecharMesa(id),
+    );
   }
 
   @Patch(':id')

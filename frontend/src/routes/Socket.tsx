@@ -31,7 +31,7 @@ export const Socket = () => {
       } else {
         const mesa_atualizada: MesaValidator = {
           ...mesa,
-          aberta: status_mesa.aberta,
+          disponivel: status_mesa.aberta,
         };
         return mesa_atualizada;
       }

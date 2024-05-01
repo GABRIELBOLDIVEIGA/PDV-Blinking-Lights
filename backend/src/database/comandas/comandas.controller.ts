@@ -13,15 +13,18 @@ import { UpdateComandaDto } from './dto/update-comanda.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import { ComandaResponseDto } from './dto/response/comanda-response.dto';
+import { AdicionaProdutoDto } from './dto/adiciona-produto.dto';
 
 @ApiTags('Comandas')
 @Controller('comandas')
 export class ComandasController {
   constructor(private readonly comandasService: ComandasService) {}
 
-  @Post()
-  create(@Body() createComandaDto: CreateComandaDto) {
-    return this.comandasService.create(createComandaDto);
+  @Post('adicionar-produtos')
+  async adicionarProduto(
+    @Body() adicionaProdutoDto: AdicionaProdutoDto,
+  ): Promise<string> {
+    return this.comandasService.adicionarProduto(adicionaProdutoDto);
   }
 
   @Get()
