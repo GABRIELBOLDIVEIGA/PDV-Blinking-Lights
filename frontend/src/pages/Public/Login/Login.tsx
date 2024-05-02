@@ -12,7 +12,7 @@ export const Login = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/pedido/meus-pedidos");
+      navigate("/mesas/todas-mesas");
     }
   }, [navigate, user]);
 

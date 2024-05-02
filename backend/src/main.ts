@@ -57,7 +57,7 @@ async function bootstrap() {
 
   //Swagger
   const config = new DocumentBuilder()
-    .setTitle('API Rest - KMB')
+    .setTitle('API Rest - PDV')
     .setDescription(
       'Backend desenvolvido em NestJS com Mongoose, TypeScript e MongoDB',
     )

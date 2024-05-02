@@ -22,7 +22,6 @@ export const useMesasQuery = () => {
           return false;
         }
       });
-      console.log("[Mesas] => ", mesas);
 
       return mesas;
     },

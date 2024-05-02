@@ -15,6 +15,8 @@ const add_produto_schema = z.object({
 
 type AddProdutoValidator = z.infer<typeof add_produto_schema>;
 
+export const ADICIONA_PRODUTO_MUTATION_KEY = "adiciona-produto";
+
 export const useAdicionarProduto = () => {
   const { pdvApi } = usePdvApi();
 

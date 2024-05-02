@@ -5,11 +5,13 @@ import {
 } from "@/utils/validators/new/Categoria/Categoria";
 import { useQuery } from "@tanstack/react-query";
 
+export const TODAS_CATEGORIAS_QUERY_KEY = "todas-categorias";
+
 export const useCategoriasQuery = () => {
   const { pdvApi } = usePdvApi();
 
   const categoriasQuery = useQuery({
-    queryKey: ["todas-categorias"],
+    queryKey: [TODAS_CATEGORIAS_QUERY_KEY],
     queryFn: async () => {
       const { data } = await pdvApi.get<CategoriaValidator[]>("/categorias");
 

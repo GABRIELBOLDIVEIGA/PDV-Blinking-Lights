@@ -7,7 +7,7 @@ export const ErrorPage = () => {
       <h1>Ops... Parece que um erro o correu...</h1>
 
       <Button variant="link" className="text-secondary-foreground underline">
-        <Link to="/pedido/meus-pedidos">Voltar para a aplicação</Link>
+        <Link to="/mesas/todas-mesas">Voltar para a aplicação</Link>
       </Button>
     </section>
   );
