@@ -13,7 +13,7 @@ import { useState } from "react";
 import { Loader } from "@/components/Loader/Loader";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { useFecharMesa } from "@/hooks/new/mutations/mesas/useFecharMesa.mutation";
+import { useFecharMesa } from "@/hooks/mutations/mesa/useFecharMesa.mutation";
 import { queryClient } from "@/lib/react-query/queryClient";
 
 interface IFecharComanda {

@@ -1,4 +1,4 @@
-import { ProdutoValidator } from "@/utils/validators/new/Produto/Produto";
+import { ProdutoValidator } from "@/utils/validators/Produto/Produto";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 

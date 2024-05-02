@@ -1,10 +1,9 @@
-import { useProdutosQuery } from "@/hooks/new/queries/produtos/useProdutos.query";
-import { useCategoriasQuery } from "@/hooks/new/queries/categorias/useCategorias.query";
 import { TabsContent } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
 import { Loader } from "@/components/Loader/Loader";
 import { ProdutoParaAcicionar } from "./ProdutoParaAcicionar";
+import { useProdutosQuery } from "@/hooks/queries/produtos/useProdutos.query";
+import { useCategoriasQuery } from "@/hooks/queries/categorias/useCategorias.query";
 
 export const ProdutosTabsContent = () => {
   const { data: produtos, isLoading: isLoadingProdutos } = useProdutosQuery();

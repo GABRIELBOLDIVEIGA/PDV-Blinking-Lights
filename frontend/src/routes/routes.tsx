@@ -4,7 +4,7 @@ import { PrivateRoutes } from "@/routes/PrivateRoutes";
 import { CardEsqueciMinhaSenha } from "@/pages/Public/CardEsqueciMinhaSenha/CardEsqueciMinhaSenha";
 import { Login } from "@/pages/Public/Login/Login";
 import { ErrorPage } from "@/pages/Public/404";
-import { TodasMesas } from "@/pages/Private/Mesas/todas-mesas/TodasMesas";
+import { TodasMesas } from "@/pages/Private/Mesas/TodasMesas";
 
 export const routes = createBrowserRouter([
   {

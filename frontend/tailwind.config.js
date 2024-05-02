@@ -95,8 +95,8 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       boxShadow: {
-        '3xl': '0 0 30px 0 rgba(0, 0, 0, 0.3)',
-      }
+        "3xl": "0 0 30px 0 rgba(0, 0, 0, 0.3)",
+      },
     },
   },
   plugins: [

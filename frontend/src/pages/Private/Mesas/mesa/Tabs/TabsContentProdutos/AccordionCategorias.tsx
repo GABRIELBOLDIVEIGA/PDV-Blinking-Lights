@@ -1,4 +1,3 @@
-import { useCategoriasQuery } from "@/hooks/new/queries/categorias/useCategorias.query";
 import {
   Accordion,
   AccordionContent,
@@ -8,6 +7,7 @@ import {
 import { Loader } from "@/components/Loader/Loader";
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useCategoriasQuery } from "@/hooks/queries/categorias/useCategorias.query";
 
 export const AccordionCategorias = () => {
   const { data: categorias, isLoading: isLoadingCategorias } =

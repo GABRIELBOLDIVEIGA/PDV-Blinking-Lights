@@ -2,4 +2,4 @@
 
 npm run dev -- --host
 
-prettier . --write
+npx prettier . --write

@@ -1,12 +1,12 @@
 import { io } from "socket.io-client";
 import { useEffect } from "react";
-import { MesaValidator } from "@/utils/validators/new/Mesa/Mesa";
 import { queryClient } from "@/lib/react-query/queryClient";
+import { Toaster, toast } from "sonner";
 import {
   TODAS_MESAS_QUERY_KEY,
   useMesasQuery,
-} from "@/hooks/new/queries/mesas/useMesas.query";
-import { Toaster, toast } from "sonner";
+} from "@/hooks/queries/mesas/useMesas.query";
+import { MesaValidator } from "@/utils/validators/Mesa/Mesa";
 
 export const Socket = () => {
   const { data } = useMesasQuery();

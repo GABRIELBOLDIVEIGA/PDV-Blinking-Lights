@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { TabsContent } from "@/components/ui/tabs";
-import { MesaValidator } from "@/utils/validators/new/Mesa/Mesa";
 import { AlertFecharComanda } from "./AlertFecharComanda";
+import { MesaValidator } from "@/utils/validators/Mesa/Mesa";
 
 interface IProps {
   mesa: MesaValidator;

@@ -1,9 +1,9 @@
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ProdutoValidator } from "@/utils/validators/new/Produto/Produto";
 import { useEffect, useState } from "react";
 import { useMesasStore } from "@/store/useMesaStore";
+import { ProdutoValidator } from "@/utils/validators/Produto/Produto";
 
 export const ProdutoParaAcicionar = (produto: ProdutoValidator) => {
   const mesaId = useMesasStore((state) => state.mesaIdFocus);

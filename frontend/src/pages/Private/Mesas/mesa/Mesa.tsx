@@ -8,15 +8,15 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { useAbrirMesa } from "@/hooks/new/mutations/mesas/useAbrirMesa.mutation";
+import { useAbrirMesa } from "@/hooks/mutations/mesa/useAbrirMesa.mutation";
 import { Loader } from "@/components/Loader/Loader";
 import { queryClient } from "@/lib/react-query/queryClient";
-import { MesaValidator } from "@/utils/validators/new/Mesa/Mesa";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useMesasStore } from "@/store/useMesaStore";
 import { TabsContentComanda } from "./Tabs/TabsContentComanda/TabsContentComanda";
 import { TabsContentProdutos } from "./Tabs/TabsContentProdutos/TabsContentProdutos";
 import { TabsContentPedido } from "./Tabs/TabsContentPedido/TabsContentPedido";
+import { MesaValidator } from "@/utils/validators/Mesa/Mesa";
 
 export const Mesa = (mesa: MesaValidator) => {
   const { mutate, isPending } = useAbrirMesa(mesa.id);

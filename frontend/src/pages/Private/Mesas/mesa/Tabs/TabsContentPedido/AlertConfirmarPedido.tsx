@@ -9,13 +9,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useAdicionarProduto } from "@/hooks/new/mutations/mesas/useAdicionarProduto.mutation";
+import { useAdicionarProduto } from "@/hooks/mutations/mesa/useAdicionarProduto.mutation";
 import { useState } from "react";
 import { Loader } from "@/components/Loader/Loader";
 import { cn } from "@/lib/utils";
-import { useMesasQuery } from "@/hooks/new/queries/mesas/useMesas.query";
 import { useMesasStore } from "@/store/useMesaStore";
 import { Button } from "@/components/ui/button";
+import { useMesasQuery } from "@/hooks/queries/mesas/useMesas.query";
 
 interface IAlertConfirmarPedido {
   children: JSX.Element;
