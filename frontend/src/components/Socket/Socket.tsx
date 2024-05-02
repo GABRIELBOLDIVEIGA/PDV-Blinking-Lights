@@ -53,8 +53,6 @@ export const Socket = () => {
   };
 
   const atualizaProdutosMesa = () => {
-    console.log("[Atualiza Produtos]");
-
     setTimeout(() => {
       queryClient.invalidateQueries({
         predicate: ({ queryKey }) => queryKey[0] === TODAS_MESAS_QUERY_KEY,

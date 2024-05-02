@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ComandasService } from './comandas.service';
 import { CreateComandaDto } from './dto/create-comanda.dto';
@@ -28,8 +29,26 @@ export class ComandasController {
   async adicionarProduto(
     @Body() adicionaProdutoDto: AdicionaProdutoDto,
   ): Promise<string> {
-    this.mesaGateway.atualizaProdutosMesa();
-    return this.comandasService.adicionarProduto(adicionaProdutoDto);
+    const response =
+      await this.comandasService.adicionarProduto(adicionaProdutoDto);
+    if (response) {
+      this.mesaGateway.atualizaProdutosMesa();
+    }
+    return response;
+  }
+
+  @Patch('remover-produto/:id')
+  async removerProduto(@Param('id', ParseIntPipe) id: number) {
+    const response = await this.comandasService.removerProduto(id);
+    if (response) this.mesaGateway.atualizaProdutosMesa();
+    return response;
+  }
+
+  @Patch('restaurar-produto/:id')
+  async restaurarProduto(@Param('id', ParseIntPipe) id: number) {
+    const response = await this.comandasService.restaurarProduto(id);
+    if (response) this.mesaGateway.atualizaProdutosMesa();
+    return response;
   }
 
   @Get()

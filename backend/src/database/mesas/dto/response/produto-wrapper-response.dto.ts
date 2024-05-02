@@ -2,17 +2,17 @@ import { Exclude, Expose, Type } from 'class-transformer';
 import { ProdutoResponseDto } from './produto-respose.dto';
 
 export class ProdutoWrapperResponseDto {
-  @Exclude()
+  @Expose()
   id: number;
 
-  @Exclude()
+  @Expose()
   created_at: string;
 
   @Exclude()
   updated_at: string;
 
-  @Exclude()
-  deleted_at: null;
+  @Expose()
+  deleted_at: string | null;
 
   @Expose()
   @Type(() => ProdutoResponseDto)

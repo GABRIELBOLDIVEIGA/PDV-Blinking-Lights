@@ -41,6 +41,7 @@ export class MesasService {
   async findAll(): Promise<Mesa[]> {
     try {
       return await this.mesaDirectRepository.find({
+        withDeleted: true,
         relations: ['comanda.produtos.produto'],
       });
     } catch (error) {

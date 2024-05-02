@@ -6,9 +6,10 @@ import { Comanda } from './entities/comanda.entity';
 import { ComandaRepository } from './comanda.repository';
 import { Mesa } from '../mesas/entities/mesa.entity';
 import { MesaGateway } from '../mesas/mesas.gateway';
+import { ComandaProduto } from './entities/comanda_produto.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Comanda, Mesa])],
+  imports: [TypeOrmModule.forFeature([Comanda, Mesa, ComandaProduto])],
   controllers: [ComandasController],
   providers: [ComandasService, ComandaRepository, MesaGateway],
 })
