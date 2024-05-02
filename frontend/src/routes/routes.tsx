@@ -5,6 +5,7 @@ import { CardEsqueciMinhaSenha } from "@/pages/Public/CardEsqueciMinhaSenha/Card
 import { Login } from "@/pages/Public/Login/Login";
 import { ErrorPage } from "@/pages/Public/404";
 import { TodasMesas } from "@/pages/Private/Mesas/TodasMesas";
+import { Comandas } from "@/pages/Private/Comandas/Comandas";
 
 export const routes = createBrowserRouter([
   {
@@ -51,6 +52,15 @@ export const routes = createBrowserRouter([
           {
             path: "/mesas/todas-mesas",
             element: <TodasMesas />,
+          },
+        ],
+      },
+      {
+        path: "/comandas",
+        children: [
+          {
+            path: "/comandas/todas-comandas",
+            element: <Comandas />,
           },
         ],
       },

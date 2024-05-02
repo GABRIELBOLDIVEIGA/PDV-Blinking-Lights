@@ -1,8 +1,3 @@
-// import { Menu } from "./Menu/Menu";
-// import { Button } from "../ui/button";
-// import { ShoppingBag } from "lucide-react";
-// import { CarrinhoSheet } from "../CarrinhoSheet/CarrinhoSheet";
-// import { SwitchThema } from "../SwitchThema/SwitchThema";
 import { MenuPerfil } from "./MenuPerfil/MenuPerfil";
 import { cn } from "@/lib/utils";
 import { MenuMobile } from "./Menu/MenuMobile";
@@ -21,22 +16,6 @@ export const Cabecalho = ({ ...props }: IProps) => {
     >
       <MenuMobile className="hidden mobile:block" />
       <MenuPerfil />
-
-      {/* <Menu className="mobile:hidden" /> */}
-
-      {/*
-      <div className="flex items-center">
-      <CarrinhoSheet>
-      <Button variant="ghost" size="icon">
-      <ShoppingBag className="w-4" />
-      </Button>
-      </CarrinhoSheet> 
-      <div className="pr-2">
-      <SwitchThema />
-      </div>
-      
-      </div>
-    */}
     </div>
   );
 };
