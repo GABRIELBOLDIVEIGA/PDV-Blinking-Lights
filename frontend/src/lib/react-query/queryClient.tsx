@@ -1,9 +1,9 @@
 import { QueryClient } from "@tanstack/react-query";
-import kmbApi from "../axios/useKmbApi";
+import { loginApi } from "../axios/login";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const defaultQueryFn = async ({ queryKey }: any) => {
-  const { data } = await kmbApi.get(`${queryKey[0]}`);
+  const { data } = await loginApi.get(`${queryKey[0]}`);
   return data;
 };
 

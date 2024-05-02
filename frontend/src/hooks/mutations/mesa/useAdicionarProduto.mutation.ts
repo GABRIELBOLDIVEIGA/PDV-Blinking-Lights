@@ -1,4 +1,4 @@
-import { usePdvApi } from "@/lib/axios/new/usePdvApi";
+import { usePdvApi } from "@/lib/axios/usePdvApi";
 import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
 

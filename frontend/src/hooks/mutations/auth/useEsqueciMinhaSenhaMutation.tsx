@@ -1,11 +1,11 @@
-import { useKmbApi } from "@/lib/axios/useKmbApi";
+import { usePdvApi } from "@/lib/axios/usePdvApi";
 import { useMutation } from "@tanstack/react-query";
 
 export const useEsqueciMinhaSenhaMutation = () => {
-  const { kmbApi } = useKmbApi();
+  const { pdvApi } = usePdvApi();
 
   const esqueciMinhaSenha = async (email: string): Promise<string> => {
-    const { data } = await kmbApi.post<string>(`/auth/forgot-password`, {
+    const { data } = await pdvApi.post<string>(`/auth/forgot-password`, {
       email: email,
     });
     return data;

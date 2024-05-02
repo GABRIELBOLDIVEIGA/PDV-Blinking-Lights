@@ -1,4 +1,4 @@
-import { usePdvApi } from "@/lib/axios/new/usePdvApi";
+import { usePdvApi } from "@/lib/axios/usePdvApi";
 import { useMutation } from "@tanstack/react-query";
 
 export const FECHAR_MESA_MUTATION_KEY = "fechar-mesa";

@@ -1,4 +1,4 @@
-import { usePdvApi } from "@/lib/axios/new/usePdvApi";
+import { usePdvApi } from "@/lib/axios/usePdvApi";
 import {
   CategoriaValidator,
   categoria_schema,

@@ -1,4 +1,4 @@
-import { usePdvApi } from "@/lib/axios/new/usePdvApi";
+import { usePdvApi } from "@/lib/axios/usePdvApi";
 import { MesaValidator, mesa_schema } from "@/utils/validators/Mesa/Mesa";
 import { useQuery } from "@tanstack/react-query";
 
