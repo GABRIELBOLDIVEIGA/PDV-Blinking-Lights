@@ -11,10 +11,11 @@ export const useRemoverOuRestaurarProduto = () => {
 
   const removerOuRestaurarProduto = useMutation({
     mutationKey: ["remover-produto"],
-    mutationFn: async ({ id, opcao }: IParams): Promise<string> => {
+    mutationFn: async ({ id, opcao }: IParams) => {
       const { data } = await pdvApi.patch<string>(
         `/comandas/${opcao}-produto/${id}`,
       );
+
       return data;
     },
   });

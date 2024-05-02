@@ -10,6 +10,7 @@ import { Loader } from "@/components/Loader/Loader";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { errorHandler } from "@/lib/axios/axiosErrorHandler";
 
 interface IComandaOptionsProps {
   isDeleted: boolean;
@@ -24,11 +25,13 @@ export const ItemComandaOptions = ({ isDeleted, id }: IComandaOptionsProps) => {
     mutate(
       { id, opcao: isDeleted ? "restaurar" : "remover" },
       {
-        onSuccess: () => {
+        onSuccess: (data) => {
           setIsOpen(false);
+          toast.success(data);
         },
         onError: (error) => {
-          toast.error(error.message, { duration: 3000 });
+          setIsOpen(false);
+          toast.error(errorHandler(error)?.message, { duration: 5000 });
         },
       },
     );

@@ -2,9 +2,9 @@ import { z } from "zod";
 
 export const statusResponse = z
   .object({
-    isSuccess: z.boolean(),
-    title: z.string(),
-    description: z.string().optional(),
+    error: z.string(),
+    message: z.string(),
+    status: z.coerce.number().or(z.undefined()),
   })
   .nullable();
 
