@@ -29,7 +29,7 @@ export class ComandaRepository extends BaseRepository {
           id: item.produto_id,
         });
 
-        if (!produto) throw new NotFoundException('Produto não encontrado.');
+        if (!produto) return;
 
         await Promise.all(
           Array.from({ length: item.quantidade }).map(async () => {
