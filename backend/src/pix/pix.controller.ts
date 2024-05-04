@@ -1,6 +1,6 @@
 import { PixService } from './pix.service';
 import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
 import { OriginalDTO } from './dto/valor.dto';
 import { CobrancasQueryDTO } from './dto/cobrancas-query.dto';
 import { CobrancasResponseDTO } from './dto/cobrancas.response.dto';
@@ -31,5 +31,11 @@ export class PixController {
     @Query() cobrancasQuery: CobrancasQueryDTO,
   ): Promise<CobrancasResponseDTO> {
     return this.pixService.getCobrancas(cobrancasQuery);
+  }
+
+  @Post('web-hook')
+  async webhook(@Req() req: any) {
+    console.log(req.body);
+    return '200';
   }
 }

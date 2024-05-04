@@ -8,7 +8,7 @@ import {
 // import { MesasService } from 'src/database/mesas/mesas.service';
 
 @UsePipes(new ValidationPipe())
-@WebSocketGateway(8092, {
+@WebSocketGateway(8091, {
   maxHttpBufferSize: 1e6,
   cors: {
     origin: '*',
