@@ -14,6 +14,7 @@ import { MesasModule } from './mesas/mesas.module';
 import { SubCategoriasModule } from './sub-categorias/sub-categorias.module';
 import { EstoqueHistoricoModule } from './estoque-historico/estoque-historico.module';
 import { ComandasModule } from './comandas/comandas.module';
+import { ConfigsModule } from './configs/configs.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { ComandasModule } from './comandas/comandas.module';
     SubCategoriasModule,
     EstoqueHistoricoModule,
     ComandasModule,
+    ConfigsModule,
   ],
 })
 export class DataBaseModule {}
