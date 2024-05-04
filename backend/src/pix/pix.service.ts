@@ -1,42 +1,67 @@
 import { Injectable } from '@nestjs/common';
-import axios from 'axios';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as https from 'https';
-
-const cert = fs.readFileSync(
-  path.resolve(__dirname, `./certs/${process.env.GN_CERT}`),
-);
-
-console.log('[Cert] => ', cert);
-
-const agent = new https.Agent({
-  pfx: cert,
-  passphrase: '',
-});
+import { HttpService } from '@nestjs/axios';
+import { catchError, firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class PixService {
-  constructor() {}
+  constructor(private readonly httpService: HttpService) {}
 
   async oauth() {
+    const url = `${process.env.GN_ENDPOINT}/oauth/token`;
+
     const credentials = Buffer.from(
-      `${process.env.GN_CLIENT_ID}: ${process.env.GN_CLIENT_SECRET}`,
+      `${process.env.GN_CLIENT_ID}:${process.env.GN_CLIENT_SECRET}`,
     ).toString('base64');
 
-    console.log('[Credentials] => ', credentials);
+    const cert = fs.readFileSync(
+      path.join(process.cwd(), `src/pix/certs/${process.env.GN_CERT}`),
+    );
 
-    return axios({
-      method: 'POST',
-      url: `${process.env.GN_ENDPOINT}/oauth/token`,
+    const agent = new https.Agent({
+      pfx: cert,
+      passphrase: '',
+    });
+
+    const headers = {
       headers: {
         Authorization: `Basic ${credentials}`,
         'Content-Type': 'application/json',
       },
       httpsAgent: agent,
-      data: {
-        grant_type: 'client_credentials',
-      },
-    });
+    };
+
+    const body = {
+      grant_type: 'client_credentials',
+    };
+
+    try {
+      const { data } = await firstValueFrom(
+        this.httpService.post(url, body, headers).pipe(
+          catchError((error: unknown) => {
+            console.log(error);
+            throw 'An error happened!';
+          }),
+        ),
+      );
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async viaCep() {
+    const { data } = await firstValueFrom(
+      this.httpService.get('https://viacep.com.br/ws/29026255/json/').pipe(
+        catchError((error: unknown) => {
+          throw 'An error happened!';
+        }),
+      ),
+    );
+
+    return data;
   }
 }
