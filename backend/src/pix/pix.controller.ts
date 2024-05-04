@@ -11,9 +11,4 @@ export class PixController {
   async auth() {
     return await this.pixService.oauth();
   }
-
-  @Get('via-cep')
-  async viaCep() {
-    return await this.pixService.viaCep();
-  }
 }

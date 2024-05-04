@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as https from 'https';
@@ -9,59 +9,58 @@ import { catchError, firstValueFrom } from 'rxjs';
 export class PixService {
   constructor(private readonly httpService: HttpService) {}
 
-  async oauth() {
-    const url = `${process.env.GN_ENDPOINT}/oauth/token`;
-
+  getCredentials() {
     const credentials = Buffer.from(
       `${process.env.GN_CLIENT_ID}:${process.env.GN_CLIENT_SECRET}`,
     ).toString('base64');
 
+    return credentials;
+  }
+
+  getCert() {
     const cert = fs.readFileSync(
-      path.join(process.cwd(), `src/pix/certs/${process.env.GN_CERT}`),
+      path.join(process.cwd(), `certs/${process.env.GN_CERT}`),
     );
 
+    return cert;
+  }
+
+  getAgent() {
     const agent = new https.Agent({
-      pfx: cert,
+      pfx: this.getCert(),
       passphrase: '',
     });
 
-    const headers = {
-      headers: {
-        Authorization: `Basic ${credentials}`,
-        'Content-Type': 'application/json',
-      },
-      httpsAgent: agent,
-    };
+    return agent;
+  }
 
-    const body = {
-      grant_type: 'client_credentials',
-    };
-
+  async oauth() {
     try {
+      const url = `${process.env.GN_ENDPOINT}/oauth/token`;
+
+      const body = {
+        grant_type: 'client_credentials',
+      };
+
+      const options = {
+        headers: {
+          Authorization: `Basic ${this.getCredentials()}`,
+          'Content-Type': 'application/json',
+        },
+        httpsAgent: this.getAgent(),
+      };
+
       const { data } = await firstValueFrom(
-        this.httpService.post(url, body, headers).pipe(
+        this.httpService.post(url, body, options).pipe(
           catchError((error: unknown) => {
-            console.log(error);
-            throw 'An error happened!';
+            throw error;
           }),
         ),
       );
 
       return data;
     } catch (error) {
-      console.log(error);
+      throw new InternalServerErrorException(error);
     }
-  }
-
-  async viaCep() {
-    const { data } = await firstValueFrom(
-      this.httpService.get('https://viacep.com.br/ws/29026255/json/').pipe(
-        catchError((error: unknown) => {
-          throw 'An error happened!';
-        }),
-      ),
-    );
-
-    return data;
   }
 }
