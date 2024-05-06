@@ -35,8 +35,8 @@ export class PixController {
     return this.pixService.getQrcode(id);
   }
 
-  @ApiBearerAuth('JWT-auth')
-  @UseGuards(AuthGuard)
+  // @ApiBearerAuth('JWT-auth')
+  // @UseGuards(AuthGuard)
   @ApiQuery({ name: 'status', enum: ['ATIVA', 'CONCLUIDA'], required: false })
   @Get('cobrancas')
   async getCobrancas(

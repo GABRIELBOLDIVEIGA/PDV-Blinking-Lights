@@ -12,6 +12,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { StatusComanda } from '../enums/StatusComanda';
+import { FormaPagamento } from '../enums/FormaPagamento';
 
 @Entity({ name: 'comanda' })
 export class Comanda {
@@ -27,6 +28,13 @@ export class Comanda {
 
   @ManyToOne(() => Mesa, (mesa) => mesa, { nullable: true })
   mesa: Mesa;
+
+  @Column({
+    type: 'enum',
+    enum: FormaPagamento,
+    default: FormaPagamento.DINHEIRO,
+  })
+  forma_pagamento: string;
 
   @Column({
     type: 'enum',

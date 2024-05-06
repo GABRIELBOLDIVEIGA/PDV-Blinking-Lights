@@ -1,4 +1,14 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateComandaDto } from './create-comanda.dto';
+import { IsEnum } from 'class-validator';
+import { StatusComanda } from '../enums/StatusComanda';
+import { FormaPagamento } from '../enums/FormaPagamento';
+import { ApiProperty } from '@nestjs/swagger';
 
-export class UpdateComandaDto extends PartialType(CreateComandaDto) {}
+export class UpdateComandaDto {
+  @ApiProperty({ type: 'enum', example: StatusComanda })
+  @IsEnum(StatusComanda)
+  status: StatusComanda;
+
+  @ApiProperty({ type: 'enum', example: FormaPagamento })
+  @IsEnum(FormaPagamento)
+  forma_pagamento: FormaPagamento;
+}

@@ -108,6 +108,7 @@ export class PixService {
         calendario: {
           expiracao: 1800,
         },
+
         valor: {
           original: original,
         },

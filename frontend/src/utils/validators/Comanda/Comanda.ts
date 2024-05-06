@@ -28,6 +28,15 @@ export const comanda_schema = z.object({
       }),
     }),
   ),
+
+  mesa: z.object({
+    id: z.coerce.number(),
+    nome: z.string(),
+    disponivel: z.boolean(),
+    created_at: z.string().datetime(),
+    updated_at: z.string().datetime(),
+    deleted_at: z.string().datetime().or(z.null()),
+  }),
 });
 
 export type ComandaValidator = z.infer<typeof comanda_schema>;

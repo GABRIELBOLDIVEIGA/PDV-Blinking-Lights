@@ -1,6 +1,8 @@
 import { Exclude, Expose, Type } from 'class-transformer';
 import { MesaResponseDto } from './mesa-response.dto';
 import { ProdutoWrapperResponseDto } from './produto-wrapper-response.dto';
+import { FormaPagamento } from '../../enums/FormaPagamento';
+import { StatusComanda } from '../../enums/StatusComanda';
 
 export class ComandaResponseDto {
   @Expose()
@@ -10,7 +12,10 @@ export class ComandaResponseDto {
   codigo: string;
 
   @Expose()
-  status: boolean;
+  status: StatusComanda;
+
+  @Expose()
+  forma_pagamento: FormaPagamento;
 
   @Type(() => ProdutoWrapperResponseDto)
   produtos: ProdutoWrapperResponseDto[];

@@ -61,6 +61,10 @@ export class ComandasController {
     const comanda = this.comandasService.findOne(+id);
     return plainToInstance(ComandaResponseDto, comanda);
   }
+  @Get('by-code/:codigo')
+  findOneByCode(@Param('codigo') codigo: string) {
+    return this.comandasService.findOneByCode(codigo);
+  }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateComandaDto: UpdateComandaDto) {

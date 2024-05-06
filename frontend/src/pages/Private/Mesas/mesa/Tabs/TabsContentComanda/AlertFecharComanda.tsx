@@ -29,7 +29,8 @@ export const AlertFecharComanda = ({ children, mesa_id }: IFecharComanda) => {
     mutate(mesa_id, {
       onSuccess: () => {
         queryClient.invalidateQueries({
-          predicate: ({ queryKey }) => queryKey[0] === "todas-mesas",
+          predicate: ({ queryKey }) =>
+            queryKey[0] === "todas-mesas" || queryKey[0] === "todas-comandas",
         });
         setTimeout(() => {
           setIsOpen(false);

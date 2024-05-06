@@ -85,8 +85,22 @@ export class ComandasService {
     });
   }
 
-  update(id: number, updateComandaDto: UpdateComandaDto) {
-    return `This action updates a #${id} comanda`;
+  async findOneByCode(code: string) {
+    return await this.comandaDirectRepository.findOne({
+      where: { codigo: code },
+      relations: ['produtos.produto', 'mesa'],
+    });
+  }
+
+  async update(id: number, updateComandaDto: UpdateComandaDto) {
+    const response = await this.comandaDirectRepository.update(id, {
+      ...updateComandaDto,
+    });
+
+    if (response.affected === 0)
+      throw new BadRequestException('Atualização não concluida.');
+
+    return await this.comandaDirectRepository.findOne({ where: { id } });
   }
 
   remove(id: number) {
