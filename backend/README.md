@@ -36,3 +36,9 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## EC2
+
+```bash
+$ ssh -i ./certs/chave-aws-ec2.pem ubuntu@18.230.231.147
+
+```

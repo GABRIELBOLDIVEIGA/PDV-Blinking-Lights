@@ -1,9 +1,19 @@
 import { PixService } from './pix.service';
-import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
+import { ApiBearerAuth, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { OriginalDTO } from './dto/valor.dto';
 import { CobrancasQueryDTO } from './dto/cobrancas-query.dto';
 import { CobrancasResponseDTO } from './dto/cobrancas.response.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Pix')
 @Controller('pix')
@@ -25,6 +35,8 @@ export class PixController {
     return this.pixService.getQrcode(id);
   }
 
+  @ApiBearerAuth('JWT-auth')
+  @UseGuards(AuthGuard)
   @ApiQuery({ name: 'status', enum: ['ATIVA', 'CONCLUIDA'], required: false })
   @Get('cobrancas')
   async getCobrancas(

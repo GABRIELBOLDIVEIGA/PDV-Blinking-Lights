@@ -11,4 +11,4 @@ services:
       - database=${MYSQL_DATA_BASE}
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
     ports:
-      - '3306:3306'
+      - '3312:3312'

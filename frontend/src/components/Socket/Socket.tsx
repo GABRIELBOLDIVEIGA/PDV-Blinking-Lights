@@ -11,7 +11,7 @@ import { MesaValidator } from "@/utils/validators/Mesa/Mesa";
 export const Socket = () => {
   const { data } = useMesasQuery();
 
-  const URL = "http://localhost:8092";
+  const URL = "http://localhost:8091";
 
   const socketOptions = {
     transportOptions: {

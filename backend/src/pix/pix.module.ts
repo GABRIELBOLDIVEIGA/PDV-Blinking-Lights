@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { PixService } from './pix.service';
 import { PixController } from './pix.controller';
 import { HttpModule } from '@nestjs/axios';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -11,6 +12,6 @@ import { HttpModule } from '@nestjs/axios';
     }),
   ],
   controllers: [PixController],
-  providers: [PixService],
+  providers: [PixService, JwtService],
 })
 export class PixModule {}

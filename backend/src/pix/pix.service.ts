@@ -17,6 +17,7 @@ import { CobrancasQueryDTO } from './dto/cobrancas-query.dto';
 import { CobrancasResponseDTO } from './dto/cobrancas.response.dto';
 import configs from 'src/config/pix.env';
 import { Cron } from '@nestjs/schedule';
+import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 
 @Injectable()
 export class PixService {
@@ -185,7 +186,7 @@ export class PixService {
           .pipe(
             catchError((error: AxiosError) => {
               this.logger.error(error.response.data);
-              throw error.message;
+              throw error;
             }),
           ),
       );
