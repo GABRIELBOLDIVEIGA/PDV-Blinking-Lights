@@ -9,6 +9,7 @@ $ npm install
 ```bash
 $ docker build .
 $ docker-compose up -d
+$ docker-compose up --build
 ```
 
 ## Running the app

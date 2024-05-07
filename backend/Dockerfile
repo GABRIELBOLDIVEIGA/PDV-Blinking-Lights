@@ -4,20 +4,12 @@ WORKDIR /home/node/app
 
 COPY package*.json ./ 
 
-# RUN npm install bcrypt
+COPY ./init-db/init.sql ./docker-entrypoint-initdb.d/
 
 RUN npm install
-
-# COPY tsconfig.json ./ 
-
-# COPY typeOrm.config.ts ./ 
 
 COPY . .
 
 EXPOSE 3000
-
-# RUN npm run build
-
-# USER node
 
 CMD ["npm", "run", "start"]

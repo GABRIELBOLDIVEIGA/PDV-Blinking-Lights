@@ -6,7 +6,7 @@ config();
 
 const configService = new ConfigService();
 
-export default new DataSource({
+const dataSource = new DataSource({
   type: 'mysql',
   host: configService.getOrThrow('MYSQL_HOST'),
   port: configService.getOrThrow('MYSQL_PORT'),
@@ -17,3 +17,16 @@ export default new DataSource({
   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
   migrations: ['migrations/**'],
 });
+
+console.log(dataSource);
+
+dataSource
+  .initialize()
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+
+export default dataSource;

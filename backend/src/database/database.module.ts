@@ -30,6 +30,7 @@ import { ConfigsModule } from './configs/configs.module';
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
         autoLoadEntities: true,
       }),
+
       inject: [ConfigService],
     }),
     CategoriasModule,
