@@ -7,7 +7,8 @@ $ npm install
 ## Running the docker
 
 ```bash
-$ docker-compose up
+$ docker build .
+$ docker-compose up -d
 ```
 
 ## Running the app

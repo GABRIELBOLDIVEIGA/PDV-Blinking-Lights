@@ -1,6 +1,7 @@
 
 services: 
   mysql:
+    container_name: mysql
     image: mysql 
     env_file:
       - .env
@@ -10,18 +11,32 @@ services:
       - password=${MYSQL_PASSWORD}
       - database=${MYSQL_DATA_BASE}
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - $HOME/database/var/lib/mysql
     ports:
-      - '3312:3312'
-  
+      - '3306:3306'
+    expose:
+      - 3306
+
   app:
+    container_name: nestjs
     build: .
     entrypoint: sh -c "npm install && npm run start:dev"
-    ports:
-      - 3000:3000
+    env_file:
+      - .env
+    environment:
+      - PORT=${PORT}
+      - JWT_SECRET=${JWT_SECRET}
+      - DATA_BASE_MONGODB=${DATA_BASE_MONGODB}
+      - GN_CLIENT_ID=${GN_CLIENT_ID}
+      - GN_CLIENT_SECRET=${GN_CLIENT_SECRET}
+      - GN_ENDPOINT=${GN_ENDPOINT}
+      - GN_CERT=${GN_CERT}
+      - GN_CERT_WEBHOOK=${GN_CERT_WEBHOOK}
     volumes:
       - .:/home/node/app
-    depends_on:
-      - redis
-
-  redis:
-    image: redis:6.2.6-alpine3.14
+    # entrypoint: npm run dev
+    ports:
+      - 3000:3000
+    
