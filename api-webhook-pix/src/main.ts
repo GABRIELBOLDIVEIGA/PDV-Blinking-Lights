@@ -7,7 +7,7 @@ async function bootstrap() {
 
   //Swagger
   const config = new DocumentBuilder()
-    .setTitle('Microservice PIX - PDV')
+    .setTitle('Webhook PIX - PDV')
     .setDescription('')
     .setVersion('1.0')
     .addBearerAuth(
@@ -24,7 +24,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('webhook-pix-api', app, document);
 
   // Start app
   await app.listen(process.env.PORT || 3000);
@@ -32,6 +32,8 @@ async function bootstrap() {
   // console.clear();
 
   console.log(`Base Url: http://localhost:${process.env.PORT} 🌐`);
-  console.log(`Swagger: http://localhost:${process.env.PORT}/api/ 📜`);
+  console.log(
+    `Swagger: http://localhost:${process.env.PORT}/webhook-pix-api/ 📜`,
+  );
 }
 bootstrap();

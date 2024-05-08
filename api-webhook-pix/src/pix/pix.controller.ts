@@ -50,4 +50,9 @@ export class PixController {
     console.log(req.body);
     return '200';
   }
+
+  @Get('/sse')
+  getEvent() {
+    return this.pixService.getEvent();
+  }
 }
