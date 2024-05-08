@@ -1,7 +1,8 @@
 version: "3"
-services: 
+services:
   mysql:
     container_name: mysql
+    restart: always
     image: mysql:8.0
     env_file:
       - .env
@@ -17,8 +18,8 @@ services:
     networks:
       - internalnet
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/0_init.sql
-      - $HOME/database:/var/lib/mysql
+      - ./init-db/init.sql:/docker-entrypoint-initdb.d/0_init.sql
+      - pdv-datavolume:/var/lib/mysql
     ports:
       - 3306:3306
     expose:
@@ -39,7 +40,6 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - MYSQL_DATA_BASE=nestjs_pdv
       - DATA_BASE_MONGODB=${DATA_BASE_MONGODB}
-      # - MYSQL_DATA_BASE=${MYSQL_DATA_BASE}
       - GN_CLIENT_ID=${GN_CLIENT_ID}
       - GN_CLIENT_SECRET=${GN_CLIENT_SECRET}
       - GN_ENDPOINT=${GN_ENDPOINT}
@@ -60,3 +60,6 @@ services:
 networks:
   internalnet:
     driver: bridge
+
+volumes:
+  pdv-datavolume:  

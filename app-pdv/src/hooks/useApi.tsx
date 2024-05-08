@@ -1,7 +1,11 @@
+import { useAuthStore } from "@/stores/auth.store";
+import { useNavigate } from "@tanstack/react-router";
 import axios from "axios";
 
 export const useApi = () => {
-  const token = sessionStorage.getItem("pdv-blinking-lights-auth");
+  const resetAuthStore = useAuthStore((store) => store.reset);
+  const access_token = useAuthStore((store) => store.access_token);
+  const navigate = useNavigate();
 
   const pdvApi = axios.create({
     baseURL:
@@ -9,7 +13,7 @@ export const useApi = () => {
         ? import.meta.env.VITE_API_DEVELOPMENT
         : import.meta.env.VITE_API_PRODUCTION,
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${access_token}`,
     },
     withCredentials: false,
   });
@@ -20,8 +24,8 @@ export const useApi = () => {
     },
     function (error) {
       if (error.response.status === 401) {
-        window.location.href = "/login";
-        alert("Usuário não tem autorização para acessar essa URL!");
+        resetAuthStore();
+        navigate({ to: "/login" });
         return Promise.reject(error);
       }
       return Promise.reject(error);

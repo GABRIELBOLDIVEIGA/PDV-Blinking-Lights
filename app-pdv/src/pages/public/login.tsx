@@ -7,15 +7,31 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import banner from "@/assets/banner-login.png";
 import { Separator } from "@/components/ui/separator";
+import { useEffect } from "react";
+import { useAuthStore } from "@/stores/auth.store";
 
 export const Login = () => {
+  const navigate = useNavigate();
+  const user = useAuthStore((store) => store.user);
+
+  useEffect(() => {
+    if (user) navigate({ to: "/produtos" });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
   return (
     <section className="h-full flex">
       <div className="w-1/2 grid justify-center pt-32">
-        <img src={banner} />
+        <div>
+          <img src={banner} />
+          <p className="font-bold tracking-wider text-2xl text-end text-muted-foreground pt-6 h-fit">
+            O seu negócio com você o tempo todo
+          </p>
+        </div>
       </div>
 
       <Separator orientation="vertical" />

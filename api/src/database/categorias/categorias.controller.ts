@@ -7,12 +7,14 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { CategoriasService } from './categorias.service';
 import { CreateCategoriaDto } from './dto/create-categoria.dto';
 import { UpdateCategoriaDto } from './dto/update-categoria.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Categoria } from './entities/categoria.entity';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Categorias')
 @Controller('categorias')
@@ -26,6 +28,8 @@ export class CategoriasController {
     return this.categoriasService.create(createCategoriaDto);
   }
 
+  @ApiBearerAuth('JWT-auth')
+  @UseGuards(AuthGuard)
   @Get()
   async findAll(): Promise<Categoria[]> {
     return this.categoriasService.findAll();

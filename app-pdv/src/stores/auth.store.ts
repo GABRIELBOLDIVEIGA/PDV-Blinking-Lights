@@ -7,6 +7,7 @@ export type AuthStore = {
   user: AuthValidator;
   access_token: string | null;
   setToken: (access_token: string) => void;
+  reset: () => void;
 };
 
 export const useAuthStore = create<AuthStore>()(
@@ -24,6 +25,10 @@ export const useAuthStore = create<AuthStore>()(
           console.warn("[Error] => ", authSchema.safeParse(decoded));
           set(() => ({ user: null, access_token: null }));
         }
+      },
+
+      reset: () => {
+        set(() => ({ user: null, access_token: null }));
       },
     }),
     {
