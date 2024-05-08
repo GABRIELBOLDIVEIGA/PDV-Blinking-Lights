@@ -1,20 +1,31 @@
 import { Menu } from "@/components/menu/menu";
-
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Outlet } from "@tanstack/react-router";
+import { Login } from "./public/login";
+import { useAuthStore } from "@/stores/auth.store";
+import { Header } from "@/components/header/header";
 
 export function Layout() {
-  return (
-    <section className="ring min-h-screen h-screen overflow-y-hidden">
-      <main className="flex h-full ring-2 ring-purple-500">
-        <Menu />
+  const autentidado = useAuthStore((state) => state.user);
 
-        <div className="ring-2 ring-green-600 w-full">
-          <header className="ring">
-            <p className="w-fit">header</p>
-          </header>
-          <Outlet />
-        </div>
-      </main>
+  return (
+    <section className="min-h-screen h-screen">
+      {autentidado ? (
+        <main className="flex h-full max-h-screen">
+          <Menu />
+
+          <div className="w-full h-full">
+            <Header />
+            <ScrollArea className="h-[89%]">
+              <div className="p-4">
+                <Outlet />
+              </div>
+            </ScrollArea>
+          </div>
+        </main>
+      ) : (
+        <Login />
+      )}
     </section>
   );
 }

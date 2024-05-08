@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { useState } from "react";
-
 import { Link } from "@tanstack/react-router";
 import { CircleChevronRight } from "lucide-react";
+import { menuOptions } from "./menu-options";
 
 export const Menu = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -11,7 +11,7 @@ export const Menu = () => {
   return (
     <menu
       className={cn(
-        "w-[300px] transition-all duration-1000 flex flex-col items-center",
+        "w-[300px] transition-all duration-1000 flex flex-col items-center border-r",
         {
           "w-[50px]": !isVisible,
         }
@@ -21,13 +21,13 @@ export const Menu = () => {
         <Button
           variant="ghost"
           size="icon"
-          className={cn("transition-all duration-1000 mr-2")}
+          className={cn("transition-transform duration-1000 mr-2")}
           onClick={() => {
             setIsVisible((prev) => !prev);
           }}
         >
           <CircleChevronRight
-            className={cn("transition-all duration-500", {
+            className={cn("transition-transform duration-500", {
               "rotate-180": isVisible,
             })}
           />
@@ -36,22 +36,34 @@ export const Menu = () => {
 
       <div
         className={cn(
-          "flex flex-col w-full gap-4 pt-16  transition-all duration-1000 px-4",
+          "flex flex-col w-full gap-4 pt-6 transition-transform duration-1000 px-4",
           {
-            "w-0": !isVisible,
+            "": !isVisible,
           }
         )}
       >
-        {[1, 2, 3, 4, 5].map((i) => (
+        {menuOptions.map((option) => (
           <Link
-            key={i}
-            to="/login"
-            className={cn("[&.active]:font-bold [&.active]:bg-muted w-full", {
-              "": !isVisible,
-            })}
+            to={option.link}
+            className={cn(
+              "[&.active]:font-bold [&.active]:opacity-100 opacity-80 [&.active]:bg-muted w-full rounded-md py-1",
+              {
+                "": !isVisible,
+              }
+            )}
           >
-            {i}
-            {/* <div className={cn("ring rounded-md px-2")}>{i}</div> */}
+            <div
+              className={cn(
+                "flex gap-2 justify-start translate-x-0 transition-transform duration-1000",
+                {
+                  "-translate-x-1": !isVisible,
+                }
+              )}
+            >
+              <div>{option.icon}</div>
+
+              <p className="truncate">{option.text}</p>
+            </div>
           </Link>
         ))}
       </div>
