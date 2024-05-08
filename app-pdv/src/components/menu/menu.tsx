@@ -21,7 +21,7 @@ export const Menu = () => {
         <Button
           variant="ghost"
           size="icon"
-          className={cn("transition-transform duration-1000 mr-2")}
+          className={cn("transition-transform duration-1000 mr-2 mt-3")}
           onClick={() => {
             setIsVisible((prev) => !prev);
           }}
@@ -44,6 +44,7 @@ export const Menu = () => {
       >
         {menuOptions.map((option) => (
           <Link
+            key={option.text}
             to={option.link}
             className={cn(
               "[&.active]:font-bold [&.active]:opacity-100 opacity-80 [&.active]:bg-muted w-full rounded-md py-1",

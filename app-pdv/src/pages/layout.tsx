@@ -9,15 +9,16 @@ export function Layout() {
   const autentidado = useAuthStore((state) => state.user);
 
   return (
-    <section className="min-h-screen h-screen">
+    <section className="min-h-screen h-screen overflow-y-hidden">
       {autentidado ? (
         <main className="flex h-full max-h-screen">
           <Menu />
 
           <div className="w-full h-full">
             <Header />
-            <ScrollArea className="h-[89%]">
-              <div className="p-4">
+
+            <ScrollArea className="h-[93.5%]">
+              <div className="p-4 h-full">
                 <Outlet />
               </div>
             </ScrollArea>
