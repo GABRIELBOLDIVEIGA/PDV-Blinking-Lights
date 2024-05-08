@@ -17,7 +17,7 @@ import { CreateMesaDto } from './dto/create-mesa.dto';
 import { UpdateMesaDto } from './dto/update-mesa.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Mesa } from './entities/mesa.entity';
-import { Observable, defer, map, repeat, tap } from 'rxjs';
+import { Observable, defer, lastValueFrom, map, repeat, tap } from 'rxjs';
 import { Response } from 'express';
 import { MesaResponseDto } from './dto/response/mesa-response.dto';
 import { plainToInstance } from 'class-transformer';
@@ -96,7 +96,7 @@ export class MesasController {
     return mesa;
   }
 
-  @Sse('sse/:id/events')
+  @Sse('/sse/:id')
   events(
     @Param('id', ParseIntPipe) id: number,
     @Res() response: Response,
@@ -104,14 +104,13 @@ export class MesasController {
     return defer(() => this.mesasService.findOne(id)).pipe(
       repeat({ delay: 1000 }),
       tap((report) => {
-        if (report.disponivel === true) {
-          setTimeout(() => {
-            console.log('[Aberto]');
-            response.end();
-          }, 1000);
-        }
-        console.log('[Fechado]');
+        console.log('[Report] => ', report);
+
+        setTimeout(() => {
+          response.end();
+        }, 1000);
       }),
+
       map((report) => ({ type: 'message', data: report })),
     );
   }

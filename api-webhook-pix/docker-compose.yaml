@@ -1,0 +1,65 @@
+version: "3"
+services:
+  mysql:
+    container_name: mysql
+    restart: always
+    image: mysql:8.0
+    env_file:
+      - .env
+    environment:
+      - host=${MYSQL_HOST}
+      - port=${MYSQL_PORT}
+      - database=${MYSQL_DATA_BASE}
+      - username=${MYSQL_USER_NAME}
+      - password=${MYSQL_PASSWORD}
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_DATABASE=nestjs_pdv
+      - MYSQL_SYNCHRONIZE=${MYSQL_SYNCHRONIZE}
+    networks:
+      - internalnet
+    volumes:
+      - ./init-db/init.sql:/docker-entrypoint-initdb.d/0_init.sql
+      - pdv-datavolume:/var/lib/mysql
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+
+  nestjs:
+    container_name: nestjs
+    build: .
+    entrypoint: sh -c "npm install && npm run start:dev"
+    depends_on:
+      - mysql
+    env_file:
+      - .env
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - PORT=${PORT}
+      - JWT_SECRET=${JWT_SECRET}
+      - MYSQL_DATA_BASE=nestjs_pdv
+      - DATA_BASE_MONGODB=${DATA_BASE_MONGODB}
+      - GN_CLIENT_ID=${GN_CLIENT_ID}
+      - GN_CLIENT_SECRET=${GN_CLIENT_SECRET}
+      - GN_ENDPOINT=${GN_ENDPOINT}
+      - GN_CERT=${GN_CERT}
+      - GN_CERT_WEBHOOK=${GN_CERT_WEBHOOK}
+      - MYSQL_USER=${MYSQL_USER_NAME}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_DATABASE=nestjs_pdv
+      - MYSQL_SYNCHRONIZE=${MYSQL_SYNCHRONIZE}
+    volumes:
+      - .:/home/node/app
+    ports:
+      - 3000:3000
+    networks:
+      - internalnet
+
+networks:
+  internalnet:
+    driver: bridge
+
+volumes:
+  pdv-datavolume:  

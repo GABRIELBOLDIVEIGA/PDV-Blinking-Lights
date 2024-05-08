@@ -2,6 +2,7 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  MessageEvent,
 } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -18,6 +19,13 @@ import { CobrancasResponseDTO } from './dto/cobrancas.response.dto';
 import configs from 'src/config/pix.env';
 import { Cron } from '@nestjs/schedule';
 import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
+import yaml from 'js-yaml';
+
+interface PayloadYAML {
+  event: string;
+  id: number;
+  data: { status: boolean; txid: string };
+}
 
 @Injectable()
 export class PixService {
@@ -196,5 +204,20 @@ export class PixService {
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
+  }
+
+  async webhookAws(txid: string): Promise<string> {
+    const { data } = await lastValueFrom(
+      this.httpService
+        .get<string>(`http://localhost:3001/pix/aws/${txid}`)
+        .pipe(
+          catchError((error: AxiosError) => {
+            this.logger.error(error.response.data);
+            throw error.message;
+          }),
+        ),
+    );
+
+    return data;
   }
 }

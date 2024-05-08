@@ -20,13 +20,7 @@ import { CobrancasResponseDTO } from './dto/cobrancas.response.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { Observable, defer, interval, map, repeat, tap } from 'rxjs';
 import { Response } from 'express';
-
-// export interface MessageEvent {
-//   data: string | object;
-//   id?: string;
-//   type?: string;
-//   retry?: number;
-// }
+import yaml from 'js-yaml';
 
 @ApiTags('Pix')
 @Controller('pix')
@@ -58,43 +52,23 @@ export class PixController {
     return this.pixService.getCobrancas(cobrancasQuery);
   }
 
-  @Sse('sse')
-  events(@Res() response: Response): Observable<MessageEvent> {
-    const milliseconds = 1000;
-
-    const promise = new Promise<{ tentativas: number }>((resolve, reject) => {
-      var count = 1;
-
-      var rand = (Math.random() * 10).toFixed();
-
-      while (Number(rand) != 1) {
-        console.log('[Tentativa] => ', count);
-        count++;
-
-        rand = (Math.random() * 200).toFixed();
-      }
-
-      const data = { tentativas: count };
-
-      setTimeout(resolve, milliseconds, data);
-    });
-
-    return defer(() => promise).pipe(
+  @Sse('/docker/:txid')
+  events(
+    @Param('txid') txid: string,
+    @Res() response: Response,
+  ): Observable<MessageEvent> {
+    console.log('[TXID] => ', txid);
+    return defer(() => this.pixService.webhookAws(txid)).pipe(
       repeat({ delay: 1000 }),
       tap((report) => {
-        console.log('[Report] => ', report);
         if (report) {
-          response.end();
+          setTimeout(() => {
+            response.end();
+          }, 1000);
         }
       }),
-      // map((report) => ({ type: 'message', data: report })),
-      map((report) => ({ data: report })),
-    );
-  }
 
-  @Post('web-hook')
-  async webhook(@Req() req: any) {
-    console.log(req.body);
-    return '200';
+      map((report) => ({ type: 'message', data: report })),
+    );
   }
 }

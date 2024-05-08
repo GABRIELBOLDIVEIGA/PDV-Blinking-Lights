@@ -43,6 +43,7 @@
     "@tanstack/react-query-devtools": "^5.35.1",
     "@tanstack/react-router": "^1.31.20",
     "@tanstack/react-table": "^8.16.0",
+    "@types/js-yaml": "^4.0.9",
     "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -50,6 +51,7 @@
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.0.4",
     "input-otp": "^1.2.4",
+    "js-yaml": "^4.1.0",
     "jwt-decode": "^4.0.0",
     "lottie-react": "^2.4.0",
     "lucide-react": "^0.378.0",
@@ -63,6 +65,7 @@
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.1",
+    "yaml-to-json": "^0.3.0",
     "zod": "^3.23.6",
     "zustand": "^4.5.2"
   },
