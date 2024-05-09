@@ -1,4 +1,4 @@
-import { authSchema } from "@/common/schemas/Auth.schema";
+import { authSchema } from "@/common/schemas/auth-schema";
 
 export function isAuthenticated() {
   try {

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { jwtDecode } from "jwt-decode";
-import { AuthValidator, authSchema } from "@/common/schemas/Auth.schema";
+import { AuthValidator, authSchema } from "@/common/schemas/auth-schema";
 
 export type AuthStore = {
   user: AuthValidator;

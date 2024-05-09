@@ -1,7 +1,7 @@
 import {
   CategoriaValidator,
   categoriaSchema,
-} from "@/common/schemas/Categoria.schema";
+} from "@/common/schemas/categoria-schema";
 import { useApi } from "@/hooks/useApi";
 import { useQuery } from "@tanstack/react-query";
 

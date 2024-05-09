@@ -89,7 +89,7 @@ export class ProdutosService {
       const produto = await this.produtoRepository.findOne({
         where: { id },
         relations: [
-          'categorias.categoria',
+          'categorias.categoria.subCategorias.subCategoria',
           'subCategorias.subCategoria',
           'fornecedores.fornecedor',
         ],

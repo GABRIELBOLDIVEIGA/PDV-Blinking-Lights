@@ -1,10 +1,15 @@
-import { LayoutPanelTop, PackageSearch } from "lucide-react";
+import { LayoutDashboard, PackageSearch, Table2 } from "lucide-react";
 
 export const menuOptions = [
   {
+    link: "/dashboard",
+    text: "Dashboard",
+    icon: <LayoutDashboard />,
+  },
+  {
     link: "/categorias",
     text: "Categorias",
-    icon: <LayoutPanelTop />,
+    icon: <Table2 />,
   },
   {
     link: "/produtos",

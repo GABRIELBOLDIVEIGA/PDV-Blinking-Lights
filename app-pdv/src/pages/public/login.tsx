@@ -12,13 +12,14 @@ import banner from "@/assets/banner-login.png";
 import { Separator } from "@/components/ui/separator";
 import { useEffect } from "react";
 import { useAuthStore } from "@/stores/auth.store";
+import { SwitchTheme } from "@/components/switch-theme/switch-theme";
 
 export const Login = () => {
   const navigate = useNavigate();
   const user = useAuthStore((store) => store.user);
 
   useEffect(() => {
-    if (user) navigate({ to: "/produtos" });
+    if (user) navigate({ to: "/dashboard" });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
@@ -36,7 +37,8 @@ export const Login = () => {
 
       <Separator orientation="vertical" />
 
-      <div className="w-1/2 grid place-content-center">
+      <div className="w-1/2 grid place-content-center relative">
+        <SwitchTheme className="absolute right-8 top-8" />
         <Card>
           <CardHeader>
             <CardTitle>Bem vindo!</CardTitle>

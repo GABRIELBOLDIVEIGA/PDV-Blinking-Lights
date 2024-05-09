@@ -1,11 +1,14 @@
 import { cn } from "@/lib/utils";
 import { SwitchTheme } from "../switch-theme/switch-theme";
+import { useRouterState } from "@tanstack/react-router";
 
 interface IProps {
   className?: string;
 }
 
 export const Header = ({ className }: IProps) => {
+  const router = useRouterState();
+
   return (
     <header
       className={cn(
@@ -13,7 +16,9 @@ export const Header = ({ className }: IProps) => {
         className
       )}
     >
-      <p className="w-fit">Header</p>
+      <p className="w-fit capitalize">
+        {router.location.pathname.replace("/", "")}
+      </p>
 
       <SwitchTheme />
     </header>

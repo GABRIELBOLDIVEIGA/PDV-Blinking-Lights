@@ -15,6 +15,7 @@ import { Route as RouteTreeImport } from './routes/routeTree'
 import { Route as RootImport } from './routes/root'
 import { Route as LoginImport } from './routes/login'
 import { Route as ProdutosProdutosImport } from './routes/produtos/produtos'
+import { Route as DashboardDashboardImport } from './routes/dashboard/dashboard'
 import { Route as CategoriasCategoriasImport } from './routes/categorias/categorias'
 
 // Create/Update Routes
@@ -36,6 +37,11 @@ const LoginRoute = LoginImport.update({
 
 const ProdutosProdutosRoute = ProdutosProdutosImport.update({
   path: '/produtos/produtos',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DashboardDashboardRoute = DashboardDashboardImport.update({
+  path: '/dashboard/dashboard',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -64,6 +70,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategoriasCategoriasImport
       parentRoute: typeof rootRoute
     }
+    '/dashboard/dashboard': {
+      preLoaderRoute: typeof DashboardDashboardImport
+      parentRoute: typeof rootRoute
+    }
     '/produtos/produtos': {
       preLoaderRoute: typeof ProdutosProdutosImport
       parentRoute: typeof rootRoute
@@ -78,6 +88,7 @@ export const routeTree = rootRoute.addChildren([
   RootRoute,
   RouteTreeRoute,
   CategoriasCategoriasRoute,
+  DashboardDashboardRoute,
   ProdutosProdutosRoute,
 ])
 

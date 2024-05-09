@@ -13,7 +13,7 @@ export const SwitchTheme = ({ className }: IProps) => {
   return (
     <Switch
       className={cn("", className)}
-      checked={theme === "dark" ? true : false}
+      checked={theme === "dark"}
       onCheckedChange={() => setTheme(theme === "dark" ? "light" : "dark")}
     />
   );
