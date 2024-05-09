@@ -11,9 +11,10 @@ RUN npm install
 
 # para evitar o erro bcrypt_lib.node: invalid ELF header
 # essa lib precisa ser instalada no OS onde o projeto for rodar
+# caso o erro permaneça exclua a node_modules antes de gerar uma nova build
 RUN npm uninstall bcrypt
 
-RUN npm i bcrypt
+RUN npm install bcrypt
 
 COPY . .
 

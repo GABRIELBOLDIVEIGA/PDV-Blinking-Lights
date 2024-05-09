@@ -1,16 +1,17 @@
--- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
---
--- Host: localhost    Database: nestjs_pdv
--- ------------------------------------------------------
--- Server version	8.0.37
+-- CREATE DATABASE IF NOT EXISTS nestjs_pdv;
 
 CREATE DATABASE  IF NOT EXISTS `nestjs_pdv` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `nestjs_pdv`;
+-- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: nestjs_pdv
+-- ------------------------------------------------------
+-- Server version	8.0.37
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
+/*!50503 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -70,6 +71,7 @@ CREATE TABLE `categorias` (
 
 LOCK TABLES `categorias` WRITE;
 /*!40000 ALTER TABLE `categorias` DISABLE KEYS */;
+INSERT INTO `categorias` VALUES (1,'Alimentos','Consumíveis alimentícios','2024-05-08 12:32:03.622111','2024-05-08 12:32:03.622111',NULL);
 /*!40000 ALTER TABLE `categorias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -153,7 +155,7 @@ CREATE TABLE `comanda` (
   UNIQUE KEY `IDX_392d9d126ced48665ee1fecc33` (`codigo`),
   KEY `FK_ac711fa84757219d1d4501e0f8c` (`mesaId`),
   CONSTRAINT `FK_ac711fa84757219d1d4501e0f8c` FOREIGN KEY (`mesaId`) REFERENCES `mesas` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -184,7 +186,7 @@ CREATE TABLE `comanda_produtos` (
   KEY `FK_07d33cb49d3003a93aba713701a` (`produtoId`),
   CONSTRAINT `FK_07d33cb49d3003a93aba713701a` FOREIGN KEY (`produtoId`) REFERENCES `produtos` (`id`),
   CONSTRAINT `FK_81928cbc78685f08feeee27da50` FOREIGN KEY (`comandaId`) REFERENCES `comanda` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -256,6 +258,7 @@ CREATE TABLE `estoque` (
 
 LOCK TABLES `estoque` WRITE;
 /*!40000 ALTER TABLE `estoque` DISABLE KEYS */;
+INSERT INTO `estoque` VALUES (1,1,11.11,0,0,'2024-05-08 12:31:18.030625','2024-05-08 12:31:18.030625',NULL,1);
 /*!40000 ALTER TABLE `estoque` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -344,6 +347,7 @@ CREATE TABLE `fornecedor` (
 
 LOCK TABLES `fornecedor` WRITE;
 /*!40000 ALTER TABLE `fornecedor` DISABLE KEYS */;
+INSERT INTO `fornecedor` VALUES (1,'Nome do fornecedor','Pedir desconto.','2024-05-08 12:31:42.424255','2024-05-08 12:31:42.424255',NULL);
 /*!40000 ALTER TABLE `fornecedor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -366,7 +370,7 @@ CREATE TABLE `mesa_comanda` (
   KEY `FK_68b133004f9e0ecc469532dbb9d` (`comandaId`),
   CONSTRAINT `FK_68b133004f9e0ecc469532dbb9d` FOREIGN KEY (`comandaId`) REFERENCES `comanda` (`id`),
   CONSTRAINT `FK_b9eed07d0cca00504107809d8fc` FOREIGN KEY (`mesaId`) REFERENCES `mesas` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -397,7 +401,7 @@ CREATE TABLE `mesas` (
   UNIQUE KEY `IDX_7acda1efeec181d51c9c5af0eb` (`nome`),
   UNIQUE KEY `comanda-id` (`comandaId`),
   CONSTRAINT `FK_05f66eefd77909b283667a3fe6a` FOREIGN KEY (`comandaId`) REFERENCES `comanda` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -406,7 +410,7 @@ CREATE TABLE `mesas` (
 
 LOCK TABLES `mesas` WRITE;
 /*!40000 ALTER TABLE `mesas` DISABLE KEYS */;
-INSERT INTO `mesas` VALUES (1,'Mesa 1',1,'2024-05-08 12:30:36.191265','2024-05-09 15:50:00.000000',NULL,NULL),(2,'Mesa 2',1,'2024-05-09 16:39:54.839482','2024-05-09 16:48:36.029993',NULL,NULL),(3,'Mesa 3',1,'2024-05-09 16:39:59.839840','2024-05-09 16:39:59.839840',NULL,NULL),(4,'Mesa 4',1,'2024-05-09 16:40:07.708804','2024-05-09 16:48:36.045906',NULL,NULL),(5,'Mesa 5',1,'2024-05-09 16:40:11.208264','2024-05-09 16:48:36.052827',NULL,NULL),(6,'Mesa 6',1,'2024-05-09 16:40:15.235404','2024-05-09 16:40:15.235404',NULL,NULL),(7,'Mesa 7',1,'2024-05-09 16:40:19.375370','2024-05-09 16:40:19.375370',NULL,NULL),(8,'Mesa 8',1,'2024-05-09 16:40:27.751186','2024-05-09 16:40:27.751186',NULL,NULL),(9,'Mesa 9',1,'2024-05-09 16:40:32.054072','2024-05-09 16:40:32.054072',NULL,NULL),(10,'Mesa 10',1,'2024-05-09 16:40:40.552679','2024-05-09 16:40:40.552679',NULL,NULL),(11,'Mesa 11',1,'2024-05-09 16:40:43.698224','2024-05-09 16:40:43.698224',NULL,NULL),(12,'Mesa 12',1,'2024-05-09 16:40:46.694951','2024-05-09 16:48:36.058030',NULL,NULL),(13,'Mesa 13',1,'2024-05-09 16:40:50.263937','2024-05-09 16:40:50.263937',NULL,NULL),(14,'Mesa 14',1,'2024-05-09 16:40:57.482261','2024-05-09 16:40:57.482261',NULL,NULL),(15,'Mesa 15',1,'2024-05-09 16:41:00.870903','2024-05-09 16:48:36.062425',NULL,NULL);
+INSERT INTO `mesas` VALUES (1,'Mesa 1',1,'2024-05-08 12:30:36.191265','2024-05-08 12:30:36.191265',NULL,NULL);
 /*!40000 ALTER TABLE `mesas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -522,6 +526,7 @@ CREATE TABLE `produtos` (
 
 LOCK TABLES `produtos` WRITE;
 /*!40000 ALTER TABLE `produtos` DISABLE KEYS */;
+INSERT INTO `produtos` VALUES (1,'A','Produto A','Prod. A',11.11,1,'2024-05-08 12:31:18.018052','2024-05-08 12:31:18.018052',NULL);
 /*!40000 ALTER TABLE `produtos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -582,7 +587,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (2,'DEV','Gabriel DEV','gabriel.boldi.dev@gmail.com','$2b$12$S6TMEDHqiYpStMC4Ow4ZF.8ksrjPVsafUVkr3VAWFfmTX5EIUtxHy','2024-05-08 12:30:13.073999','2024-05-08 12:30:13.073999',NULL,NULL);
+INSERT INTO `usuarios` VALUES (1,'DEV','Usuário','email@email.com','$2b$12$MUg/7dG8IEA3iPmOvcZrVeTH42HD8BEscLzQcClxvXgFcsTzl7aT2','2024-05-08 12:27:38.681877','2024-05-08 12:27:38.681877',NULL,NULL),(2,'DEV','Gabriel DEV','gabriel.boldi.dev@gmail.com','$2b$12$S6TMEDHqiYpStMC4Ow4ZF.8ksrjPVsafUVkr3VAWFfmTX5EIUtxHy','2024-05-08 12:30:13.073999','2024-05-08 12:30:13.073999',NULL,NULL);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -667,6 +672,10 @@ LOCK TABLES `vendas` WRITE;
 UNLOCK TABLES;
 
 --
+-- Dumping events for database 'nestjs_pdv'
+--
+
+--
 -- Dumping routines for database 'nestjs_pdv'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -679,4 +688,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-09 13:51:51
+-- Dump completed on 2024-05-08  9:33:21
