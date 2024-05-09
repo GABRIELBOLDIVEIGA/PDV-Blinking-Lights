@@ -1,8 +1,8 @@
+import { HttpService } from '@nestjs/axios';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import * as fs from 'fs';
-import * as path from 'path';
 import * as https from 'https';
-import { HttpService } from '@nestjs/axios';
+import * as path from 'path';
 
 import configs from 'src/config/pix.env';
 

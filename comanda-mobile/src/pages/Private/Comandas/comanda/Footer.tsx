@@ -24,12 +24,18 @@ import { StatusComanda } from "@/utils/validators/Comanda/StatusComanda.enum";
 import { queryClient } from "@/lib/react-query/queryClient";
 import { toast } from "sonner";
 import { errorHandler } from "@/lib/axios/axiosErrorHandler";
+import { useWebhookPix } from "@/hooks/queries/cobrancasPix/useWebhookPix.query";
 
 interface IFooter {
   comanda: ComandaValidator;
 }
 
 export const Footer = ({ comanda }: IFooter) => {
+  const {
+    setTxid,
+    data: webhookData,
+    isPending: webhookIsPending,
+  } = useWebhookPix();
   const {
     mutate: atualizaCoimandaMutate,
     isPending: atualizaComandaIsPending,
@@ -52,6 +58,7 @@ export const Footer = ({ comanda }: IFooter) => {
   const gerarCobrancaPix = (valor: number) => {
     mutate(valor.toFixed(2), {
       onSuccess: (resp) => {
+        setTxid(resp.txid);
         setTime(resp.calendario.expiracao * 1000);
       },
       onError: (error) => {
@@ -86,6 +93,11 @@ export const Footer = ({ comanda }: IFooter) => {
       },
     );
   };
+
+  useEffect(() => {
+    console.log("[webhookData] => ", webhookData);
+    console.log("[webhookIsPending] => ", webhookIsPending);
+  }, [webhookIsPending, webhookData]);
 
   return (
     <CardFooter className="flex flex-col px-2 pb-2">

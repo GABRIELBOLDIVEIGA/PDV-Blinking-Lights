@@ -57,7 +57,6 @@ export class PixController {
     @Param('txid') txid: string,
     @Res() response: Response,
   ): Observable<MessageEvent> {
-    console.log('[TXID] => ', txid);
     return defer(() => this.pixService.webhookAws(txid)).pipe(
       repeat({ delay: 1000 }),
       tap((report) => {

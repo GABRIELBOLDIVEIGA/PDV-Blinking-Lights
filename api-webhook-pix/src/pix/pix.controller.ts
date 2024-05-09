@@ -9,17 +9,25 @@ import {
   Delete,
   ParseIntPipe,
   Sse,
-  MessageEvent,
   Res,
   UseGuards,
   Req,
+  MessageEvent,
 } from '@nestjs/common';
-
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-
-import { Observable, defer, lastValueFrom, map, repeat, tap } from 'rxjs';
+import {
+  Observable,
+  Subscription,
+  defer,
+  lastValueFrom,
+  map,
+  repeat,
+  subscribeOn,
+  tap,
+} from 'rxjs';
 import { Response } from 'express';
 import { WebhookPostDTO } from './dto/webhook-post.dto';
+import yaml from 'js-yaml';
 
 @ApiTags('Pix')
 @Controller('pix')
@@ -40,7 +48,6 @@ export class PixController {
           }, 1000);
         }
       }),
-
       map((report) => ({ type: 'message', data: report })),
     );
   }

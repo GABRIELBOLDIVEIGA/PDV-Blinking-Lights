@@ -208,14 +208,12 @@ export class PixService {
 
   async webhookAws(txid: string): Promise<string> {
     const { data } = await lastValueFrom(
-      this.httpService
-        .get<string>(`http://localhost:3001/pix/aws/${txid}`)
-        .pipe(
-          catchError((error: AxiosError) => {
-            this.logger.error(error.response.data);
-            throw error.message;
-          }),
-        ),
+      this.httpService.get(`http://localhost:3001/pix/aws/${txid}`).pipe(
+        catchError((error: AxiosError) => {
+          this.logger.error(error.response.data);
+          throw error.message;
+        }),
+      ),
     );
 
     return data;
