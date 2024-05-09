@@ -25,6 +25,8 @@ import { queryClient } from "@/lib/react-query/queryClient";
 import { toast } from "sonner";
 import { errorHandler } from "@/lib/axios/axiosErrorHandler";
 import { useWebhookPix } from "@/hooks/queries/cobrancasPix/useWebhookPix.query";
+import { cn } from "@/lib/utils";
+import check from "@/assets/check-48.png";
 
 interface IFooter {
   comanda: ComandaValidator;
@@ -95,8 +97,12 @@ export const Footer = ({ comanda }: IFooter) => {
   };
 
   useEffect(() => {
-    console.log("[webhookData] => ", webhookData);
-    console.log("[webhookIsPending] => ", webhookIsPending);
+    if (webhookData?.status) {
+      setTimeout(() => {
+        confirmaRecebimento(FormaPagamento.PIX);
+      }, 1000);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [webhookIsPending, webhookData]);
 
   return (
@@ -151,6 +157,7 @@ export const Footer = ({ comanda }: IFooter) => {
               <Button
                 size="icon"
                 onClick={() => gerarCobrancaPix(comanda.total)}
+                disabled={webhookData?.status}
               >
                 <QrCode size={18} />
               </Button>
@@ -164,11 +171,27 @@ export const Footer = ({ comanda }: IFooter) => {
 
               {data && (
                 <>
-                  <div className="text-4xl font-bold tracking-wider">
-                    {+minutes < 10 ? `0${minutes}` : minutes}:
-                    {+seconds < 10 ? `0${seconds}` : seconds}
+                  {!webhookData?.status && (
+                    <div className="text-4xl font-bold tracking-wider ">
+                      {+minutes < 10 ? `0${minutes}` : minutes}:
+                      {+seconds < 10 ? `0${seconds}` : seconds}
+                    </div>
+                  )}
+                  <div
+                    className={cn(
+                      "relative text-4xl font-bold tracking-wider transition-shadow duration-200",
+                      {
+                        "shadow-3xl shadow-green-300": webhookData?.status,
+                      },
+                    )}
+                  >
+                    {webhookData?.status && (
+                      <div className=" absolute grid h-full w-full place-content-center">
+                        <img src={check} className="w-24" />
+                      </div>
+                    )}
+                    <img src={data?.imagemQrcode} />
                   </div>
-                  <img src={data?.imagemQrcode} />
                 </>
               )}
 
@@ -179,7 +202,7 @@ export const Footer = ({ comanda }: IFooter) => {
             <CardFooter className="flex items-center justify-center py-3">
               <Button
                 className="w-full"
-                disabled={!data}
+                disabled={!data || webhookData?.status}
                 onClick={() => confirmaRecebimento(FormaPagamento.PIX)}
               >
                 Confirmar Recebimento

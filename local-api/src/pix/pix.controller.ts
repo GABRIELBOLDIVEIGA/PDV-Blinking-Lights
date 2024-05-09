@@ -18,9 +18,8 @@ import { OriginalDTO } from './dto/valor.dto';
 import { CobrancasQueryDTO } from './dto/cobrancas-query.dto';
 import { CobrancasResponseDTO } from './dto/cobrancas.response.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { Observable, defer, interval, map, repeat, tap } from 'rxjs';
+import { Observable, defer, map, repeat, tap } from 'rxjs';
 import { Response } from 'express';
-import yaml from 'js-yaml';
 
 @ApiTags('Pix')
 @Controller('pix')

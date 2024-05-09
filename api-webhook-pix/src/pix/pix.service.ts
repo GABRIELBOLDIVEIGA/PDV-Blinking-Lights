@@ -61,6 +61,14 @@ export class PixService {
     return options;
   }
 
+  async adicionaJob(txid: string) {
+    this.jobs.push({ status: false, txid: txid });
+
+    console.log('[Jobs] => ', this.jobs);
+
+    return { status: false, txid: txid };
+  }
+
   async resolveJobs(txid: string) {
     const job = this.jobs.find((job) => job.txid === txid);
 

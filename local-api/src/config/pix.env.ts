@@ -10,4 +10,5 @@ export default {
   GN_CLIENT_SECRET: configService.getOrThrow('GN_CLIENT_SECRET'),
   GN_ENDPOINT: configService.getOrThrow('GN_ENDPOINT'),
   GN_CERT: configService.getOrThrow('GN_CERT'),
+  API_AWS_WEBHOOK: configService.getOrThrow('API_AWS_WEBHOOK'),
 };

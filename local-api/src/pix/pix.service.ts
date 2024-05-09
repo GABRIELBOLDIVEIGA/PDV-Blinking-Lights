@@ -2,7 +2,6 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
-  MessageEvent,
 } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -18,14 +17,6 @@ import { CobrancasQueryDTO } from './dto/cobrancas-query.dto';
 import { CobrancasResponseDTO } from './dto/cobrancas.response.dto';
 import configs from 'src/config/pix.env';
 import { Cron } from '@nestjs/schedule';
-import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
-import yaml from 'js-yaml';
-
-interface PayloadYAML {
-  event: string;
-  id: number;
-  data: { status: boolean; txid: string };
-}
 
 @Injectable()
 export class PixService {
@@ -33,6 +24,7 @@ export class PixService {
   private readonly logger = new Logger(PixService.name);
   private access_token: string = '';
   private readonly url = `${configs.GN_ENDPOINT}`;
+  private readonly aws_webhook = `${configs.API_AWS_WEBHOOK}`;
 
   private getCredentials() {
     const credentials = Buffer.from(
@@ -144,9 +136,33 @@ export class PixService {
       const qrcode = await this.getQrcode(data.loc.id);
       const response = { ...data, ...qrcode };
 
+      this.addJob(data.txid);
+
       return response;
     } catch (error) {
       throw new InternalServerErrorException(error);
+    }
+  }
+
+  async addJob(txid: string) {
+    try {
+      const { data } = await lastValueFrom(
+        this.httpService
+          .post<{
+            status: boolean;
+            txid: string;
+          }>(`${this.aws_webhook}/pix/adiciona-job`, { txid })
+          .pipe(
+            catchError((error: AxiosError) => {
+              this.logger.error(error.response.data);
+              throw error.message;
+            }),
+          ),
+      );
+
+      return data;
+    } catch (error) {
+      return 'erro ao cliar job';
     }
   }
 
@@ -208,7 +224,7 @@ export class PixService {
 
   async webhookAws(txid: string): Promise<string> {
     const { data } = await lastValueFrom(
-      this.httpService.get(`http://localhost:3001/pix/aws/${txid}`).pipe(
+      this.httpService.get(`${this.url}/pix/aws/${txid}`).pipe(
         catchError((error: AxiosError) => {
           this.logger.error(error.response.data);
           throw error.message;

@@ -28,11 +28,17 @@ import {
 import { Response } from 'express';
 import { WebhookPostDTO } from './dto/webhook-post.dto';
 import yaml from 'js-yaml';
+import { AdicionaJobDTO } from './dto/adiciona-job.dto';
 
 @ApiTags('Pix')
 @Controller('pix')
 export class PixController {
   constructor(private readonly pixService: PixService) {}
+
+  @Get('all-jobs')
+  allJobs() {
+    return this.pixService.jobs;
+  }
 
   @Sse('/aws/:txid')
   events(
@@ -50,6 +56,11 @@ export class PixController {
       }),
       map((report) => ({ type: 'message', data: report })),
     );
+  }
+
+  @Post('adiciona-job')
+  async adicionaJob(@Body() body: AdicionaJobDTO) {
+    return this.pixService.adicionaJob(body.txid);
   }
 
   // enviaremos uma requisição sem certificado e seu servidor não deverá aceitar a requisição
