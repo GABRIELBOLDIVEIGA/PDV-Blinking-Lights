@@ -54,7 +54,12 @@ export const CardCarrinho = () => {
           Carrinho
         </CardTitle>
 
-        <Button variant="destructive" size="icon" onClick={reset}>
+        <Button
+          variant="destructive"
+          size="icon"
+          disabled={carrinho.length == 0}
+          onClick={reset}
+        >
           <Trash2 size={18} />
         </Button>
       </div>
