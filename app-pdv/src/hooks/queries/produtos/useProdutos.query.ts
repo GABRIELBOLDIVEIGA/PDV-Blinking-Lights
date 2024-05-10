@@ -5,13 +5,13 @@ import {
 import { useApi } from "@/hooks/useApi";
 import { useQuery } from "@tanstack/react-query";
 
-export const TODOS_PRODUTOS = "todos-produtos";
+export const TODOS_PRODUTOS_QUERY_KEY = "todos-produtos";
 
 export const useProdutos = () => {
   const { pdvApi } = useApi();
 
   const produtosQuery = useQuery({
-    queryKey: [TODOS_PRODUTOS],
+    queryKey: [TODOS_PRODUTOS_QUERY_KEY],
 
     queryFn: async () => {
       const { data } = await pdvApi.get<ProdutoValidator[]>("/produto");

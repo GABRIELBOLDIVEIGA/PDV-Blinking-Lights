@@ -4,6 +4,12 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { CircleChevronRight } from "lucide-react";
 import { menuOptions } from "./menu-options";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 
 export const Menu = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -36,36 +42,48 @@ export const Menu = () => {
 
       <div
         className={cn(
-          "flex flex-col w-full gap-4 pt-6 transition-transform duration-1000 px-4",
+          "flex flex-col w-full gap-2 pt-6 transition-transform duration-1000 ",
           {
             "": !isVisible,
           }
         )}
       >
         {menuOptions.map((option) => (
-          <Link
-            key={option.text}
-            to={option.link}
-            className={cn(
-              "[&.active]:font-bold [&.active]:opacity-100 opacity-80 [&.active]:bg-muted w-full rounded-md py-1",
-              {
-                "": !isVisible,
-              }
-            )}
-          >
-            <div
-              className={cn(
-                "flex gap-2 justify-start translate-x-0 transition-transform duration-1000",
-                {
-                  "-translate-x-1": !isVisible,
-                }
-              )}
-            >
-              <div>{option.icon}</div>
+          <TooltipProvider key={option.text}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  to={option.link}
+                  className={cn(
+                    "[&.active]:font-bold [&.active]:opacity-100 opacity-50 [&.active]:bg-muted  w-full rounded-md px-4 py-2",
+                    {
+                      "bg-none [&.active]:bg-transparent": !isVisible,
+                    }
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "flex gap-2 justify-start translate-x-0 transition-transform duration-1000",
+                      {
+                        "-translate-x-1": !isVisible,
+                      }
+                    )}
+                  >
+                    <div>{option.icon}</div>
 
-              <p className="truncate">{option.text}</p>
-            </div>
-          </Link>
+                    <p className="truncate">{option.text}</p>
+                  </div>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent
+                className={cn("sr-only", {
+                  "translate-x-10 translate-y-9 not-sr-only": !isVisible,
+                })}
+              >
+                <p>{option.text}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         ))}
       </div>
     </menu>

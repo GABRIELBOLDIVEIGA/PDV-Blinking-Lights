@@ -14,6 +14,8 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as RouteTreeImport } from './routes/routeTree'
 import { Route as RootImport } from './routes/root'
 import { Route as LoginImport } from './routes/login'
+import { Route as VendaVendaImport } from './routes/venda/venda'
+import { Route as SubCategoriasSubCategoriasImport } from './routes/sub-categorias/sub-categorias'
 import { Route as ProdutosProdutosImport } from './routes/produtos/produtos'
 import { Route as DashboardDashboardImport } from './routes/dashboard/dashboard'
 import { Route as CategoriasCategoriasImport } from './routes/categorias/categorias'
@@ -34,6 +36,18 @@ const LoginRoute = LoginImport.update({
   path: '/login',
   getParentRoute: () => rootRoute,
 } as any)
+
+const VendaVendaRoute = VendaVendaImport.update({
+  path: '/venda/venda',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SubCategoriasSubCategoriasRoute = SubCategoriasSubCategoriasImport.update(
+  {
+    path: '/sub-categorias/sub-categorias',
+    getParentRoute: () => rootRoute,
+  } as any,
+)
 
 const ProdutosProdutosRoute = ProdutosProdutosImport.update({
   path: '/produtos/produtos',
@@ -78,6 +92,14 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProdutosProdutosImport
       parentRoute: typeof rootRoute
     }
+    '/sub-categorias/sub-categorias': {
+      preLoaderRoute: typeof SubCategoriasSubCategoriasImport
+      parentRoute: typeof rootRoute
+    }
+    '/venda/venda': {
+      preLoaderRoute: typeof VendaVendaImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -90,6 +112,8 @@ export const routeTree = rootRoute.addChildren([
   CategoriasCategoriasRoute,
   DashboardDashboardRoute,
   ProdutosProdutosRoute,
+  SubCategoriasSubCategoriasRoute,
+  VendaVendaRoute,
 ])
 
 /* prettier-ignore-end */

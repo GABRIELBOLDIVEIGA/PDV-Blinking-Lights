@@ -4,8 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useLogin } from "@/hooks/mutations/login/useLogin.mutation";
 
 import { useAuthStore } from "@/stores/auth.store";
+import { useNavigate } from "@tanstack/react-router";
 
 export const useLoginForm = () => {
+  const navigate = useNavigate();
   const { mutate, isPending } = useLogin();
   const setToken = useAuthStore((state) => state.setToken);
   const form = useForm<LoginForm>({
@@ -17,15 +19,13 @@ export const useLoginForm = () => {
   });
 
   const onSubmit = (data: LoginForm) => {
-    console.log("[Form] => ", data);
-
     mutate(data, {
       onSuccess: (resp) => {
-        console.log("[Resp] => ", resp.access_token);
+        navigate({ to: "/dashboard" });
         setToken(resp.access_token);
       },
       onError: (error) => {
-        console.log("[Error] => ", error);
+        console.warn("[Error] => ", error);
       },
     });
   };

@@ -17,6 +17,19 @@ module.exports = {
       },
     },
     extend: {
+      screens: {
+        mobile: { max: "639px" },
+        // => @media (max-width: 639px) { ... }
+
+        tablet: "640px",
+        // => @media (min-width: 640px) { ... }
+
+        laptop: "1024px",
+        // => @media (min-width: 1024px) { ... }
+
+        desktop: "1600px",
+        // => @media (min-width: 1280px) { ... }
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

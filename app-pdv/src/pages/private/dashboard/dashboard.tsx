@@ -2,7 +2,7 @@ import { CardTotalVendas } from "./card-total-vendas";
 import { CardLucroBruto } from "./card-lucro-bruto";
 import { CardEstoqueTotal } from "./card-estoque-total";
 import { CardVendasPeriodo } from "./card-vendas-periodo";
-import { CardTiposPagamentos } from "./card-tipos-pagamentos";
+import { CardFornecedores } from "./card-fornecedores";
 import { CardMaioresCliente } from "./card-maiores-clientes";
 import { CardProdutosMaisVendidos } from "./card-produtos-mais-vendidos";
 import { CardVendasPorVendedos } from "./card-vendas-por-vendedos";
@@ -19,7 +19,7 @@ export const Dashboard = () => {
 
       <CardVendasPeriodo className="row-span-3 col-span-2" />
 
-      <CardTiposPagamentos className="row-span-3" />
+      <CardFornecedores className="row-span-3" />
 
       <CardMaioresCliente className="col-span-2" />
 

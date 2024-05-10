@@ -5,11 +5,11 @@ interface IProps {
   className?: string;
 }
 
-export const CardTiposPagamentos = ({ className }: IProps) => {
+export const CardFornecedores = ({ className }: IProps) => {
   return (
     <Card className={cn("", className)}>
       <CardHeader>
-        <CardTitle className="text-sm">TIPOS DE PAGAMENTO</CardTitle>
+        <CardTitle className="text-sm">FORNECEDORES</CardTitle>
       </CardHeader>
     </Card>
   );

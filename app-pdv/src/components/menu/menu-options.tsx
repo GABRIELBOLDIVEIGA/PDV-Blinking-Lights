@@ -1,4 +1,10 @@
-import { LayoutDashboard, PackageSearch, Table2 } from "lucide-react";
+import {
+  LayoutDashboard,
+  PackageSearch,
+  ShoppingCart,
+  Tag,
+  Tags,
+} from "lucide-react";
 
 export const menuOptions = [
   {
@@ -7,9 +13,19 @@ export const menuOptions = [
     icon: <LayoutDashboard />,
   },
   {
+    link: "/venda",
+    text: "Venda",
+    icon: <ShoppingCart />,
+  },
+  {
     link: "/categorias",
     text: "Categorias",
-    icon: <Table2 />,
+    icon: <Tag />,
+  },
+  {
+    link: "/subcategorias",
+    text: "Subcategorias",
+    icon: <Tags />,
   },
   {
     link: "/produtos",
