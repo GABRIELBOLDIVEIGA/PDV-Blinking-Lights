@@ -32,7 +32,7 @@ export const useAuthStore = create<AuthStore>()(
       },
     }),
     {
-      name: "pdv-blinking-lights-auth",
+      name: "auth-pdv-blinking-lights",
       storage: createJSONStorage(() => sessionStorage),
     }
   )

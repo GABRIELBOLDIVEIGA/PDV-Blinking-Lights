@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
+import { Toaster } from "@/components/ui/sonner";
 
 export function Layout() {
   const autentidado = useAuthStore((state) => state.user);
@@ -38,6 +39,7 @@ export function Layout() {
                     process.env.NODE_ENV === "development" && showBg,
                 })}
               >
+                <Toaster />
                 <Outlet />
               </div>
             </ScrollArea>

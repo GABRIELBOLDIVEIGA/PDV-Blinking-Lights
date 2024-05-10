@@ -35,7 +35,7 @@ export const useThemeStore = create<ThemeStore>()(
     }),
 
     {
-      name: "pdv-blinking-lights-theme",
+      name: "theme-pdv-blinking-lights",
       storage: createJSONStorage(() => sessionStorage),
     }
   )

@@ -2,7 +2,7 @@ import { authSchema } from "@/common/schemas/auth-schema";
 
 export function isAuthenticated() {
   try {
-    const storage = sessionStorage.getItem("pdv-blinking-lights-auth");
+    const storage = sessionStorage.getItem("auth-pdv-blinking-lights");
 
     if (storage === null) return false;
 

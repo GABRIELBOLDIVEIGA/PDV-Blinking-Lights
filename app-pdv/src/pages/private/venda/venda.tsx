@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { CardProduto } from "./card-produto";
 import { ProdutoValidator } from "@/common/schemas/produto-schema";
 import { X } from "lucide-react";
+import { CardCarrinho } from "./card-carrinho";
 
 export const Venda = () => {
   const { data } = useProdutos();
@@ -34,11 +35,10 @@ export const Venda = () => {
 
   const filtro = (str: string | undefined) => {
     const produtos_filtrados = data?.filter((produto) => {
-      const produto_tem_categoria = produto.categorias.find((cat) =>
-        cat.categoria.nome.toLowerCase().includes(`${str?.toLocaleLowerCase()}`)
+      return (
+        produto.nome.toLowerCase().includes(`${str?.toLocaleLowerCase()}`) ||
+        produto.codigo.toLowerCase().includes(`${str?.toLocaleLowerCase()}`)
       );
-
-      return produto_tem_categoria;
     });
     setProdutos(produtos_filtrados ?? []);
   };
@@ -92,28 +92,24 @@ export const Venda = () => {
       <div className="flex w-full pt-4 gap-4 h-[750px]">
         <Card className="gap-2 p-2 pr-1 w-2/3">
           <ScrollArea className="h-[720px]">
-            <div className="gap-2 p-4 grid desktop:grid-cols-7 place-content-start laptop:grid-cols-4 tablet:grid-cols-3 mobile:grid-cols-2">
+            <div className="gap-4 p-4 grid desktop:grid-cols-6 place-content-start laptop:grid-cols-4 tablet:grid-cols-3 mobile:grid-cols-2">
               {categoriaSelecionada === "todas" &&
                 produtos?.map((item) => (
                   <CardProduto key={item.id} {...item} />
                 ))}
-              {/* data?.map((item) => <CardProduto key={item.id} {...item} />)} */}
+
               {categoriaSelecionada != "todas" &&
-                produtos?.map((item) =>
-                  filtroPorCategoria(item) ? (
-                    <CardProduto key={item.id} {...item} />
-                  ) : null
+                produtos?.map(
+                  (item) =>
+                    filtroPorCategoria(item) && (
+                      <CardProduto key={item.id} {...item} />
+                    )
                 )}
-              {/* data?.map((item) =>
-                  filtroPorCategoria(item) ? (
-                    <CardProduto key={item.id} {...item} />
-                  ) : null
-                )} */}
             </div>
           </ScrollArea>
         </Card>
 
-        <Card className="p-4 w-1/3">Carrinho</Card>
+        <CardCarrinho />
       </div>
     </section>
   );
