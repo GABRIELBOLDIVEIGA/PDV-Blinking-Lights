@@ -1,5 +1,4 @@
-## Installation
-
+## Installation 
 ```bash
 $ npm install
 ```
@@ -38,7 +37,8 @@ API_AWS_WEBHOOK=''
 ```
 
 ## Running the docker
-
+* Caso seu OS seja windows delete a pasta node_modules antes de rodar os comandos do Docker.
+* Algumas libs precisão ser instaladas no OS onde o projeto ira rodar.
 ```bash
 # gerar a build 
 $ docker build .
