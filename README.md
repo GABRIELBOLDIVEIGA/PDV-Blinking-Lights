@@ -11,5 +11,5 @@
 <!-- , como restaurantes e bares, que precisão de agilidade e sincronia nos pedidos -->
 
 
-#### Fluxo PIX
-![plot](./images/pdv-blinking-lights.png)
+<!-- #### Fluxo PIX
+![plot](./images/pdv-blinking-lights.png) -->
