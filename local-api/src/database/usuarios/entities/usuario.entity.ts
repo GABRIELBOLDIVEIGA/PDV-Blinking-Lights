@@ -1,5 +1,6 @@
 import { Endereco } from 'src/database/enderecos/entities/endereco.entity';
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -44,4 +45,10 @@ export class Usuario {
 
   @DeleteDateColumn()
   deleted_at: Date;
+
+  @BeforeInsert()
+  nameToUpperCase() {
+    this.nome = this.nome.toLowerCase();
+    this.email = this.email.toLowerCase();
+  }
 }

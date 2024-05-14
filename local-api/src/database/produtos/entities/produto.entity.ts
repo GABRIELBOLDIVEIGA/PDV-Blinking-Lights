@@ -2,6 +2,7 @@ import { ProdutoCategoria } from 'src/database/produtos/entities/produto_categor
 import { ProdutoFornecedor } from 'src/database/produtos/entities/produto_fornecedor.entity';
 import { Estoque } from 'src/database/estoque/entities/estoque.entity';
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -63,4 +64,11 @@ export class Produto {
 
   @DeleteDateColumn()
   deleted_at: Date;
+
+  @BeforeInsert()
+  nameToUpperCase() {
+    this.codigo = this.codigo.toLowerCase();
+    this.nome = this.nome.toLowerCase();
+    this.descricao = this.descricao.toLowerCase();
+  }
 }

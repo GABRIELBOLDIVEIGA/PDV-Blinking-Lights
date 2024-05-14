@@ -1,5 +1,6 @@
 import { CategoriaSubCategoria } from 'src/database/categorias/entities/categoria_subcategoria.entity';
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -34,4 +35,10 @@ export class Categoria {
 
   @DeleteDateColumn()
   deleted_at: Date;
+
+  @BeforeInsert()
+  nameToUpperCase() {
+    this.nome = this.nome.toLowerCase();
+    this.descricao = this.descricao.toLowerCase();
+  }
 }

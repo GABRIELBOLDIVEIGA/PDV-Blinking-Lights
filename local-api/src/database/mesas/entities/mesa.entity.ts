@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -45,4 +46,9 @@ export class Mesa {
 
   @DeleteDateColumn()
   deleted_at: Date;
+
+  @BeforeInsert()
+  nameToUpperCase() {
+    this.nome = this.nome.toLowerCase();
+  }
 }

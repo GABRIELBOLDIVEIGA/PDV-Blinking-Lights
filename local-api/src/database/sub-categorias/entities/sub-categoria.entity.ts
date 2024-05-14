@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -26,4 +27,10 @@ export class SubCategoria {
 
   @DeleteDateColumn()
   deleted_at: Date;
+
+  @BeforeInsert()
+  nameToUpperCase() {
+    this.nome = this.nome.toLowerCase();
+    this.descricao = this.descricao.toLowerCase();
+  }
 }

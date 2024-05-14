@@ -17,6 +17,7 @@ import { CardProduto } from "./card-produto";
 import { ProdutoValidator } from "@/common/schemas/produto-schema";
 import { X } from "lucide-react";
 import { CardCarrinho } from "./card-carrinho";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const Venda = () => {
   const { data } = useProdutos();
@@ -93,6 +94,11 @@ export const Venda = () => {
         <Card className="gap-2 p-2 pr-1 w-2/3">
           <ScrollArea className="h-[720px]">
             <div className="gap-4 p-4 grid desktop:grid-cols-6 place-content-start laptop:grid-cols-4 tablet:grid-cols-3 mobile:grid-cols-2">
+              {!data &&
+                new Array(10)
+                  .fill((i: unknown) => i)
+                  .map((i) => <Skeleton className="h-44 w-32" key={i} />)}
+
               {categoriaSelecionada === "todas" &&
                 produtos?.map((item) => (
                   <CardProduto key={item.id} {...item} />
