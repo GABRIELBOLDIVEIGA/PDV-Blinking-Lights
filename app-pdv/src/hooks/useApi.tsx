@@ -1,6 +1,7 @@
 import { useAuthStore } from "@/stores/auth.store";
 import { useNavigate } from "@tanstack/react-router";
 import axios from "axios";
+import axiosTauriApiAdapter from "axios-tauri-api-adapter";
 
 export const useApi = () => {
   const resetAuthStore = useAuthStore((store) => store.reset);
@@ -8,10 +9,12 @@ export const useApi = () => {
   const navigate = useNavigate();
 
   const pdvApi = axios.create({
+    adapter: axiosTauriApiAdapter,
     baseURL:
       process.env.NODE_ENV === "development"
         ? import.meta.env.VITE_API_DEVELOPMENT
         : import.meta.env.VITE_API_PRODUCTION,
+
     headers: {
       Authorization: `Bearer ${access_token}`,
     },

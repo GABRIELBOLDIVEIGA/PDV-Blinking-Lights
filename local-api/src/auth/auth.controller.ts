@@ -21,6 +21,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   create(@Body() singinAuthDto: SinginAuthDto) {
+    console.log('[SinginAuthDto] => ', singinAuthDto);
     return this.authService.signIn(singinAuthDto);
   }
 

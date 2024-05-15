@@ -7,10 +7,22 @@ import { Header } from "@/components/header/header";
 import { cn } from "@/lib/utils";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
+import { invoke } from "@tauri-apps/api";
 
 export function Layout() {
+  useEffect(() => {
+    try {
+      invoke("greet", { name: "World" })
+        // `invoke` returns a Promise
+        .then((response: unknown) => console.log(response));
+    } catch (error) {
+      console.log("[Error] => ", error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const autentidado = useAuthStore((state) => state.user);
   const [showBg, setShowBg] = useState(false);
 

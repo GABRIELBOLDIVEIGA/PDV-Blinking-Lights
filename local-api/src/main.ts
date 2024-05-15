@@ -50,6 +50,7 @@ async function bootstrap() {
     origin: [
       '*',
       'http://localhost:5173',
+      'http://localhost:5173/',
       'https://<link do projeto>.vercel.app',
     ],
     credentials: true,
