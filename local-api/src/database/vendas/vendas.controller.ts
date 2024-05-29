@@ -31,12 +31,18 @@ export class VendasController {
   async adiconarProduto(@Body() adicionaProdutoDto: AdicionaProdutoDto) {
     return this.vendasService.adiconarProduto(adicionaProdutoDto);
   }
+
   @Post('remove-produto')
   async removeProduto(@Body() removeProduto: RemoveProdutoDto) {
     return this.vendasService.removeProduto(
       removeProduto.venda_id,
       removeProduto.produto_id,
     );
+  }
+
+  @Get('total-de-itens-vendidos')
+  async totalDeItensVendidos() {
+    return this.vendasService.totalDeItensVendidos();
   }
 
   @Get()

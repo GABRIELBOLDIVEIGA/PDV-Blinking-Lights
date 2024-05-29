@@ -169,6 +169,10 @@ export class VendasService {
     });
   }
 
+  async totalDeItensVendidos() {
+    return await this.vendaProdutoRepository.count();
+  }
+
   async findAll() {
     try {
       const vendas = await this.vendaRepository.find({

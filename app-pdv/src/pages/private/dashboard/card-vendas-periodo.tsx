@@ -103,6 +103,7 @@ function CustomTooltip({ active, payload }: any) {
     const data = payload[0].payload;
     const { qnt } = data;
     setFinalValue(qnt);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [payload]);
 
   return (

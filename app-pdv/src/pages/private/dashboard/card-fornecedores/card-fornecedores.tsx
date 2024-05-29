@@ -40,7 +40,7 @@ export const CardFornecedores = ({ className }: IProps) => {
                   </p>
                   <p className="w-1/2 truncate">{fornecedor.documento}</p>
                   <DropdownMenuFornecedor>
-                    <Button variant="outline" size="icon">
+                    <Button variant="ghost" size="icon">
                       <DotsVerticalIcon className="w-4 h-4" />
                     </Button>
                   </DropdownMenuFornecedor>

@@ -5,18 +5,41 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { useCountUp } from "@/hooks/useCountUp";
 import { useEffect } from "react";
+import { useVendas } from "@/hooks/queries/vendas/useVendas.query";
+import { useTotalDeItensVendidos } from "@/hooks/queries/vendas/useTotalDeItensVendidos.query";
+import CountUp from "react-countup";
 
 interface IProps {
   className?: string;
 }
 
 export const CardTotalVendas = ({ className }: IProps) => {
+  const { data } = useVendas();
   const { currentValue, setFinalValue } = useCountUp();
+  const { totalDeItensVendidos } = useTotalDeItensVendidos();
 
   useEffect(() => {
-    setFinalValue(836.98);
+    if (!data) return;
+
+    const total_por_item = data?.map((item) => {
+      const amount = item.produtos.map(
+        (produto) => produto.produto.preco_venda * produto.quantidade
+      );
+
+      return amount.reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0
+      );
+    });
+
+    const total_geral = total_por_item?.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+    );
+
+    setFinalValue(Number(total_geral?.toFixed(2)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [data]);
 
   return (
     <Card className={cn("", className)}>
@@ -36,19 +59,35 @@ export const CardTotalVendas = ({ className }: IProps) => {
           <p className="text-muted-foreground font-semibold text-sm tracking-wide">
             Qtd de vendas
           </p>
-          <p className="font-semibold">{0}</p>
+          <p className="font-semibold">
+            <CountUp start={0} end={data?.length ?? 0} duration={0.7} />
+          </p>
         </div>
         <div className="flex flex-col items-center">
           <p className="text-muted-foreground font-semibold text-sm tracking-wide">
             Ticket médio
           </p>
-          <p className="font-semibold">{currencyFormt(0)}</p>
+          <p className="font-semibold">
+            R${" "}
+            <CountUp
+              start={0}
+              end={currentValue / (data?.length ?? 1)}
+              duration={0.7}
+            />
+          </p>
         </div>
         <div className="flex flex-col items-center">
           <p className="text-muted-foreground font-semibold text-sm tracking-wide">
             Itens vendidos
           </p>
-          <p className="font-semibold">{0}</p>
+          <p className="font-semibold">
+            R${" "}
+            <CountUp
+              start={0}
+              end={totalDeItensVendidos.data ?? 0}
+              duration={0.7}
+            />
+          </p>
         </div>
       </CardContent>
     </Card>
