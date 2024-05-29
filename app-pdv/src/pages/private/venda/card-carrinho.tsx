@@ -8,15 +8,24 @@ import { Separator } from "@/components/ui/separator";
 import { currencyFormt } from "@/helpers/currencyFormt";
 import { RealizarVendaForm } from "@/hooks/mutations/venda/realizar-venda-schema";
 import { useRealizarVenda } from "@/hooks/mutations/venda/useVenda.mutation";
+import { useCountUp } from "@/hooks/useCountUp";
+import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth.store";
 import { useCarrinhoStore } from "@/stores/carrinho.store";
 import { Minus, Plus, Trash2 } from "lucide-react";
+import { useEffect } from "react";
 import { toast } from "sonner";
 
 export const CardCarrinho = () => {
   const { user } = useAuthStore();
   const { carrinho, editaQuandidade, reset, total } = useCarrinhoStore();
   const { mutate, isPending } = useRealizarVenda();
+  const { currentValue, setFinalValue } = useCountUp(total());
+
+  useEffect(() => {
+    setFinalValue(total());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [carrinho]);
 
   const submitVenda = () => {
     const form: RealizarVendaForm = {
@@ -29,7 +38,7 @@ export const CardCarrinho = () => {
       valor_pago: total(),
       prods: carrinho.map((item) => ({
         id: item.produto.id,
-        quantidade: item.qnt,
+        quantidade: item.qnt <= 0 ? 1 : item.qnt,
       })),
     };
 
@@ -55,9 +64,9 @@ export const CardCarrinho = () => {
         </CardTitle>
 
         <Button
-          variant="destructive"
+          className="bg-rose-500 hover:bg-rose-600 dark:text-primary"
           size="icon"
-          disabled={carrinho.length == 0}
+          disabled={carrinho.length === 0}
           onClick={reset}
         >
           <Trash2 size={18} />
@@ -74,8 +83,14 @@ export const CardCarrinho = () => {
                   <p className="pl-2">{item.produto.nome}</p>
                   <div className="flex gap-1">
                     <Button
-                      className="transition-all duration-300"
-                      variant={item.qnt === 0 ? "destructive" : "secondary"}
+                      className={cn(
+                        "transition-all duration-300 text-primary",
+                        {
+                          "bg-rose-500 hover:bg-rose-600 text-primary-foreground":
+                            item.qnt === 0,
+                        }
+                      )}
+                      variant="secondary"
                       size="icon"
                       onClick={() =>
                         editaQuandidade(item.produto.id, --item.qnt)
@@ -118,7 +133,7 @@ export const CardCarrinho = () => {
       <CardFooter className="px-4 py-2 pt-4">
         <div className="flex justify-between w-full">
           <p className="font-semibold tracking-wide">
-            Total: {currencyFormt(total())}
+            Total: {currencyFormt(currentValue)}
           </p>
 
           <Button

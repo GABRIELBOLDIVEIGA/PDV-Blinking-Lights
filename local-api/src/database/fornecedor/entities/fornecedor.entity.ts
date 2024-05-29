@@ -16,6 +16,9 @@ export class Fornecedor {
   nome: string;
 
   @Column({ type: 'varchar', default: '' })
+  documento: string;
+
+  @Column({ type: 'varchar', default: '' })
   observacoes: string;
 
   @CreateDateColumn()

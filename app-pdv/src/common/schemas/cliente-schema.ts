@@ -1,13 +1,16 @@
 import { z } from "zod";
 
-export const fornecedorSchema = z.object({
+export const clienteSchema = z.object({
   id: z.coerce.number().positive().int(),
   nome: z.string(),
   documento: z.string(),
-  observacoes: z.string(),
+  email: z.string().email(),
+  tel1: z.string(),
+  tel2: z.string(),
+  tel3: z.string(),
   created_at: z.coerce.date(),
   updated_at: z.coerce.date(),
   deleted_at: z.coerce.date().or(z.null()),
 });
 
-export type FornecedorValidator = z.infer<typeof fornecedorSchema>;
+export type ClienteValidator = z.infer<typeof clienteSchema>;

@@ -42,7 +42,7 @@ export const Menu = () => {
 
       <div
         className={cn(
-          "flex flex-col w-full gap-2 pt-6 transition-transform duration-1000 ",
+          "flex flex-col w-full gap-2 pt-6 transition-transform duration-1000",
           {
             "": !isVisible,
           }

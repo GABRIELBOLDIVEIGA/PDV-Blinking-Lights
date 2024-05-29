@@ -4,33 +4,33 @@ import { subCategoriaSchema } from "./subCategoria-schema";
 import { fornecedorSchema } from "./fornecedor-schema";
 
 export const produtoSchema = z.object({
-  id: z.coerce.number(),
+  id: z.coerce.number().positive().int(),
   codigo: z.string(),
   nome: z.string(),
   descricao: z.string(),
-  preco_venda: z.coerce.number(),
-  preco_compra: z.coerce.number(),
-  created_at: z.string().datetime(),
-  updated_at: z.string().datetime(),
-  deleted_at: z.string().datetime().or(z.null()),
+  preco_venda: z.coerce.number().positive().multipleOf(0.01),
+  preco_compra: z.coerce.number().positive().multipleOf(0.01),
+  created_at: z.coerce.date(),
+  updated_at: z.coerce.date(),
+  deleted_at: z.coerce.date().or(z.null()),
 
   categorias: z.array(
     z.object({
-      id: z.coerce.number(),
+      id: z.coerce.number().positive().int(),
       categoria: categoriaSchema,
     })
   ),
 
   fornecedores: z.array(
     z.object({
-      id: z.coerce.number(),
+      id: z.coerce.number().positive().int(),
       fornecedor: fornecedorSchema,
     })
   ),
 
   subCategorias: z.array(
     z.object({
-      id: z.coerce.number(),
+      id: z.coerce.number().positive().int(),
       subCategoria: subCategoriaSchema,
     })
   ),

@@ -20,7 +20,7 @@ export function Layout() {
         <main className="flex h-full relative max-h-screen">
           <Menu />
           {process.env.NODE_ENV === "development" && (
-            <div className="absolute bottom-5 left-5 flex gap-2">
+            <div className="absolute bottom-5 left-5 flex gap-2 sr-only">
               <Label htmlFor="bg-media-query">Show bg media query</Label>
               <Switch
                 id="bg-media-query"

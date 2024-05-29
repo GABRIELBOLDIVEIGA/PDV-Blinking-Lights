@@ -2,7 +2,7 @@ import { CardTotalVendas } from "./card-total-vendas";
 import { CardLucroBruto } from "./card-lucro-bruto";
 import { CardEstoqueTotal } from "./card-estoque-total";
 import { CardVendasPeriodo } from "./card-vendas-periodo";
-import { CardFornecedores } from "./card-fornecedores";
+import { CardFornecedores } from "./card-fornecedores/card-fornecedores";
 import { CardMaioresCliente } from "./card-maiores-clientes";
 import { CardProdutosMaisVendidos } from "./card-produtos-mais-vendidos";
 import { CardVendasPorVendedos } from "./card-vendas-por-vendedos";
