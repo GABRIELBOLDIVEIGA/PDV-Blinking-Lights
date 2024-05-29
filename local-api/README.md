@@ -12,7 +12,7 @@ PORT=''
 JWT_SECRET=''
 DATA_BASE_MONGODB=''
 
-# Válvulas do Banco MYSQL
+# Variaveis do Banco MYSQL
 MYSQL_HOST=''
 MYSQL_PORT=''
 MYSQL_USER_NAME=''
